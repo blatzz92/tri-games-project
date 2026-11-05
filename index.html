@@ -34,8 +34,15 @@
     .page-btn.active { background: #ff9900; color: #000; font-weight: bold; border-color: #ff9900; }
 
     #player-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; flex-direction: column; z-index: 999; }
-    .player-box { background: #000; border: 2px solid #ff9900; padding: 10px; width: 820px; text-align: right; }
-    .close-btn { background: #d9534f; color: #fff; border: none; padding: 5px 12px; cursor: pointer; font-weight: bold; margin-bottom: 5px; }
+    .player-box { background: #000; border: 2px solid #ff9900; padding: 10px; width: 820px; }
+    
+    /* Üst butonlar alanı */
+    .player-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .player-buttons { display: flex; gap: 5px; }
+    
+    .close-btn { background: #d9534f; color: #fff; border: none; padding: 5px 12px; cursor: pointer; font-weight: bold; border-radius: 3px; }
+    .fs-btn { background: #337ab7; color: #fff; border: none; padding: 5px 12px; cursor: pointer; font-weight: bold; border-radius: 3px; }
+    
     #swf-container { width: 800px; height: 600px; background: #111; position: relative; }
 
     #maintenance-screen { display: none; text-align: center; margin-top: 100px; }
@@ -55,7 +62,7 @@
       <div class="header-right">
         <!-- Ruffle Aç/Kapat Toggle Butonu -->
         <button id="ruffle-toggle-btn" class="ruffle-toggle" onclick="toggleRuffle()">Ruffle: KAPALI</button>
-        <span class="version-tag" id="version-display">Versiyon:unkown</span>
+        <span class="version-tag" id="version-display">Versiyon: v1.0</span>
       </div>
     </header>
 
@@ -73,13 +80,26 @@
 
   <!-- Oyun Oynatıcı / Web Port Modal Penceresi -->
   <div id="player-modal">
-    <div class="player-box">
-      <button class="close-btn" onclick="closeGame()">X KAPAT</button>
+    <div class="player-box" id="player-box">
+      <div class="player-header">
+        <span id="playing-title" style="color: #ff9900; font-weight: bold;">Oynatılıyor...</span>
+        <div class="player-buttons">
+          <button class="fs-btn" onclick="toggleFullScreen()">[  ] TAM EKRAN</button>
+          <button class="close-btn" onclick="closeGame()">X KAPAT</button>
+        </div>
+      </div>
       <div id="swf-container"></div>
     </div>
   </div>
 
   <script>
+    // ==========================================
+    // BURAYI KENDİ GİTHUB BİLGİLERİNLE DEĞİŞTİR:
+    // ==========================================
+    var githubUser = "blatzz92"; 
+    var githubRepo = "tri-games-project";      
+    // ==========================================
+
     var gamesData = [];
     var currentPage = 1;
     var itemsPerPage = 15;
@@ -113,97 +133,62 @@
         document.head.appendChild(script);
       }
 
-      var fs, path;
-      try {
-        fs = require('fs');
-        path = require('path');
-      } catch(e) {
-        return;
-      }
+      // GitHub API Üzerinden Klasörleri Tarama İşlemi
+      loadGithubFolder('swf games/best games', 'basarili', 'swf');
+      loadGithubFolder('swf games/popular games', 'populer', 'swf');
+      loadGithubFolder('swf games/other games', 'diger', 'swf');
+      loadGithubFolder('non-swf games', 'non-swf', 'html');
+    }
 
-      var rootDir = process.cwd();
+    // GitHub API'den Belirtilen Klasör İçeriğini Çeken Fonksiyon
+    function loadGithubFolder(folderPath, categoryName, fileType) {
+      var apiUrl = "https://api.github.com/repos/" + githubUser + "/" + githubRepo + "/contents/" + folderPath;
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", apiUrl, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            try {
+              var files = JSON.parse(xhr.responseText);
+              for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var nameLower = file.name.toLowerCase();
 
-      try {
-        var settingsPath = path.join(rootDir, 'settings.json');
-        if (fs.existsSync(settingsPath)) {
-          var rawData = fs.readFileSync(settingsPath, 'utf8');
-          if (rawData.charCodeAt(0) === 0xFEFF) rawData = rawData.slice(1);
-          var settings = JSON.parse(rawData);
-          if (settings.versiyon) {
-            document.getElementById("version-display").innerText = "Versiyon: " + settings.versiyon;
-          }
-          if (settings.aktifmi === false) {
-            document.getElementById("main-content").style.display = "none";
-            document.getElementById("maintenance-screen").style.display = "block";
-            return;
-          }
-        }
-      } catch(err) {}
-
-      // 1. SWF Oyun Klasörleri Taranıyor
-      var categoryFolders = [
-        { folder: path.join(rootDir, 'swf games', 'best games'), cat: 'basarili', sub: 'best games' },
-        { folder: path.join(rootDir, 'swf games', 'popular games'), cat: 'populer', sub: 'popular games' },
-        { folder: path.join(rootDir, 'swf games', 'other games'), cat: 'diger', sub: 'other games' }
-      ];
-
-      for (var i = 0; i < categoryFolders.length; i++) {
-        var item = categoryFolders[i];
-        try {
-          if (fs.existsSync(item.folder)) {
-            var files = fs.readdirSync(item.folder);
-            for (var j = 0; j < files.length; j++) {
-              var fileName = files[j];
-              if (fileName.toLowerCase().indexOf(".swf") !== -1) {
-                var cleanName = fileName.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
-                var webPath = 'swf games/' + item.sub + '/' + fileName;
-
-                gamesData.push({
-                  name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
-                  file: webPath,
-                  category: item.cat,
-                  type: 'swf'
-                });
+                if (fileType === 'swf' && nameLower.indexOf(".swf") !== -1) {
+                  var cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+                  gamesData.push({
+                    name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
+                    file: file.download_url,
+                    category: categoryName,
+                    type: 'swf'
+                  });
+                } else if (fileType === 'html' && (nameLower.endsWith('.html') || nameLower.endsWith('.htm'))) {
+                  var cleanNfName = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+                  gamesData.push({
+                    name: cleanNfName.charAt(0).toUpperCase() + cleanNfName.slice(1),
+                    file: file.download_url,
+                    category: categoryName,
+                    type: 'html'
+                  });
+                }
               }
+              renderGrid();
+            } catch(e) {
+              console.error("JSON parse hatası:", e);
             }
-          }
-        } catch(e) {}
-      }
-
-      // 2. NON-SWF Klasöründeki .html ve .htm Dosyaları Kesin Tarama
-      var nonSwfFolder = path.join(rootDir, 'non-swf games');
-      try {
-        if (fs.existsSync(nonSwfFolder)) {
-          var nonFiles = fs.readdirSync(nonSwfFolder);
-          for (var k = 0; k < nonFiles.length; k++) {
-            var nf = nonFiles[k];
-            var nfLower = nf.toLowerCase();
-            // .html veya .htm uzantı kontrolü (uzantı ile bitip bitmediğine bakıyoruz)
-            if (nfLower.endsWith('.html') || nfLower.endsWith('.htm')) {
-              var cleanNfName = nf.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
-              var webNfPath = 'non-swf games/' + nf;
-
-              gamesData.push({
-                name: cleanNfName.charAt(0).toUpperCase() + cleanNfName.slice(1),
-                file: webNfPath,
-                category: 'non-swf',
-                type: 'html'
-              });
-            }
+          } else {
+            console.warn("GitHub klasörü yüklenemedi: " + folderPath);
           }
         }
-      } catch(e) {
-        console.log("Non-SWF klasör okuma hatası:", e);
-      }
-
-      renderGrid();
+      };
+      xhr.send();
     }
 
     function getFilteredGames() {
       var filtered = [];
       for (var i = 0; i < gamesData.length; i++) {
         var g = gamesData[i];
-        // Kategori filtresi: 'hepsi' ise tümü, 'non-swf' ise sadece non-swf, diğerleri kendi kategorisi
         var matchCategory = (currentCategory === 'hepsi' || g.category === currentCategory);
         var matchSearch = g.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
         if (matchCategory && matchSearch) {
@@ -223,7 +208,7 @@
       var pageGames = filtered.slice(startIndex, endIndex);
 
       if (pageGames.length === 0) {
-        grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; padding:20px; color:#888;'>Bu kategoride oyun bulunamadı!</p>";
+        grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; padding:20px; color:#888;'>Oyunlar yükleniyor veya bu kategoride oyun yok...</p>";
       } else {
         for (var i = 0; i < pageGames.length; i++) {
           var game = pageGames[i];
@@ -232,7 +217,7 @@
           
           card.onclick = (function(gObj) {
             return function() {
-              playGame(gObj.file, gObj.type);
+              playGame(gObj.file, gObj.type, gObj.name);
             };
           })(game);
 
@@ -287,8 +272,9 @@
       renderGrid();
     }
 
-    function playGame(filePath, fileType) {
+    function playGame(filePath, fileType, gameName) {
       var container = document.getElementById("swf-container");
+      document.getElementById("playing-title").innerText = gameName;
       
       if (fileType === 'html') {
         container.innerHTML = '<iframe src="' + filePath + '" width="100%" height="100%" style="border:none;"></iframe>';
@@ -306,6 +292,31 @@
       }
 
       document.getElementById("player-modal").style.display = "flex";
+    }
+
+    // Tam Ekran Aç/Kapat (Toggle) Fonksiyonu
+    function toggleFullScreen() {
+      var elem = document.getElementById("swf-container");
+      
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        // Tam ekrana geç
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen();
+        }
+      } else {
+        // Tam ekrandan çık
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
     }
 
     function closeGame() {
