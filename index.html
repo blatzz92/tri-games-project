@@ -2,275 +2,67 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Tri-Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>...</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, Arial, sans-serif; }
-    body { background-color: #121212; color: #e0e0e0; padding: 15px; font-size: 13px; }
-    
-    header { border-bottom: 2px solid #ff9900; padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    h1 { color: #ff9900; font-size: 22px; font-weight: bold; }
-    
-    .header-right { display: flex; align-items: center; gap: 10px; }
-    .version-tag { background: #222; color: #ff9900; border: 1px solid #ff9900; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    /* Ruffle Toggle Switch Stili */
-    .ruffle-toggle { background: #2a2a2a; border: 1px solid #444; color: #ccc; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
-    .ruffle-toggle.active { background: #28a745; color: #fff; border-color: #28a745; }
+    body {
+      background-color: #0f172a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
 
-    .controls { margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
-    input[type="text"] { background: #222; border: 1px solid #444; color: #fff; padding: 6px 10px; font-size: 13px; width: 220px; border-radius: 3px; }
+    .rainbow-text {
+      font-size: 3rem;
+      font-weight: 800;
+      text-align: center;
+      background: linear-gradient(
+        90deg,
+        #ff0000,
+        #ff7f00,
+        #ffff00,
+        #00ff00,
+        #0000ff,
+        #4b0082,
+        #8b00ff,
+        #ff0000
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: rainbow 3s linear infinite;
+    }
 
-    .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px; min-height: 280px; }
-    .game-card { background: #222; border: 1px solid #333; padding: 10px; text-align: center; border-radius: 4px; cursor: pointer; }
-    .game-card:hover { border-color: #ff9900; background: #2a2a2a; }
-    .game-title { color: #fff; font-weight: bold; font-size: 13px; word-break: break-word; }
+    @keyframes rainbow {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
 
-    .pagination { display: flex; justify-content: center; gap: 5px; margin-top: 10px; }
-    .page-btn { background: #222; border: 1px solid #444; color: #fff; padding: 5px 10px; cursor: pointer; border-radius: 3px; font-size: 12px; }
-    .page-btn.active { background: #ff9900; color: #000; font-weight: bold; border-color: #ff9900; }
-
-    #player-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; flex-direction: column; z-index: 999; }
-    .player-box { background: #000; border: 2px solid #ff9900; padding: 10px; width: 820px; }
-    
-    .player-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-    .player-buttons { display: flex; gap: 5px; }
-    
-    .close-btn { background: #d9534f; color: #fff; border: none; padding: 5px 12px; cursor: pointer; font-weight: bold; border-radius: 3px; }
-    .fs-btn { background: #337ab7; color: #fff; border: none; padding: 5px 12px; cursor: pointer; font-weight: bold; border-radius: 3px; }
-    
-    #swf-container { width: 800px; height: 600px; background: #111; position: relative; }
+    @media (max-width: 600px) {
+      .rainbow-text {
+        font-size: 2rem;
+        padding: 0 1rem;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div id="main-content">
-    <header>
-      <h1>Tri-Games</h1>
-      <div class="header-right">
-        <!-- Ruffle Aç/Kapat Toggle Butonu -->
-        <button id="ruffle-toggle-btn" class="ruffle-toggle" onclick="toggleRuffle()">Ruffle: KAPALI</button>
-        <span class="version-tag" id="version-display">Versiyon: v1.0</span>
-      </div>
-    </header>
+  <h1 class="rainbow-text">Sistem güncelleniyor</h1>
 
-    <div class="controls">
-      <input type="text" id="search-input" placeholder="Oyun ara..." oninput="onSearch()">
-    </div>
-
-    <div class="game-grid" id="game-grid"></div>
-    <div class="pagination" id="pagination"></div>
-  </div>
-
-  <!-- Oyun Oynatıcı Modal Penceresi -->
-  <div id="player-modal">
-    <div class="player-box" id="player-box">
-      <div class="player-header">
-        <span id="playing-title" style="color: #ff9900; font-weight: bold;">Oynatılıyor...</span>
-        <div class="player-buttons">
-          <button class="fs-btn" onclick="toggleFullScreen()">[  ] TAM EKRAN</button>
-          <button class="close-btn" onclick="closeGame()">X KAPAT</button>
-        </div>
-      </div>
-      <div id="swf-container"></div>
-    </div>
-  </div>
-
-  <script>
-    // GitHub Bilgileri
-    var githubUser = "blatzz92"; 
-    var githubRepo = "tri-games-project";      
-
-    var gamesData = [];
-    var currentPage = 1;
-    var itemsPerPage = 15;
-    var searchQuery = '';
-    var ruffleActive = false;
-
-    // Ruffle Toggle ve Sayfayı Yeniden Yükleme Sistemi
-    function toggleRuffle() {
-      ruffleActive = !ruffleActive;
-      if (ruffleActive) {
-        localStorage.setItem("ruffle_status", "true");
-        location.reload();
-      } else {
-        localStorage.removeItem("ruffle_status");
-        location.reload();
-      }
-    }
-
-    function initLauncher() {
-      var savedRuffle = localStorage.getItem("ruffle_status");
-      if (savedRuffle === "true") {
-        ruffleActive = true;
-        var btn = document.getElementById("ruffle-toggle-btn");
-        btn.className = "ruffle-toggle active";
-        btn.innerText = "Ruffle: ACIK";
-
-        var script = document.createElement("script");
-        script.id = "ruffle-script";
-        script.src = "https://unpkg.com/@ruffle-rs/ruffle";
-        document.head.appendChild(script);
-      }
-
-      // Sadece 'swf games/other games' klasörünü tarar
-      loadGithubFolder('swf games/other games');
-    }
-
-    // GitHub API Üzerinden Klasör Taraması (ES5 / Chrome 49 Uyumlu XMLHttpRequest)
-    function loadGithubFolder(folderPath) {
-      var apiUrl = "https://api.github.com/repos/" + githubUser + "/" + githubRepo + "/contents/" + folderPath;
-      
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", apiUrl, true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            try {
-              var files = JSON.parse(xhr.responseText);
-              for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var nameLower = file.name.toLowerCase();
-
-                if (nameLower.indexOf(".swf") !== -1) {
-                  var cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
-                  gamesData.push({
-                    name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
-                    file: file.download_url
-                  });
-                }
-              }
-              renderGrid();
-            } catch(e) {
-              console.error("JSON parse hatası:", e);
-            }
-          } else {
-            console.warn("GitHub klasörü yüklenemedi: " + folderPath);
-          }
-        }
-      };
-      xhr.send();
-    }
-
-    function getFilteredGames() {
-      var filtered = [];
-      for (var i = 0; i < gamesData.length; i++) {
-        var g = gamesData[i];
-        var matchSearch = g.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
-        if (matchSearch) {
-          filtered.push(g);
-        }
-      }
-      return filtered;
-    }
-
-    function renderGrid() {
-      var filtered = getFilteredGames();
-      var grid = document.getElementById("game-grid");
-      grid.innerHTML = "";
-
-      var startIndex = (currentPage - 1) * itemsPerPage;
-      var endIndex = startIndex + itemsPerPage;
-      var pageGames = filtered.slice(startIndex, endIndex);
-
-      if (pageGames.length === 0) {
-        grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; padding:20px; color:#888;'>Oyunlar yükleniyor veya klasörde oyun yok...</p>";
-      } else {
-        for (var i = 0; i < pageGames.length; i++) {
-          var game = pageGames[i];
-          var card = document.createElement("div");
-          card.className = "game-card";
-          
-          card.onclick = (function(gObj) {
-            return function() {
-              playGame(gObj.file, gObj.name);
-            };
-          })(game);
-
-          card.innerHTML = "<div class='game-title'>" + game.name + "</div>";
-          grid.appendChild(card);
-        }
-      }
-
-      renderPagination(filtered.length);
-    }
-
-    function renderPagination(totalItems) {
-      var totalPages = Math.ceil(totalItems / itemsPerPage);
-      var container = document.getElementById("pagination");
-      container.innerHTML = "";
-
-      if (totalPages <= 1) return;
-
-      for (var i = 1; i <= totalPages; i++) {
-        var btn = document.createElement("button");
-        btn.className = "page-btn" + (i === currentPage ? " active" : "");
-        btn.innerText = i;
-        btn.onclick = (function(pageNum) {
-          return function() {
-            currentPage = pageNum;
-            renderGrid();
-          };
-        })(i);
-        container.appendChild(btn);
-      }
-    }
-
-    function onSearch() {
-      searchQuery = document.getElementById("search-input").value;
-      currentPage = 1;
-      renderGrid();
-    }
-
-    function playGame(filePath, gameName) {
-      var container = document.getElementById("swf-container");
-      document.getElementById("playing-title").innerText = gameName;
-      
-      if (ruffleActive) {
-        container.innerHTML = '<object data="' + filePath + '" width="100%" height="100%">' +
-          '<embed src="' + filePath + '" width="100%" height="100%"></embed>' +
-          '</object>';
-      } else {
-        container.innerHTML = '<object width="100%" height="100%">' +
-          '<param name="movie" value="' + filePath + '">' +
-          '<embed src="' + filePath + '" width="100%" height="100%"></embed>' +
-          '</object>';
-      }
-
-      document.getElementById("player-modal").style.display = "flex";
-    }
-
-    // Tam Ekran Aç/Kapat (Toggle) Fonksiyonu
-    function toggleFullScreen() {
-      var elem = document.getElementById("swf-container");
-      
-      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) {
-          elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) {
-          elem.msRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      }
-    }
-
-    function closeGame() {
-      var container = document.getElementById("swf-container");
-      container.innerHTML = "";
-      document.getElementById("player-modal").style.display = "none";
-    }
-
-    window.onload = function() {
-      initLauncher();
-    };
-  </script>
 </body>
 </html>
