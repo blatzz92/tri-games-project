@@ -3,66 +3,749 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>...</title>
+  <title>MSM Games - Akıllı Tahta Sürümü</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, Arial, sans-serif; user-select: none; }
+    body { background-color: #121212; color: #e0e0e0; padding: 15px; font-size: 13px; height: 100vh; display: flex; flex-direction: column; }
+    
+    header { border-bottom: 2px solid #00d2ff; padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #00d2ff; font-size: 22px; font-weight: bold; }
+    
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .version-tag { background: #222; color: #00d2ff; border: 1px solid #00d2ff; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
 
-    body {
-      background-color: #0f172a;
+    /* Buton Stilleri */
+    .head-btn { background: #2a2a2a; border: 1px solid #444; color: #ccc; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: 0.2s; }
+    .head-btn:hover { background: #00d2ff; color: #000; border-color: #00d2ff; }
+    .ruffle-toggle.active { background: #28a745; color: #fff; border-color: #28a745; }
+
+    .controls { margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+    .controls-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    input[type="text"] { background: #222; border: 1px solid #444; color: #fff; padding: 8px 12px; font-size: 14px; width: 220px; border-radius: 4px; }
+
+    /* Kategori Butonları */
+    .cat-btn { background: #222; border: 1px solid #444; color: #ccc; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
+    .cat-btn.active { background: #00d2ff; color: #000; border-color: #00d2ff; }
+
+    .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 15px; flex: 1; overflow-y: auto; }
+    .game-card { background: #222; border: 1px solid #333; padding: 15px 10px; text-align: center; border-radius: 6px; cursor: pointer; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+    .game-card:hover { border-color: #00d2ff; background: #2a2a2a; transform: translateY(-2px); }
+    .game-title { color: #fff; font-weight: bold; font-size: 14px; word-break: break-word; }
+
+    .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+    .page-btn { background: #222; border: 1px solid #444; color: #fff; padding: 8px 14px; cursor: pointer; border-radius: 4px; font-size: 13px; font-weight: bold; }
+    .page-btn.active { background: #00d2ff; color: #000; border-color: #00d2ff; }
+
+    /* OYNATICI MODAL & TAM EKRAN DÜZENİ */
+    #player-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; flex-direction: column; z-index: 9999; }
+    
+    .player-box { background: #000; border: 2px solid #00d2ff; padding: 10px; width: 840px; max-width: 98vw; display: flex; flex-direction: column; border-radius: 8px; }
+    
+    .player-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .player-buttons { display: flex; gap: 8px; }
+    
+    .close-btn { background: #d9534f; color: #fff; border: none; padding: 8px 16px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 13px; }
+    .fs-btn { background: #007bff; color: #fff; border: none; padding: 8px 16px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 13px; }
+    
+    #swf-container { width: 100%; height: 550px; background: #111; position: relative; border-radius: 4px; overflow: hidden; }
+
+    /* OYUN KUZUSU TARZI BAŞLATMA EKRANI (SPLASH SCREEN) */
+    #splash-screen {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(18, 18, 18, 0.95);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-    }
-
-    .rainbow-text {
-      font-size: 3rem;
-      font-weight: 800;
+      z-index: 10;
       text-align: center;
-      background: linear-gradient(
-        90deg,
-        #ff0000,
-        #ff7f00,
-        #ffff00,
-        #00ff00,
-        #0000ff,
-        #4b0082,
-        #8b00ff,
-        #ff0000
-      );
-      background-size: 200% auto;
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: rainbow 3s linear infinite;
+      padding: 20px;
+    }
+    #splash-screen h2 { color: #00d2ff; font-size: 26px; margin-bottom: 10px; }
+    #splash-screen p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
+    .baslat-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(40,167,69,0.4);
+      transition: 0.2s;
+    }
+    .baslat-btn:hover { background: #218838; transform: scale(1.05); }
+
+    /* TAM EKRAN (SPLIT-VIEW) MODU CSS */
+    #player-modal.is-fullscreen {
+      padding: 0;
+      background: #000;
     }
 
-    @keyframes rainbow {
-      0% {
-        background-position: 0% center;
-      }
-      100% {
-        background-position: 200% center;
-      }
+    #player-modal.is-fullscreen .player-box {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
     }
 
-    @media (max-width: 600px) {
-      .rainbow-text {
-        font-size: 2rem;
-        padding: 0 1rem;
-      }
+    #player-modal.is-fullscreen .player-header {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10001;
+      background: rgba(0,0,0,0.7);
+      padding: 5px 10px;
+      border-radius: 6px;
     }
+
+    #player-modal.is-fullscreen #playing-title { display: none; }
+
+    #player-modal.is-fullscreen #swf-container {
+      flex: 1;
+      height: auto !important;
+      width: 100vw;
+    }
+
+    /* SANAL KLAVYE STİLLERİ */
+    #sanal-klavye {
+      display: none;
+      background: #181818;
+      border-top: 3px solid #00d2ff;
+      padding: 8px;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      z-index: 10000;
+    }
+
+    #player-modal.is-fullscreen #sanal-klavye {
+      display: flex; /* Tam ekranda altta otomatik açılır */
+    }
+
+    .klavye-satir {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .tus {
+      background: #2a2a2a;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 10px 0;
+      flex: 1;
+      text-align: center;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .tus:active, .tus.active {
+      background: #00d2ff;
+      color: #000;
+      transform: scale(0.96);
+    }
+
+    .tus.yon-tusu { background: #00d2ff; color: #000; font-size: 16px; }
+    .tus.wasd-tusu { background: #007bff; }
+
+    /* Klavye Genişlik Modları (Ekran oranına ve çözünürlüğe duyarlı) */
+    #sanal-klavye.mod-genis { width: 100%; max-width: 100vw; }
+    #sanal-klavye.mod-yakin { width: 90%; max-width: 900px; margin: 0 auto; border-radius: 10px 10px 0 0; }
+
+    /* AYARLAR & İNFO MODAL */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 20000; }
+    .modal-card { background: #1f1f1f; border: 2px solid #00d2ff; padding: 25px; border-radius: 8px; width: 440px; color: #fff; }
+    .modal-card h3 { color: #00d2ff; margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+    .ayar-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 14px; }
+    .ayar-row select { background: #333; color: #fff; border: 1px solid #555; padding: 6px 10px; border-radius: 4px; font-size: 13px; }
+
+    .info-box { background: #111; border: 1px solid #333; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px; line-height: 1.6; }
+    .info-box strong { color: #00d2ff; }
+
+    /* 4K EKRAN OPTİMİZASYONU */
+    body.ekran-4k h1 { font-size: 32px; }
+    body.ekran-4k .head-btn { padding: 10px 20px; font-size: 16px; }
+    body.ekran-4k input[type="text"] { font-size: 18px; width: 350px; padding: 12px; }
+    body.ekran-4k .game-title { font-size: 18px; }
+    body.ekran-4k .tus { padding: 18px 0; font-size: 20px; }
+    body.ekran-4k .page-btn { padding: 12px 20px; font-size: 16px; }
   </style>
 </head>
 <body>
 
-  <h1 class="rainbow-text">Sistem güncelleniyor</h1>
+  <div id="main-content">
+    <header>
+      <h1>MSM Games</h1>
+      <div class="header-right">
+        <button class="head-btn" onclick="infoAcModal(true)">ℹ️ Info</button>
+        <button class="head-btn" onclick="ayarlariAcModal(true)">⚙️ Ayarlar</button>
+        <span class="version-tag" id="version-display">v1.0</span>
+      </div>
+    </header>
 
+    <div class="controls">
+      <div class="controls-left">
+        <button id="cat-swf-btn" class="cat-btn active" onclick="kategoriDegistir('swf')">SWF Games</button>
+        <button id="cat-html-btn" class="cat-btn" onclick="kategoriDegistir('html')">HTML Games</button>
+      </div>
+      <input type="text" id="search-input" placeholder="Oyun ara..." oninput="onSearch()">
+    </div>
+
+    <div class="game-grid" id="game-grid"></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+  <!-- Oyun Oynatıcı Modal Penceresi -->
+  <div id="player-modal">
+    <div class="player-box" id="player-box">
+      <div class="player-header">
+        <span id="playing-title" style="color: #00d2ff; font-weight: bold;">Oynatılıyor...</span>
+        <div class="player-buttons">
+          <button class="fs-btn" id="fs-toggle-btn" onclick="toggleFullScreen()">[  ] TAM EKRAN</button>
+          <button class="close-btn" onclick="closeGame()">X KAPAT</button>
+        </div>
+      </div>
+      
+      <!-- SWF / HTML Oyun Alanı ve Oyun Kuzusu Tarzı Başlatma Ekranı -->
+      <div id="swf-container">
+        <div id="splash-screen">
+          <h2 id="splash-title">Oyun Adı</h2>
+          <p>Oyunu başlatmak için aşağıdaki Tamam / Başlat butonuna tıklayın.</p>
+          <button class="baslat-btn" onclick="oyunuBaslatGercek()">▶ TAMAM / OYUNA BAŞLA</button>
+          <div style="margin-top: 15px; color: #00d2ff; font-weight: bold; font-size: 14px; letter-spacing: 1px;">MADE BY MSM CLUB</div>
+        </div>
+      </div>
+
+      <!-- Tam Ekranda Açılan Geniş Sanal Klavye -->
+      <div id="sanal-klavye" class="mod-genis">
+        <div class="klavye-satir">
+          <button class="tus" onmousedown="tusBas('Escape')" onmouseup="tusBirak('Escape')" onmouseleave="tusBirak('Escape')" ontouchstart="tusBas('Escape')" ontouchend="tusBirak('Escape')" //'Escape')" //'Escape')" //'Escape')">ESC</button>
+          <button class="tus" onmousedown="tusBas('1')" onmouseup="tusBirak('1')" onmouseleave="tusBirak('1')" ontouchstart="tusBas('1')" ontouchend="tusBirak('1')" //'1')" //'1')" //'1')">1</button>
+          <button class="tus" onmousedown="tusBas('2')" onmouseup="tusBirak('2')" onmouseleave="tusBirak('2')" ontouchstart="tusBas('2')" ontouchend="tusBirak('2')" //'2')" //'2')" //'2')">2</button>
+          <button class="tus" onmousedown="tusBas('3')" onmouseup="tusBirak('3')" onmouseleave="tusBirak('3')" ontouchstart="tusBas('3')" ontouchend="tusBirak('3')" //'3')" //'3')" //'3')">3</button>
+          <button class="tus" onmousedown="tusBas('4')" onmouseup="tusBirak('4')" onmouseleave="tusBirak('4')" ontouchstart="tusBas('4')" ontouchend="tusBirak('4')" //'4')" //'4')" //'4')">4</button>
+          <button class="tus" onmousedown="tusBas('5')" onmouseup="tusBirak('5')" onmouseleave="tusBirak('5')" ontouchstart="tusBas('5')" ontouchend="tusBirak('5')" //'5')" //'5')" //'5')">5</button>
+          <button class="tus" onmousedown="tusBas('6')" onmouseup="tusBirak('6')" onmouseleave="tusBirak('6')" ontouchstart="tusBas('6')" ontouchend="tusBirak('6')" //'6')" //'6')" //'6')">6</button>
+          <button class="tus" onmousedown="tusBas('7')" onmouseup="tusBirak('7')" onmouseleave="tusBirak('7')" ontouchstart="tusBas('7')" ontouchend="tusBirak('7')" //'7')" //'7')" //'7')">7</button>
+          <button class="tus" onmousedown="tusBas('8')" onmouseup="tusBirak('8')" onmouseleave="tusBirak('8')" ontouchstart="tusBas('8')" ontouchend="tusBirak('8')" //'8')" //'8')" //'8')">8</button>
+          <button class="tus" onmousedown="tusBas('9')" onmouseup="tusBirak('9')" onmouseleave="tusBirak('9')" ontouchstart="tusBas('9')" ontouchend="tusBirak('9')" //'9')" //'9')" //'9')">9</button>
+          <button class="tus" onmousedown="tusBas('0')" onmouseup="tusBirak('0')" onmouseleave="tusBirak('0')" ontouchstart="tusBas('0')" ontouchend="tusBirak('0')" //'0')" //'0')" //'0')">0</button>
+          <button class="tus" onmousedown="tusBas('Backspace')" onmouseup="tusBirak('Backspace')" onmouseleave="tusBirak('Backspace')" ontouchstart="tusBas('Backspace')" ontouchend="tusBirak('Backspace')" //'Backspace')" //'Backspace')" //'Backspace')">🔙</button>
+        </div>
+        <div class="klavye-satir">
+          <button class="tus" onmousedown="tusBas('Tab')" onmouseup="tusBirak('Tab')" onmouseleave="tusBirak('Tab')" ontouchstart="tusBas('Tab')" ontouchend="tusBirak('Tab')" //'Tab')" //'Tab')" //'Tab')">TAB</button>
+          <button class="tus" onmousedown="tusBas('q')" onmouseup="tusBirak('q')" onmouseleave="tusBirak('q')" ontouchstart="tusBas('q')" ontouchend="tusBirak('q')" //'q')" //'q')" //'q')">Q</button>
+          <button class="tus wasd-tusu" onmousedown="tusBas('w')" onmouseup="tusBirak('w')" onmouseleave="tusBirak('w')" ontouchstart="tusBas('w')" ontouchend="tusBirak('w')" //'w')" //'w')" //'w')">W</button>
+          <button class="tus" onmousedown="tusBas('e')" onmouseup="tusBirak('e')" onmouseleave="tusBirak('e')" ontouchstart="tusBas('e')" ontouchend="tusBirak('e')" //'e')" //'e')" //'e')">E</button>
+          <button class="tus" onmousedown="tusBas('r')" onmouseup="tusBirak('r')" onmouseleave="tusBirak('r')" ontouchstart="tusBas('r')" ontouchend="tusBirak('r')" //'r')" //'r')" //'r')">R</button>
+          <button class="tus" onmousedown="tusBas('t')" onmouseup="tusBirak('t')" onmouseleave="tusBirak('t')" ontouchstart="tusBas('t')" ontouchend="tusBirak('t')" //'t')" //'t')" //'t')">T</button>
+          <button class="tus" onmousedown="tusBas('y')" onmouseup="tusBirak('y')" onmouseleave="tusBirak('y')" ontouchstart="tusBas('y')" ontouchend="tusBirak('y')" //'y')" //'y')" //'y')">Y</button>
+          <button class="tus" onmousedown="tusBas('u')" onmouseup="tusBirak('u')" onmouseleave="tusBirak('u')" ontouchstart="tusBas('u')" ontouchend="tusBirak('u')" //'u')" //'u')" //'u')">U</button>
+          <button class="tus" onmousedown="tusBas('ı')" onmouseup="tusBirak('ı')" onmouseleave="tusBirak('ı')" ontouchstart="tusBas('ı')" ontouchend="tusBirak('ı')" //'ı')" //'ı')" //'ı')">I</button>
+          <button class="tus" onmousedown="tusBas('o')" onmouseup="tusBirak('o')" onmouseleave="tusBirak('o')" ontouchstart="tusBas('o')" ontouchend="tusBirak('o')" //'o')" //'o')" //'o')">O</button>
+          <button class="tus" onmousedown="tusBas('p')" onmouseup="tusBirak('p')" onmouseleave="tusBirak('p')" ontouchstart="tusBas('p')" ontouchend="tusBirak('p')" //'p')" //'p')" //'p')">P</button>
+          <button class="tus" onmousedown="tusBas('ğ')" onmouseup="tusBirak('ğ')" onmouseleave="tusBirak('ğ')" ontouchstart="tusBas('ğ')" ontouchend="tusBirak('ğ')" //'ğ')" //'ğ')" //'ğ')">Ğ</button>
+          <button class="tus" onmousedown="tusBas('ü')" onmouseup="tusBirak('ü')" onmouseleave="tusBirak('ü')" ontouchstart="tusBas('ü')" ontouchend="tusBirak('ü')" //'ü')" //'ü')" //'ü')">Ü</button>
+        </div>
+        <div class="klavye-satir">
+          <button class="tus wasd-tusu" onmousedown="tusBas('a')" onmouseup="tusBirak('a')" onmouseleave="tusBirak('a')" ontouchstart="tusBas('a')" ontouchend="tusBirak('a')" //'a')" //'a')" //'a')">A</button>
+          <button class="tus wasd-tusu" onmousedown="tusBas('s')" onmouseup="tusBirak('s')" onmouseleave="tusBirak('s')" ontouchstart="tusBas('s')" ontouchend="tusBirak('s')" //'s')" //'s')" //'s')">S</button>
+          <button class="tus wasd-tusu" onmousedown="tusBas('d')" onmouseup="tusBirak('d')" onmouseleave="tusBirak('d')" ontouchstart="tusBas('d')" ontouchend="tusBirak('d')" //'d')" //'d')" //'d')">D</button>
+          <button class="tus" onmousedown="tusBas('f')" onmouseup="tusBirak('f')" onmouseleave="tusBirak('f')" ontouchstart="tusBas('f')" ontouchend="tusBirak('f')" //'f')" //'f')" //'f')">F</button>
+          <button class="tus" onmousedown="tusBas('g')" onmouseup="tusBirak('g')" onmouseleave="tusBirak('g')" ontouchstart="tusBas('g')" ontouchend="tusBirak('g')" //'g')" //'g')" //'g')">G</button>
+          <button class="tus" onmousedown="tusBas('h')" onmouseup="tusBirak('h')" onmouseleave="tusBirak('h')" ontouchstart="tusBas('h')" ontouchend="tusBirak('h')" //'h')" //'h')" //'h')">H</button>
+          <button class="tus" onmousedown="tusBas('j')" onmouseup="tusBirak('j')" onmouseleave="tusBirak('j')" ontouchstart="tusBas('j')" ontouchend="tusBirak('j')" //'j')" //'j')" //'j')">J</button>
+          <button class="tus" onmousedown="tusBas('k')" onmouseup="tusBirak('k')" onmouseleave="tusBirak('k')" ontouchstart="tusBas('k')" ontouchend="tusBirak('k')" //'k')" //'k')" //'k')">K</button>
+          <button class="tus" onmousedown="tusBas('l')" onmouseup="tusBirak('l')" onmouseleave="tusBirak('l')" ontouchstart="tusBas('l')" ontouchend="tusBirak('l')" //'l')" //'l')" //'l')">L</button>
+          <button class="tus" onmousedown="tusBas('ş')" onmouseup="tusBirak('ş')" onmouseleave="tusBirak('ş')" ontouchstart="tusBas('ş')" ontouchend="tusBirak('ş')" //'ş')" //'ş')" //'ş')">Ş</button>
+          <button class="tus" onmousedown="tusBas('i')" onmouseup="tusBirak('i')" onmouseleave="tusBirak('i')" ontouchstart="tusBas('i')" ontouchend="tusBirak('i')" //'i')" //'i')" //'i')">İ</button>
+          <button class="tus" onmousedown="tusBas('Enter')" onmouseup="tusBirak('Enter')" onmouseleave="tusBirak('Enter')" ontouchstart="tusBas('Enter')" ontouchend="tusBirak('Enter')" //'Enter')" //'Enter')" //'Enter')">ENTER</button>
+        </div>
+        <div class="klavye-satir">
+          <button class="tus" onmousedown="tusBas('Shift')" onmouseup="tusBirak('Shift')" onmouseleave="tusBirak('Shift')" ontouchstart="tusBas('Shift')" ontouchend="tusBirak('Shift')" //'Shift')" //'Shift')" //'Shift')">SHIFT</button>
+          <button class="tus" onmousedown="tusBas('z')" onmouseup="tusBirak('z')" onmouseleave="tusBirak('z')" ontouchstart="tusBas('z')" ontouchend="tusBirak('z')" //'z')" //'z')" //'z')">Z</button>
+          <button class="tus" onmousedown="tusBas('x')" onmouseup="tusBirak('x')" onmouseleave="tusBirak('x')" ontouchstart="tusBas('x')" ontouchend="tusBirak('x')" //'x')" //'x')" //'x')">X</button>
+          <button class="tus" onmousedown="tusBas('c')" onmouseup="tusBirak('c')" onmouseleave="tusBirak('c')" ontouchstart="tusBas('c')" ontouchend="tusBirak('c')" //'c')" //'c')" //'c')">C</button>
+          <button class="tus" onmousedown="tusBas('v')" onmouseup="tusBirak('v')" onmouseleave="tusBirak('v')" ontouchstart="tusBas('v')" ontouchend="tusBirak('v')" //'v')" //'v')" //'v')">V</button>
+          <button class="tus" onmousedown="tusBas('b')" onmouseup="tusBirak('b')" onmouseleave="tusBirak('b')" ontouchstart="tusBas('b')" ontouchend="tusBirak('b')" //'b')" //'b')" //'b')">B</button>
+          <button class="tus" onmousedown="tusBas('n')" onmouseup="tusBirak('n')" onmouseleave="tusBirak('n')" ontouchstart="tusBas('n')" ontouchend="tusBirak('n')" //'n')" //'n')" //'n')">N</button>
+          <button class="tus" onmousedown="tusBas('m')" onmouseup="tusBirak('m')" onmouseleave="tusBirak('m')" ontouchstart="tusBas('m')" ontouchend="tusBirak('m')" //'m')" //'m')" //'m')">M</button>
+          <button class="tus" onmousedown="tusBas('ö')" onmouseup="tusBirak('ö')" onmouseleave="tusBirak('ö')" ontouchstart="tusBas('ö')" ontouchend="tusBirak('ö')" //'ö')" //'ö')" //'ö')">Ö</button>
+          <button class="tus" onmousedown="tusBas('ç')" onmouseup="tusBirak('ç')" onmouseleave="tusBirak('ç')" ontouchstart="tusBas('ç')" ontouchend="tusBirak('ç')" //'ç')" //'ç')" //'ç')">Ç</button>
+          <button class="tus yon-tusu" onmousedown="tusBas('ArrowUp')" onmouseup="tusBirak('ArrowUp')" onmouseleave="tusBirak('ArrowUp')" ontouchstart="tusBas('ArrowUp')" ontouchend="tusBirak('ArrowUp')" //'ArrowUp')" //'ArrowUp')" //'ArrowUp')">⬆️</button>
+        </div>
+        <div class="klavye-satir">
+          <button class="tus" style="flex: 4;" onmousedown="tusBas(' ')" onmouseup="tusBirak(' ')" onmouseleave="tusBirak(' ')" ontouchstart="tusBas(' ')" ontouchend="tusBirak(' ')" //' ')" //' ')" //' ')">BOŞLUK (SPACE)</button>
+          <button class="tus yon-tusu" onmousedown="tusBas('ArrowLeft')" onmouseup="tusBirak('ArrowLeft')" onmouseleave="tusBirak('ArrowLeft')" ontouchstart="tusBas('ArrowLeft')" ontouchend="tusBirak('ArrowLeft')" //'ArrowLeft')" //'ArrowLeft')" //'ArrowLeft')">⬅️</button>
+          <button class="tus yon-tusu" onmousedown="tusBas('ArrowDown')" onmouseup="tusBirak('ArrowDown')" onmouseleave="tusBirak('ArrowDown')" ontouchstart="tusBas('ArrowDown')" ontouchend="tusBirak('ArrowDown')" //'ArrowDown')" //'ArrowDown')" //'ArrowDown')">⬇️</button>
+          <button class="tus yon-tusu" onmousedown="tusBas('ArrowRight')" onmouseup="tusBirak('ArrowRight')" onmouseleave="tusBirak('ArrowRight')" ontouchstart="tusBas('ArrowRight')" ontouchend="tusBirak('ArrowRight')" //'ArrowRight')" //'ArrowRight')" //'ArrowRight')">➡️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AYARLAR PENCERESİ (MODAL) -->
+  <div id="ayar-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h3>⚙️ Akıllı Tahta & Site Ayarları</h3>
+      
+      <!-- Ruffle Toggle Ayarı -->
+      <div class="ayar-row">
+        <label>Ruffle Öykünücü (Flash Player):</label>
+        <button id="ruffle-toggle-btn" class="ruffle-toggle head-btn" onclick="toggleRuffle()">Ruffle: KAPALI</button>
+      </div>
+
+      <!-- Klavye Genişlik Ayarı -->
+      <div class="ayar-row">
+        <label>Sanal Klavye Görünümü:</label>
+        <select id="klavye-mod-select" onchange="klavyeModDegistir(this.value)">
+          <option value="mod-genis">Geniş (Ekranı Kaplayan)</option>
+          <option value="mod-yakin">Yakın / Kompakt (Ortalanmış)</option>
+        </select>
+      </div>
+
+      <!-- Klavye Türü Ayarı (Orijinal / Sanal) -->
+      <div class="ayar-row">
+        <label>Klavye Modu:</label>
+        <select id="klavye-tip-select" onchange="klavyeTipDegistir(this.value)">
+          <option value="sanal">MSM Sanal Klavye (Ekran Klavyesi)</option>
+          <option value="orjinal">Orijinal / Fiziksel Klavye</option>
+        </select>
+      </div>
+
+      <button class="head-btn" style="width: 100%; margin-top: 10px; background: #00d2ff; color: #000;" onclick="ayarlariAcModal(false)">Tamam / Kapat</button>
+    </div>
+  </div>
+
+  <!-- INFO PENCERESİ (MODAL) -->
+  <div id="info-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h3>ℹ️ Sistem Bilgisi (Info)</h3>
+      <div class="info-box">
+        <p><strong>Platform İsmi:</strong> MSM Games</p>
+        <p><strong>Oyun Motoru (Engine):</strong> Tri-Engine</p>
+        <p><strong>Sürüm:</strong> v1.0 (Akıllı Tahta Optimizeli)</p>
+        <p><strong>Açıklama:</strong> Akıllı tahta dokunmatik ekranları için tam ekran sanal klavye ve Flash (Ruffle) oyun motoru desteği içeren özel portal.</p>
+      </div>
+      <button class="head-btn" style="width: 100%; background: #00d2ff; color: #000;" onclick="infoAcModal(false)">Kapat</button>
+    </div>
+  </div>
+
+  <script>
+    // GitHub Bilgileri
+    var githubUser = "blatzz92"; 
+    var githubRepo = "tri-games-project";      
+
+    // Kategorize edilmiş oyun listeleri (İstediğin gibi SWF ve HTML games olarak ayrıldı)
+    var swfGamesData = [];
+    var htmlGamesData = [];
+    
+    var aktifKategori = 'swf'; // 'swf' veya 'html'
+    var currentPage = 1;
+    var itemsPerPage = 15;
+    var searchQuery = '';
+    var ruffleActive = false;
+
+    // Seçilen oyunun geçici verisi (Splash ekranı için)
+    var secilenOyun = null;
+
+    // 1. Çözünürlük Algılama (1080p / 4K)
+    function ekranBoyutuKontrol() {
+      var genislik = window.screen.width;
+      var yukseklik = window.screen.height;
+      if (genislik >= 3840 || yukseklik >= 2160) {
+        document.body.classList.add('ekran-4k');
+      }
+    }
+
+    // 2. Ruffle Toggle ve Hafıza Yönetimi
+    function toggleRuffle() {
+      ruffleActive = !ruffleActive;
+      if (ruffleActive) {
+        localStorage.setItem("ruffle_status", "true");
+      } else {
+        localStorage.removeItem("ruffle_status");
+      }
+      location.reload();
+    }
+
+    function initLauncher() {
+      ekranBoyutuKontrol();
+
+      var savedRuffle = localStorage.getItem("ruffle_status");
+      var btn = document.getElementById("ruffle-toggle-btn");
+      
+      if (savedRuffle === "true") {
+        ruffleActive = true;
+        if (btn) {
+          btn.className = "ruffle-toggle head-btn active";
+          btn.innerText = "Ruffle: AÇIK";
+        }
+
+        var script = document.createElement("script");
+        script.id = "ruffle-script";
+        script.src = "https://unpkg.com/@ruffle-rs/ruffle";
+        document.head.appendChild(script);
+      } else {
+        if (btn) {
+          btn.className = "ruffle-toggle head-btn";
+          btn.innerText = "Ruffle: KAPALI";
+        }
+      }
+
+      var savedKlavyeMod = localStorage.getItem("klavye_mod") || "mod-genis";
+      klavyeModDegistir(savedKlavyeMod);
+      document.getElementById("klavye-mod-select").value = savedKlavyeMod;
+
+      var savedKlavyeTip = localStorage.getItem("klavye_tipi") || "sanal";
+      klavyeTipDegistir(savedKlavyeTip);
+      document.getElementById("klavye-tip-select").value = savedKlavyeTip;
+
+      // GitHub klasörlerini yükle (SWF ve HTML games ayrı ayrı)
+      loadGithubFolder('swf games/other games', 'swf');
+      loadGithubFolder('html games', 'html');
+    }
+
+    // Kategori Değiştirme
+    function kategoriDegistir(kat) {
+      aktifKategori = kat;
+      currentPage = 1;
+      
+      document.getElementById("cat-swf-btn").className = "cat-btn" + (kat === 'swf' ? " active" : "");
+      document.getElementById("cat-html-btn").className = "cat-btn" + (kat === 'html' ? " active" : "");
+      
+      renderGrid();
+    }
+
+    // GitHub API Klasör Taraması
+    function loadGithubFolder(folderPath, kategori) {
+      var apiUrl = "https://api.github.com/repos/" + githubUser + "/" + githubRepo + "/contents/" + folderPath;
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", apiUrl, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            try {
+              var files = JSON.parse(xhr.responseText);
+              for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var nameLower = file.name.toLowerCase();
+
+                if (kategori === 'swf' && nameLower.indexOf(".swf") !== -1) {
+                  var cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+                  swfGamesData.push({
+                    name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
+                    file: file.download_url,
+                    type: 'swf'
+                  });
+                } else if (kategori === 'html' && (nameLower.indexOf(".html") !== -1 || nameLower.indexOf(".htm") !== -1 || file.type === "dir")) {
+                  // HTML oyunları veya klasörleri
+                  var cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+                  htmlGamesData.push({
+                    name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
+                    file: file.download_url || (file.html_url ? file.html_url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/") : ""),
+                    type: 'html'
+                  });
+                }
+              }
+              renderGrid();
+            } catch(e) {
+              console.error("JSON parse hatası:", e);
+            }
+          } else {
+            console.warn("GitHub klasörü yüklenemedi: " + folderPath);
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    function getActiveGamesData() {
+      return aktifKategori === 'swf' ? swfGamesData : htmlGamesData;
+    }
+
+    function getFilteredGames() {
+      var activeData = getActiveGamesData();
+      var filtered = [];
+      for (var i = 0; i < activeData.length; i++) {
+        var g = activeData[i];
+        var matchSearch = g.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
+        if (matchSearch) {
+          filtered.push(g);
+        }
+      }
+      return filtered;
+    }
+
+    function renderGrid() {
+      var filtered = getFilteredGames();
+      var grid = document.getElementById("game-grid");
+      grid.innerHTML = "";
+
+      var startIndex = (currentPage - 1) * itemsPerPage;
+      var endIndex = startIndex + itemsPerPage;
+      var pageGames = filtered.slice(startIndex, endIndex);
+
+      if (pageGames.length === 0) {
+        grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; padding:20px; color:#888;'>Bu kategoride oyun yükleniyor veya oyun bulunamadı...</p>";
+      } else {
+        for (var i = 0; i < pageGames.length; i++) {
+          var game = pageGames[i];
+          var card = document.createElement("div");
+          card.className = "game-card";
+          
+          card.onclick = (function(gObj) {
+            return function() {
+              oyunTiklandi(gObj);
+            };
+          })(game);
+
+          card.innerHTML = "<div class='game-title'>" + game.name + "</div>";
+          grid.appendChild(card);
+        }
+      }
+
+      renderPagination(filtered.length);
+    }
+
+    function renderPagination(totalItems) {
+      var totalPages = Math.ceil(totalItems / itemsPerPage);
+      var container = document.getElementById("pagination");
+      container.innerHTML = "";
+
+      if (totalPages <= 1) return;
+
+      for (var i = 1; i <= totalPages; i++) {
+        var btn = document.createElement("button");
+        btn.className = "page-btn" + (i === currentPage ? " active" : "");
+        btn.innerText = i;
+        btn.onclick = (function(pageNum) {
+          return function() {
+            currentPage = pageNum;
+            renderGrid();
+          };
+        })(i);
+        container.appendChild(btn);
+      }
+    }
+
+    function onSearch() {
+      searchQuery = document.getElementById("search-input").value;
+      currentPage = 1;
+      renderGrid();
+    }
+
+    // Oyun Kartına Tıklandığında -> Oyun Kuzusu Tarzı Başlatma Ekranı (Splash Screen) Açılır
+    function oyunTiklandi(gameObj) {
+      secilenOyun = gameObj;
+      var playerModal = document.getElementById("player-modal");
+      if (playerModal) {
+        playerModal.style.display = "flex";
+      }
+
+      var playingTitle = document.getElementById("playing-title");
+      if (playingTitle) {
+        playingTitle.innerText = gameObj.name;
+      }
+      
+      // Container içeriğini sadece splash ekranı gösterecek şekilde sıfırla
+      var container = document.getElementById("swf-container");
+      if (container) {
+        var msmClubText = (gameObj.type === 'html') ? '<div style="margin-top: 15px; color: #00d2ff; font-weight: bold; font-size: 14px; letter-spacing: 1px;">MADE BY MSM CLUB</div>' : '';
+        container.innerHTML = `
+          <div id="splash-screen">
+            <h2 id="splash-title">${gameObj.name}</h2>
+            <p>Oyunu başlatmak için aşağıdaki Tamam / Başlat butonuna tıklayın.</p>
+            <button class="baslat-btn" onclick="oyunuBaslatGercek()">▶ TAMAM / OYUNA BAŞLA</button>
+            ${msmClubText}
+          </div>
+        `;
+      }
+    }
+
+    // "TAMAM / OYUNA BAŞLA" butonuna basıldığında oyun gerçekten yüklenir
+    function oyunuBaslatGercek() {
+      if (!secilenOyun) return;
+      var container = document.getElementById("swf-container");
+      var filePath = secilenOyun.file;
+
+      if (secilenOyun.type === 'swf') {
+        if (ruffleActive) {
+          container.innerHTML = '<object id="game-element" data="' + filePath + '" width="100%" height="100%">' +
+            '<embed src="' + filePath + '" width="100%" height="100%"></embed>' +
+            '</object>';
+        } else {
+          container.innerHTML = '<object id="game-element" width="100%" height="100%">' +
+            '<param name="movie" value="' + filePath + '">' +
+            '<embed src="' + filePath + '" width="100%" height="100%"></embed>' +
+            '</object>';
+        }
+      } else {
+        // HTML Oyunlar için iframe
+        container.innerHTML = '<iframe id="game-element" src="' + filePath + '" width="100%" height="100%" style="border:none;"></iframe>';
+      }
+
+      // Oyuna otomatik odaklanma ve dışarı tıklandığında odağı koruma
+      setTimeout(function() {
+        var el = document.getElementById("game-element");
+        if (el) {
+          el.focus();
+          if (el.contentWindow) {
+            el.contentWindow.focus();
+          }
+        }
+      }, 300);
+    }
+
+    // Tam Ekran Yönetimi (Split-View & Dinamik Çıkış Butonu)
+    function toggleFullScreen() {
+      var modal = document.getElementById("player-modal");
+      
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        if (modal.requestFullscreen) {
+          modal.requestFullscreen();
+        } else if (modal.webkitRequestFullscreen) {
+          modal.webkitRequestFullscreen();
+        } else if (modal.msRequestFullscreen) {
+          modal.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+    }
+
+    document.addEventListener('fullscreenchange', handleFSChange);
+    document.addEventListener('webkitfullscreenchange', handleFSChange);
+    document.addEventListener('msfullscreenchange', handleFSChange);
+
+    function handleFSChange() {
+      var modal = document.getElementById("player-modal");
+      var fsBtn = document.getElementById("fs-toggle-btn");
+
+      if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+        modal.classList.add("is-fullscreen");
+        fsBtn.innerText = "❌ TAM EKRANDAN ÇIK";
+        fsBtn.style.background = "#d9534f";
+        
+        // Eğer orijinal klavye seçilmişse sanal klavyeyi gizle
+        if (klavyeTipi === "orjinal") {
+          document.getElementById("sanal-klavye").style.display = "none";
+        }
+      } else {
+        modal.classList.remove("is-fullscreen");
+        fsBtn.innerText = "[  ] TAM EKRAN";
+        fsBtn.style.background = "#007bff";
+      }
+    }
+
+    function closeGame() {
+      tumTuslariBirak();
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+      var container = document.getElementById("swf-container");
+      container.innerHTML = "";
+      document.getElementById("player-modal").style.display = "none";
+      secilenOyun = null;
+    }
+
+    // Ayarlar & Info Modalı Fonksiyonları
+    function ayarlariAcModal(acik) {
+      document.getElementById("ayar-modal").style.display = acik ? "flex" : "none";
+    }
+
+    function infoAcModal(acik) {
+      document.getElementById("info-modal").style.display = acik ? "flex" : "none";
+    }
+
+    function klavyeModDegistir(mod) {
+      var klavye = document.getElementById("sanal-klavye");
+      klavye.className = mod;
+      localStorage.setItem("klavye_mod", mod);
+    }
+
+    // Sanal Klavyedeki Tuş Olayları
+    function tusBas(keyName) {
+      var activeFrameOrObj = document.getElementById("swf-container").querySelector("iframe, embed, object");
+      var target = (activeFrameOrObj && activeFrameOrObj.contentWindow) ? activeFrameOrObj.contentWindow : window;
+      var ev = new KeyboardEvent("keydown", { key: keyName, code: keyName, bubbles: true, cancelable: true });
+      target.dispatchEvent(ev);
+      window.dispatchEvent(ev);
+    }
+
+    function tusBirak(keyName) {
+      var activeFrameOrObj = document.getElementById("swf-container").querySelector("iframe, embed, object");
+      var target = (activeFrameOrObj && activeFrameOrObj.contentWindow) ? activeFrameOrObj.contentWindow : window;
+      var ev = new KeyboardEvent("keyup", { key: keyName, code: keyName, bubbles: true, cancelable: true });
+      target.dispatchEvent(ev);
+      window.dispatchEvent(ev);
+    }
+
+    
+    var klavyeTipi = localStorage.getItem("klavye_tipi") || "sanal";
+
+    function klavyeTipDegistir(tip) {
+      klavyeTipi = tip;
+      localStorage.setItem("klavye_tipi", tip);
+      
+      var sanalKlavyeEl = document.getElementById("sanal-klavye");
+      if (tip === "orjinal") {
+        sanalKlavyeEl.style.display = "none";
+      } else {
+        // Sanal klavye seçildiyse tam ekranda CSS ile gösterilecek
+        sanalKlavyeEl.style.display = ""; 
+      }
+    }
+
+    window.onload = function() {
+      
+    // Oyun alanına her tıklandığında odaklanmayı garantile
+    document.getElementById('swf-container').addEventListener('click', function() {
+      var el = document.getElementById("game-element");
+      if (el) {
+        el.focus();
+        if (el.contentWindow) {
+          el.contentWindow.focus();
+        }
+      }
+    });
+
+      initLauncher();
+    };
+
+    // Acil durum tuş bırakma (oyunda basılı kalma sorununu önlemek için)
+    function tumTuslariBirak() {
+      var commonKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd', 'W', 'A', 'S', 'D', ' ', 'Enter', 'Shift'];
+      var activeFrameOrObj = document.getElementById("swf-container").querySelector("iframe, embed, object");
+      var target = (activeFrameOrObj && activeFrameOrObj.contentWindow) ? activeFrameOrObj.contentWindow : window;
+      
+      for (var i = 0; i < commonKeys.length; i++) {
+        var ev = new KeyboardEvent("keyup", { key: commonKeys[i], code: commonKeys[i], bubbles: true, cancelable: true });
+        target.dispatchEvent(ev);
+        window.dispatchEvent(ev);
+      }
+    }
+
+    window.addEventListener('blur', function() {
+      tumTuslariBirak();
+    });
+  </script>
 </body>
 </html>
