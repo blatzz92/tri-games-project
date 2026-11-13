@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=landscape">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dünya Futbol Menajeri Pro 2026/2027</title>
     <style>
         :root {
@@ -17,6 +17,7 @@
             --danger: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
+            --info: #3b82f6;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
         body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
@@ -24,18 +25,17 @@
         .logo { font-size: 0.95rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 6px; }
         .header-stats { display: flex; gap: 8px; font-size: 0.78rem; }
         .stat-badge { background: var(--bg-dark); padding: 3px 8px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 4px; }
-        main { flex: 1; padding: 12px; max-width: 1250px; width: 100%; margin: 0 auto; margin-bottom: 55px; }
+        main { flex: 1; padding: 12px; max-width: 1250px; width: 100%; margin: 0 auto; margin-bottom: 60px; }
         .screen { display: none; animation: fadeIn 0.15s ease; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
-        h2 { margin-bottom: 10px; font-size: 1.2rem; color: var(--text-main); border-left: 4px solid var(--primary); padding-left: 8px; }
+        h2 { margin-bottom: 10px; font-size: 1.15rem; color: var(--text-main); border-left: 4px solid var(--primary); padding-left: 8px; }
         .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
         select, input[type="text"] { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); padding: 7px 10px; border-radius: 6px; font-size: 0.8rem; outline: none; }
         select:focus, input[type="text"]:focus { border-color: var(--primary); }
         .league-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 10px; }
         .team-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; max-height: 480px; overflow-y: auto; padding-right: 4px; }
-        .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 5px; position: relative; z-index: 5; }
-.team-card * { pointer-events: auto !important; }
+        .team-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 6px; }
         .team-card:hover { border-color: var(--primary); background: var(--bg-card-hover); }
         .btn { background: var(--primary); color: white; border: none; padding: 7px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.8rem; text-decoration: none; }
         .btn:hover { background: var(--primary-dark); }
@@ -43,6 +43,7 @@
         .btn-secondary { background: var(--bg-card-hover); border: 1px solid var(--border); color: var(--text-main); white-space: nowrap; }
         .btn-secondary.active-tab { background: var(--primary); border-color: var(--primary); color: white; }
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        @media(max-width: 700px) { .dashboard-grid { grid-template-columns: 1fr; } }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
         .card h3 { font-size: 0.9rem; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
         .next-match-box { text-align: center; padding: 10px; background: var(--bg-dark); border-radius: 6px; border: 1px solid var(--border); margin-top: 4px; }
@@ -50,110 +51,233 @@
         .squad-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 12px; }
         @media(max-width: 900px) { .squad-layout { grid-template-columns: 1fr; } }
         .player-list { display: flex; flex-direction: column; gap: 5px; max-height: 460px; overflow-y: auto; padding-right: 4px; }
-        .player-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; }
-        .player-details { display: flex; align-items: center; gap: 8px; }
-        .player-pos { background: var(--bg-dark); padding: 2px 5px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: var(--primary); border: 1px solid var(--border); width: 42px; text-align: center; }
-        .player-ovr { background: var(--primary); color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.75rem; }
+        .player-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; gap: 8px; }
+        .player-details { display: flex; align-items: center; gap: 8px; flex: 1; }
+        .player-pos { background: var(--bg-dark); padding: 2px 5px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: var(--primary); border: 1px solid var(--border); width: 40px; text-align: center; flex-shrink: 0; }
+        .player-ovr { background: var(--primary); color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.75rem; flex-shrink: 0; }
         
-        .tactics-board { background: linear-gradient(135deg, #144434 0%, #0a241b 100%); border: 3px solid #1e4d3d; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; min-height: 460px; position: relative; box-shadow: inset 0 0 25px rgba(0,0,0,0.6); }
+        .status-badge { display: inline-block; padding: 1px 5px; border-radius: 4px; font-size: 0.64rem; font-weight: 600; margin-left: 4px; }
+        .status-free { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .status-listed { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .status-loan { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+        .status-contract { background: rgba(156, 163, 175, 0.15); color: #9ca3af; border: 1px solid rgba(156, 163, 175, 0.3); }
+
+        .tactics-board { background: linear-gradient(135deg, #144434 0%, #0a241b 100%); border: 3px solid #1e4d3d; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; min-height: 440px; position: relative; box-shadow: inset 0 0 25px rgba(0,0,0,0.6); }
         .tactics-board::before { content: ''; position: absolute; top: 0; left: 50%; width: 2px; height: 100%; background: rgba(255,255,255,0.15); transform: translateX(-50%); pointer-events: none; }
         .tactics-board::after { content: ''; position: absolute; top: 50%; left: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.15); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
-        
         .pitch-line-box-left { position: absolute; top: 50%; left: 0; width: 45px; height: 120px; border: 2px solid rgba(255,255,255,0.15); border-left: none; transform: translateY(-50%); pointer-events: none; }
         .pitch-line-box-right { position: absolute; top: 50%; right: 0; width: 45px; height: 120px; border: 2px solid rgba(255,255,255,0.15); border-right: none; transform: translateY(-50%); pointer-events: none; }
 
         .pitch-col { display: flex; flex-direction: column; justify-content: space-around; height: 100%; z-index: 2; align-items: center; }
-        .pitch-formation-container { display: flex; justify-content: space-around; align-items: center; width: 100%; height: 100%; z-index: 2; }
+        .pitch-formation-container { display: flex; justify-content: space-around; align-items: center; width: 100%; height: 100%; z-index: 2; min-height: 400px; }
         
-        .pitch-player-node { background: rgba(13, 19, 33, 0.92); border: 2px solid var(--primary); border-radius: 6px; padding: 5px 6px; width: 85px; text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 5px rgba(0,0,0,0.4); }
+        .pitch-player-node { background: rgba(13, 19, 33, 0.92); border: 2px solid var(--primary); border-radius: 6px; padding: 5px 6px; width: 82px; text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 5px rgba(0,0,0,0.4); }
         .pitch-player-node:hover { transform: scale(1.06); border-color: var(--warning); background: rgba(30, 41, 59, 0.98); }
         .pitch-player-node .pos-badge { font-size: 0.6rem; color: var(--warning); font-weight: bold; text-transform: uppercase; }
         .pitch-player-node .name-badge { font-size: 0.68rem; font-weight: bold; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
         .pitch-player-node .ovr-badge { font-size: 0.6rem; color: #10b981; }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
-        th, td { padding: 7px; text-align: left; border-bottom: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+        th, td { padding: 6px 5px; text-align: left; border-bottom: 1px solid var(--border); }
         th { color: var(--text-muted); font-weight: 600; }
         tr:hover td { background: var(--bg-card-hover); }
         .match-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 15px; text-align: center; }
-        .match-scoreboard { display: flex; justify-content: space-around; align-items: center; margin: 10px 0; font-size: 1.1rem; font-weight: bold; }
+        .match-scoreboard { display: flex; justify-content: space-around; align-items: center; margin: 10px 0; font-size: 1.05rem; font-weight: bold; }
         .match-score { font-size: 1.8rem; background: var(--bg-dark); padding: 5px 14px; border-radius: 8px; border: 1px solid var(--border); color: var(--primary); }
-        .match-commentary { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; padding: 8px; height: 110px; overflow-y: auto; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 4px; margin: 10px 0; }
-        .commentary-item { padding: 2px 4px; border-radius: 3px; background: rgba(255,255,255,0.02); }
-        nav.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 5px 0; z-index: 100; }
-        .nav-item { background: none; border: none; color: var(--text-muted); font-size: 0.6rem; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; transition: color 0.2s; }
+        .match-commentary { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; padding: 8px; height: 120px; overflow-y: auto; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 4px; margin: 10px 0; }
+        .commentary-item { padding: 3px 5px; border-radius: 3px; background: rgba(255,255,255,0.03); }
+        nav.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 6px 0; z-index: 100; }
+        .nav-item { background: none; border: none; color: var(--text-muted); font-size: 0.65rem; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; transition: color 0.2s; }
         .nav-item.active { color: var(--primary); }
-        .nav-item svg { width: 16px; height: 16px; fill: currentColor; }
-        .toast { position: fixed; top: 12px; right: 12px; background: var(--primary); color: white; padding: 7px 12px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; display: none; font-size: 0.8rem; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 15px; width: 90%; max-width: 420px; max-height: 80vh; display: flex; flex-direction: column; gap: 8px; }
+        .nav-item svg { width: 18px; height: 18px; fill: currentColor; }
+        .toast { position: fixed; top: 12px; right: 12px; background: var(--primary); color: white; padding: 8px 14px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); z-index: 3000; display: none; font-size: 0.82rem; font-weight: 600; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.78); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; width: 92%; max-width: 430px; max-height: 82vh; display: flex; flex-direction: column; gap: 8px; }
     </style>
 </head>
 <body>
+    
+    <!-- MSM CLUB INTRO SCREEN -->
+    <style>
+        #msm-intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, #111827 0%, #070a12 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #msm-intro-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .msm-intro-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            animation: introScaleUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            padding: 24px;
+            max-width: 450px;
+            width: 90%;
+        }
+        .msm-logo-img {
+            width: 250px;
+            height: auto;
+            filter: drop-shadow(0 15px 35px rgba(5, 150, 105, 0.4));
+            border-radius: 16px;
+            transform: scale(0.95);
+            animation: logoPulse 2s ease-in-out infinite alternate;
+        }
+        .msm-intro-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f9fafb;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .msm-intro-subtitle {
+            font-size: 0.9rem;
+            color: var(--primary, #059669);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        @keyframes introScaleUp {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes logoPulse {
+            0% { filter: drop-shadow(0 15px 35px rgba(5, 150, 105, 0.3)); transform: scale(1); }
+            100% { filter: drop-shadow(0 20px 45px rgba(5, 150, 105, 0.6)); transform: scale(1.03); }
+        }
+        .msm-skip-btn {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #9ca3af;
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .msm-skip-btn:hover {
+            background: var(--primary, #059669);
+            color: #fff;
+            border-color: var(--primary, #059669);
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+        }
+    </style>
+
+    <div id="msm-intro-screen" onclick="dismissMsmIntro()">
+        <div class="msm-intro-content" onclick="event.stopPropagation()">
+            <img src="data:image/png;base64,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" alt="MSM Club Logo" class="msm-logo-img">
+            <div>
+                <div class="msm-intro-title">MSM Club</div>
+                <div class="msm-intro-subtitle">Dünya Futbol Menajeri Pro</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let introDismissed = false;
+        function dismissMsmIntro() {
+            if (introDismissed) return;
+            introDismissed = true;
+            const screen = document.getElementById('msm-intro-screen');
+            if (screen) {
+                screen.classList.add('fade-out');
+            }
+        }
+        // 2.8 saniye sonra otomatik ve şık bir şekilde yok olur
+        setTimeout(() => {
+            dismissMsmIntro();
+        }, 2800);
+    </script>
+
+
     <header id="app-header" style="display: none;">
         <div class="logo">⚽ <span id="header-team-name">Takım</span></div>
         <div class="header-stats">
             <div class="stat-badge">💰 <span id="header-budget">0.3</span>M €</div>
             <div class="stat-badge">🏆 <span id="header-points">0</span> P</div>
-            <div class="stat-badge">📅 H.<span id="header-week">1</span></div>
+            <div class="stat-badge">📅 H.<span id="header-week">1</span>/38</div>
         </div>
     </header>
     <main>
         <div id="screen-team-select" class="screen active">
-            <h2>Dünya Futbol Menajeri Pro - 2026/2027 Sezonu (Akademi & Transfer Teklifleri)</h2>
-            <p style="color: var(--text-muted); margin-bottom: 8px; font-size: 0.8rem;">Niğde Belediyespor, FB, GS, BJK ve TS özel gerçek kadrolarıyla hazır! 10 haftada bir altyapıdan oyuncu çıkacak ve oyuncularına kulüplerden transfer teklifleri gelecek!</p>
+            <h2>Dünya Futbol Menajeri Pro — 2026/2027 Sezonu</h2>
+            <p style="color: var(--text-muted); margin-bottom: 8px; font-size: 0.8rem;">2026/27 güncel ligler ve kadrolar! Tüm takımlar 38 haftalık fikstürde eşzamanlı maç yapar. Transfer listesi, kiralıklar ve bonservisi elinde onlarca gerçek oyuncu seni bekliyor!</p>
             <div id="load-game-container" style="margin-bottom: 10px; display: none;">
                 <button class="btn" style="background: var(--warning); color: #000; width: 100%; margin-bottom: 4px;" onclick="loadGame()">💾 Kayıtlı Kariyere Devam Et</button>
             </div>
             <div class="filter-bar">
                 <select id="country-select" onchange="onCountryChange()" style="min-width: 170px; font-weight: bold;">
-                    <option value="Türkiye">🇹🇷 Türkiye</option>
-                    <option value="Serbest Havuz">⭐ Serbest Oyuncular Havuzu</option>
-                    <option value="İngiltere">🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere</option>
-                    <option value="İspanya">🇪🇸 İspanya</option>
-                    <option value="İtalya">🇮🇹 İtalya</option>
-                    <option value="Almanya">🇩🇪 Almanya</option>
-                    <option value="Fransa">🇫🇷 Fransa</option>
-                    <option value="Hollanda">🇳🇱 Hollanda</option>
-                    <option value="Portekiz">🇵🇹 Portekiz</option>
-                    <option value="Belçika">🇧🇪 Belçika</option>
-                    <option value="İskoçya">🏴󠁧󠁢󠁳󠁣󠁴󠁿 İskoçya</option>
-                    <option value="Brezilya">🇧🇷 Brezilya</option>
-                    <option value="Arjantin">🇦🇷 Arjantin</option>
-                    <option value="ABD">🇺🇸 ABD (MLS)</option>
-                    <option value="Suudi Arabistan">🇸🇦 Suudi Arabistan</option>
-                    <option value="Japonya">🇯🇵 Japonya</option>
+                    <option value="Türkiye">🇹🇷 Türkiye (2026/27)</option>
+                    <option value="İngiltere">🏴󠁧󠁢󠁥󠁮󠁧󠁿 İngiltere (2026/27)</option>
+                    <option value="İspanya">🇪🇸 İspanya (2026/27)</option>
+                    <option value="İtalya">🇮🇹 İtalya (2026/27)</option>
+                    <option value="Almanya">🇩🇪 Almanya (2026/27)</option>
+                    <option value="Fransa">🇫🇷 Fransa (2026/27)</option>
+                    <option value="Portekiz">🇵🇹 Portekiz (2026/27)</option>
+                    <option value="Hollanda">🇳🇱 Hollanda (2026/27)</option>
+                    <option value="Belçika">🇧🇪 Belçika (2026/27)</option>
+                    <option value="İskoçya">🏴󠁧󠁢󠁳󠁣󠁴󠁿 İskoçya (2026/27)</option>
+                    <option value="Avusturya">🇦🇹 Avusturya (2026/27)</option>
+                    <option value="İsviçre">🇨🇭 İsviçre (2026/27)</option>
+                    <option value="Yunanistan">🇬🇷 Yunanistan (2026/27)</option>
+                    <option value="Danimarka">🇩🇰 Danimarka (2026/27)</option>
+                    <option value="Norveç">🇳🇴 Norveç (2026/27)</option>
+                    <option value="İsveç">🇸🇪 İsveç (2026/27)</option>
+                    <option value="Polonya">🇵🇱 Polonya (2026/27)</option>
+                    <option value="Çekya">🇨🇿 Çekya (2026/27)</option>
+                    <option value="Hırvatistan">🇭🇷 Hırvatistan (2026/27)</option>
+                    <option value="Sırbistan">🇷🇸 Sırbistan (2026/27)</option>
+                    <option value="Ukrayna">🇺🇦 Ukrayna (2026/27)</option>
+                    <option value="Romanya">🇷🇴 Romanya (2026/27)</option>
                 </select>
-                <input type="text" id="team-search-input" placeholder="Takım ara (Örn: Niğde, Fenerbahçe, Galatasaray)..." oninput="renderTeamSelect()" style="flex: 1; min-width: 140px;">
+                <input type="text" id="team-search-input" placeholder="Takım ara (Örn: Niğde, Fenerbahçe, Galatasaray)..." oninput="renderTeamSelect()" style="flex: 1; min-width: 150px;">
             </div>
             <div class="league-tabs" id="league-tabs-container"></div>
             <div class="team-select-grid" id="team-list-container"></div>
         </div>
+
         <div id="screen-dashboard" class="screen">
-            <h2>Yönetim Paneli (2026/27)</h2>
+            <h2>Yönetim Paneli (2026/27 Sezonu — 38 Hafta)</h2>
             <div class="dashboard-grid">
                 <div class="card">
-                    <h3>Sıradaki Maç</h3>
+                    <h3>Sıradaki Lig Maçı</h3>
                     <div class="next-match-box">
-                        <div style="font-size: 0.72rem; color: var(--text-muted);" id="dashboard-match-week">Hafta 1</div>
-                        <div style="font-size: 1rem; font-weight: bold; margin: 5px 0;" id="dashboard-match-fixture">Takım vs Rakip</div>
-                        <button class="btn btn-block" onclick="startMatch()">Maça Çık</button>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);" id="dashboard-match-week">Hafta 1 / 38</div>
+                        <div style="font-size: 1rem; font-weight: bold; margin: 6px 0;" id="dashboard-match-fixture">Takım vs Rakip</div>
+                        <button class="btn btn-block" id="btn-play-match" onclick="startMatch()">Maça Çık</button>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Kulüp Durumu & Akademi</h3>
+                    <h3>Kulüp & Sezon Bilgileri</h3>
                     <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 4px; font-size: 0.78rem;">
                         <div style="display: flex; justify-content: space-between;"><span>Ülke / Lig:</span> <strong id="info-league">Lig</strong></div>
-                        <div style="display: flex; justify-content: space-between;"><span>Sezon Hedefi:</span> <strong style="color: var(--warning);" id="info-europe-target">Lig Hedefi</strong></div>
-                        <div style="display: flex; justify-content: space-between;"><span>Bütçe:</span> <strong id="info-budget">0.3M €</strong></div>
-                        <div style="display: flex; justify-content: space-between;"><span>Altyapı Durumu:</span> <strong id="info-academy-status" style="color: var(--success);">Aktif (Sonraki: 10. Hafta)</strong></div>
-                        <button class="btn btn-block btn-secondary" style="margin-top: 2px;" onclick="saveAndExit()">💾 Kaydet ve Çık / Menüye Dön</button>
+                        <div style="display: flex; justify-content: space-between;"><span>Sezon Durumu:</span> <strong style="color: var(--warning);" id="info-europe-target">Şampiyonluk Yarışı</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Transfer Bütçesi:</span> <strong id="info-budget">0.3M €</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Altyapı Akademisi:</span> <strong id="info-academy-status" style="color: var(--success);">Aktif (Sonraki: 10. Hafta)</strong></div>
+                        <button class="btn btn-block btn-secondary" style="margin-top: 4px;" onclick="saveAndExit()">💾 Kaydet ve Menüye Dön</button>
                     </div>
                 </div>
             </div>
         </div>
+
         <div id="screen-squad" class="screen">
-            <h2>2026/27 Kadro ve Taktik (Yatay SM Sahası)</h2>
+            <h2>2026/27 Kadro ve Taktik</h2>
             <div class="filter-bar" style="align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 6px;">
                     <span style="font-size: 0.8rem; color: var(--text-muted);">Diziliş:</span>
@@ -172,7 +296,7 @@
                     <div class="player-list" id="squad-list-container"></div>
                 </div>
                 <div>
-                    <h3 style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px;">İlk 11 Yatay Saha (Soccer Manager)</h3>
+                    <h3 style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px;">İlk 11 Taktik Sahası</h3>
                     <div class="tactics-board" id="tactics-pitch">
                         <div class="pitch-line-box-left"></div>
                         <div class="pitch-line-box-right"></div>
@@ -180,21 +304,30 @@
                 </div>
             </div>
         </div>
+
         <div id="screen-standings" class="screen">
-            <h2>Puan Durumu & Lig Hedefleri</h2>
-            <div class="card" style="padding: 4px;">
+            <h2>2026/27 Puan Durumu (38 Haftalık Lig)</h2>
+            <div class="card" style="padding: 4px; overflow-x: auto;">
                 <table>
                     <thead>
-                        <tr><th>#</th><th>Takım</th><th>O</th><th>G</th><th>B</th><th>M</th><th>P</th></tr>
+                        <tr><th>#</th><th>Takım</th><th>O</th><th>G</th><th>B</th><th>M</th><th>AG</th><th>YG</th><th>AV</th><th>P</th></tr>
                     </thead>
                     <tbody id="standings-table-body"></tbody>
                 </table>
             </div>
         </div>
+
         <div id="screen-transfer" class="screen">
-            <h2>2026/27 Transfer Pazarı & Serbest Oyuncular</h2>
+            <h2>2026/27 Transfer Merkezi</h2>
             <div class="filter-bar">
-                <input type="text" id="transfer-search-input" placeholder="🔍 Oyuncu adı, kulüp veya serbest ara..." oninput="renderTransferMarket()" style="flex: 2; min-width: 160px;">
+                <input type="text" id="transfer-search-input" placeholder="🔍 Oyuncu adı, kulüp veya lig ara..." oninput="renderTransferMarket()" style="flex: 2; min-width: 150px;">
+                <select id="transfer-status-filter" onchange="renderTransferMarket()" style="font-weight: 600; border-color: var(--primary);">
+                    <option value="ALL">📋 Tüm Sözleşme Durumları</option>
+                    <option value="FREE">🟢 Bonservisi Elinde (Serbest)</option>
+                    <option value="LISTED">🟡 Transfer Listesindeki Oyuncular</option>
+                    <option value="LOAN">🔵 Kiralık Alınabilir Oyuncular</option>
+                    <option value="CONTRACT">⚪ Sözleşmeli Oyuncular</option>
+                </select>
                 <select id="transfer-pos-filter" onchange="renderTransferMarket()">
                     <option value="ALL">Tüm Mevkiler</option>
                     <option value="KL">Kaleci (KL)</option>
@@ -207,10 +340,17 @@
                     <option value="SlK">Sol Kanat (SlK)</option>
                     <option value="SNT">Santrafor (SNT)</option>
                 </select>
+                <select id="transfer-ovr-filter" onchange="renderTransferMarket()">
+                    <option value="ALL">Tüm Reytingler (OVR)</option>
+                    <option value="LOW">Düşük / Alt Lig (50 - 66 OVR)</option>
+                    <option value="MID">Orta Seviye (67 - 77 OVR)</option>
+                    <option value="HIGH">Yıldız Oyuncular (78+ OVR)</option>
+                </select>
             </div>
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px;" id="transfer-result-count">Oyuncular listeleniyor...</div>
             <div class="player-list" id="transfer-list-container"></div>
         </div>
+
         <div id="screen-match" class="screen">
             <h2>Canlı Maç Anlatımı</h2>
             <div class="match-container">
@@ -227,23 +367,25 @@
             </div>
         </div>
     </main>
+
+    <!-- MODALS -->
     <div class="modal" id="lineup-modal">
         <div class="modal-content">
             <h3 id="modal-title">Oyuncu Seç</h3>
-            <div class="player-list" id="modal-player-list" style="max-height: 220px;"></div>
+            <div class="player-list" id="modal-player-list" style="max-height: 240px;"></div>
             <button class="btn btn-secondary" onclick="closeLineupModal()" style="margin-top: 8px;">Kapat</button>
         </div>
     </div>
-    <!-- MODAL: ACADEMY GRADUATE -->
+
     <div class="modal" id="academy-modal">
         <div class="modal-content" style="text-align: center;">
             <h3 style="color: var(--warning);">🌟 Gençlik Akademisi Raporu!</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Altyapımızdan süper yetenekli bir genç yıldız adayımız A takıma yükseldi!</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Altyapımızdan yetenekli bir genç oyuncu A takıma yükseldi!</p>
             <div id="academy-player-card" style="background: var(--bg-dark); padding: 10px; border-radius: 8px; border: 1px solid var(--primary); margin: 8px 0; font-size: 0.9rem;"></div>
             <button class="btn btn-block" onclick="acceptAcademyPlayer()">Kadromuza Dahil Et</button>
         </div>
     </div>
-    <!-- MODAL: TRANSFER OFFER -->
+
     <div class="modal" id="offer-modal">
         <div class="modal-content" style="text-align: center;">
             <h3 style="color: var(--warning);">💼 Oyuncunuza Transfer Teklifi Geldi!</h3>
@@ -254,6 +396,7 @@
             </div>
         </div>
     </div>
+
     <nav class="bottom-nav" id="bottom-nav" style="display: none;">
         <button class="nav-item active" onclick="switchTab('dashboard')">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Ana Sayfa
@@ -269,230 +412,529 @@
         </button>
     </nav>
     <div class="toast" id="toast-message">İşlem Başarılı!</div>
+
     <script>
-        const firstNames = ["Ali", "Mehmet", "Ahmet", "Mustafa", "Yusuf", "Emre", "Burak", "Kerem", "Umut", "Mert", "Berk", "Can", "Efe", "Arda", "Kaan", "Barış", "Oğuz", "Tolgahan", "Batuhan", "Berkay", "Enes", "Salih", "Hakan", "Cengiz", "Ferdi", "Abdülkerim", "İsmail", "Samet", "Yasin", "Gökhan", "Oltan", "Metehan", "Alperen", "Tunahan", "Yuşa", "Ebrar", "Furkan", "İbrahim", "Göktuğ", "Yalçın"];
-        const lastNames = ["Demirkıran", "Yılmaz", "Kaya", "Demir", "Çelik", "Şahin", "Yıldız", "Yıldırım", "Öztürk", "Aydın", "Özdemir", "Arslan", "Doğan", "Kılıç", "Aslan", "Çetin", "Kara", "Koç", "Kurt", "Özkan", "Şimşek", "Polat", "Özcan", "Korkmaz", "Erdoğan", "Yavuz", "Can", "Aksoy", "Şen", "Güler", "Acar", "Emlik", "Tığrak", "Dikişci", "Balcı", "Uslu", "Bolat", "Çolak", "Atasoy", "Baytekin"];
+        const TOTAL_WEEKS = 38;
+
+        const firstNames = ["Ali", "Mehmet", "Ahmet", "Mustafa", "Yusuf", "Emre", "Burak", "Kerem", "Umut", "Mert", "Berk", "Can", "Efe", "Arda", "Kaan", "Barış", "Oğuz", "Tolgahan", "Batuhan", "Berkay", "Enes", "Salih", "Hakan", "Cengiz", "Ferdi", "Abdülkerim", "İsmail", "Samet", "Yasin", "Gökhan", "Oltan", "Metehan", "Alperen", "Tunahan", "Yuşa", "Ebrar", "Furkan", "İbrahim", "Göktuğ", "Yalçın", "Berat", "Emirhan", "Onur", "Serkan", "Volkan", "Taylan", "Dorukhan", "Uğur", "Sinan", "Selçuk"];
+        const lastNames = ["Demirkıran", "Yılmaz", "Kaya", "Demir", "Çelik", "Şahin", "Yıldız", "Yıldırım", "Öztürk", "Aydın", "Özdemir", "Arslan", "Doğan", "Kılıç", "Aslan", "Çetin", "Kara", "Koç", "Kurt", "Özkan", "Şimşek", "Polat", "Özcan", "Korkmaz", "Erdoğan", "Yavuz", "Can", "Aksoy", "Şen", "Güler", "Acar", "Emlik", "Tığrak", "Dikişci", "Balcı", "Uslu", "Bolat", "Çolak", "Atasoy", "Baytekin", "Özer", "Keskin", "Sarı", "Tekin", "Taş", "Aktaş", "Bulut", "Güneş", "Karahan", "Bozkurt"];
 
         function getRandomName() {
-            let fn = firstNames[Math.floor(Math.random() * firstNames.length)];
-            let ln = lastNames[Math.floor(Math.random() * lastNames.length)];
-            return fn + " " + ln;
+            return firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)];
         }
+
+        function formatEuro(rawPrice) {
+            if (rawPrice === 0) return "Ücretsiz (Serbest)";
+            return rawPrice >= 1 ? rawPrice.toFixed(2) + "M €" : Math.round(rawPrice * 1000) + " Bin €";
+        }
+
+        // 2026/2027 Güncel Gerçek Kadrolar
+        const realSquadsDB = {
+            "Niğde Belediyespor": [
+                { name: "Tunahan Dikişci", pos: "KL", ovr: 59, rawPrice: 0.08, contractStatus: "CONTRACT" },
+                { name: "Yuşa Tığrak", pos: "KL", ovr: 57, rawPrice: 0.06, contractStatus: "CONTRACT" },
+                { name: "Ebrar Yıldırım", pos: "STP", ovr: 58, rawPrice: 0.075, contractStatus: "CONTRACT" },
+                { name: "Yusuf Balcı", pos: "STP", ovr: 57, rawPrice: 0.065, contractStatus: "CONTRACT" },
+                { name: "Samet Emlik", pos: "STP", ovr: 56, rawPrice: 0.055, contractStatus: "CONTRACT" },
+                { name: "Mertcan Çam", pos: "SĞB", ovr: 58, rawPrice: 0.07, contractStatus: "CONTRACT" },
+                { name: "Emre Özkan", pos: "SLB", ovr: 57, rawPrice: 0.065, contractStatus: "CONTRACT" },
+                { name: "Furkan Uslu", pos: "OS", ovr: 58, rawPrice: 0.075, contractStatus: "CONTRACT" },
+                { name: "İbrahim Bolat", pos: "OS", ovr: 57, rawPrice: 0.065, contractStatus: "CONTRACT" },
+                { name: "Oğuzhan Erdoğan", pos: "OOS", ovr: 59, rawPrice: 0.085, contractStatus: "CONTRACT" },
+                { name: "Burak Çolak", pos: "SlK", ovr: 59, rawPrice: 0.09, contractStatus: "CONTRACT" },
+                { name: "İbrahim Koca", pos: "SNT", ovr: 60, rawPrice: 0.10, contractStatus: "CONTRACT" },
+                { name: "Yusuf Atasoy", pos: "SNT", ovr: 58, rawPrice: 0.075, contractStatus: "CONTRACT" }
+            ],
+            "Fenerbahçe": [
+                { name: "Dominik Livaković", pos: "KL", ovr: 82, rawPrice: 10.5, contractStatus: "CONTRACT" },
+                { name: "Mason Greenwood", pos: "SğK", ovr: 83, rawPrice: 35.0, contractStatus: "CONTRACT" },
+                { name: "İrfan Can Eğribayat", pos: "KL", ovr: 76, rawPrice: 2.2, contractStatus: "CONTRACT" },
+                { name: "Çağlar Söyüncü", pos: "STP", ovr: 80, rawPrice: 9.0, contractStatus: "CONTRACT" },
+                { name: "Alexander Djiku", pos: "STP", ovr: 80, rawPrice: 8.5, contractStatus: "CONTRACT" },
+                { name: "Jayden Oosterwolde", pos: "SLB", ovr: 79, rawPrice: 13.0, contractStatus: "CONTRACT" },
+                { name: "Bright Osayi-Samuel", pos: "SĞB", ovr: 78, rawPrice: 8.0, contractStatus: "CONTRACT" },
+                { name: "Mert Müldür", pos: "SĞB", ovr: 77, rawPrice: 5.5, contractStatus: "CONTRACT" },
+                { name: "Sofyan Amrabat", pos: "OS", ovr: 81, rawPrice: 15.0, contractStatus: "CONTRACT" },
+                { name: "Fred", pos: "OS", ovr: 82, rawPrice: 14.0, contractStatus: "CONTRACT" },
+                { name: "İsmail Yüksek", pos: "OS", ovr: 79, rawPrice: 13.5, contractStatus: "CONTRACT" },
+                { name: "Sebastian Szymański", pos: "OOS", ovr: 81, rawPrice: 18.0, contractStatus: "CONTRACT" },
+                { name: "Anderson Talisca", pos: "OOS", ovr: 82, rawPrice: 12.0, contractStatus: "CONTRACT" },
+                { name: "İrfan Can Kahveci", pos: "SğK", ovr: 80, rawPrice: 9.5, contractStatus: "CONTRACT" },
+                { name: "Oğuz Aydın", pos: "SlK", ovr: 77, rawPrice: 6.5, contractStatus: "CONTRACT" },
+                { name: "Youssef En-Nesyri", pos: "SNT", ovr: 82, rawPrice: 22.0, contractStatus: "CONTRACT" },
+                { name: "Cenk Tosun", pos: "SNT", ovr: 75, rawPrice: 1.5, contractStatus: "LISTED" }
+            ],
+            "Galatasaray": [
+                { name: "Günay Güvenç", pos: "KL", ovr: 75, rawPrice: 1.5, contractStatus: "CONTRACT" },
+                { name: "Davinson Sánchez", pos: "STP", ovr: 84, rawPrice: 20.0, contractStatus: "CONTRACT" },
+                { name: "Abdülkerim Bardakcı", pos: "STP", ovr: 80, rawPrice: 8.5, contractStatus: "CONTRACT" },
+                { name: "Victor Nelsson", pos: "STP", ovr: 78, rawPrice: 11.0, contractStatus: "LISTED" },
+                { name: "Ismail Jakobs", pos: "SLB", ovr: 78, rawPrice: 8.5, contractStatus: "CONTRACT" },
+                { name: "Kaan Ayhan", pos: "SĞB", ovr: 77, rawPrice: 4.0, contractStatus: "CONTRACT" },
+                { name: "Lucas Torreira", pos: "OS", ovr: 83, rawPrice: 16.0, contractStatus: "CONTRACT" },
+                { name: "Gabriel Sara", pos: "OS", ovr: 82, rawPrice: 20.0, contractStatus: "CONTRACT" },
+                { name: "Kerem Demirbay", pos: "OS", ovr: 76, rawPrice: 3.5, contractStatus: "LISTED" },
+                { name: "Barış Alper Yılmaz", pos: "SğK", ovr: 82, rawPrice: 24.0, contractStatus: "CONTRACT" },
+                { name: "Roland Sallai", pos: "SğK", ovr: 79, rawPrice: 11.0, contractStatus: "CONTRACT" },
+                { name: "Yunus Akgün", pos: "SlK", ovr: 79, rawPrice: 11.5, contractStatus: "CONTRACT" },
+                { name: "Mauro Icardi", pos: "SNT", ovr: 83, rawPrice: 14.0, contractStatus: "CONTRACT" },
+                { name: "Michy Batshuayi", pos: "SNT", ovr: 79, rawPrice: 8.0, contractStatus: "CONTRACT" }
+            ],
+            "Beşiktaş": [
+                { name: "Mert Günok", pos: "KL", ovr: 79, rawPrice: 2.5, contractStatus: "CONTRACT" },
+                { name: "Ersin Destanoğlu", pos: "KL", ovr: 73, rawPrice: 2.0, contractStatus: "LOAN" },
+                { name: "Gabriel Paulista", pos: "STP", ovr: 79, rawPrice: 3.0, contractStatus: "CONTRACT" },
+                { name: "Felix Uduokhai", pos: "STP", ovr: 78, rawPrice: 7.5, contractStatus: "CONTRACT" },
+                { name: "Arthur Masuaku", pos: "SLB", ovr: 76, rawPrice: 3.5, contractStatus: "CONTRACT" },
+                { name: "Jonas Svensson", pos: "SĞB", ovr: 76, rawPrice: 2.5, contractStatus: "CONTRACT" },
+                { name: "Gedson Fernandes", pos: "OS", ovr: 82, rawPrice: 17.5, contractStatus: "CONTRACT" },
+                { name: "Al-Musrati", pos: "OS", ovr: 79, rawPrice: 9.0, contractStatus: "LISTED" },
+                { name: "Rafa Silva", pos: "OOS", ovr: 84, rawPrice: 16.0, contractStatus: "CONTRACT" },
+                { name: "Milot Rashica", pos: "SğK", ovr: 78, rawPrice: 7.5, contractStatus: "CONTRACT" },
+                { name: "Semih Kılıçsoy", pos: "SNT", ovr: 78, rawPrice: 15.0, contractStatus: "CONTRACT" },
+                { name: "Ciro Immobile", pos: "SNT", ovr: 80, rawPrice: 3.5, contractStatus: "CONTRACT" }
+            ],
+            "Trabzonspor": [
+                { name: "Uğurcan Çakır", pos: "KL", ovr: 81, rawPrice: 10.0, contractStatus: "CONTRACT" },
+                { name: "Stefan Savić", pos: "STP", ovr: 79, rawPrice: 3.0, contractStatus: "CONTRACT" },
+                { name: "Batista Mendy", pos: "OS", ovr: 78, rawPrice: 9.5, contractStatus: "CONTRACT" },
+                { name: "Muhammed Cham", pos: "OOS", ovr: 77, rawPrice: 6.5, contractStatus: "CONTRACT" },
+                { name: "Edin Višća", pos: "SğK", ovr: 78, rawPrice: 2.5, contractStatus: "CONTRACT" },
+                { name: "Simon Banza", pos: "SNT", ovr: 79, rawPrice: 11.0, contractStatus: "CONTRACT" },
+                { name: "Enis Destan", pos: "SNT", ovr: 74, rawPrice: 2.8, contractStatus: "LOAN" }
+            ]
+        };
+
+        // Genişletilmiş 2026/2027 Transfer Havuzu: Düşük Seviyeli Gerçekçi Oyuncular, Bonservisi Elinde Olanlar, Transfer Listesindekiler ve Kiralıklar!
+        const extraMarketPlayers = [
+            // Bonservisi Elinde (Serbest Oyuncular - Free Agents)
+            { name: "Sergio Ramos", pos: "STP", ovr: 79, rawPrice: 0, club: "Serbest Oyuncu", country: "İspanya", contractStatus: "FREE" },
+            { name: "Keylor Navas", pos: "KL", ovr: 78, rawPrice: 0, club: "Serbest Oyuncu", country: "Kosta Rika", contractStatus: "FREE" },
+            { name: "Mario Balotelli", pos: "SNT", ovr: 75, rawPrice: 0, club: "Serbest Oyuncu", country: "İtalya", contractStatus: "FREE" },
+            { name: "Dele Alli", pos: "OOS", ovr: 74, rawPrice: 0, club: "Serbest Oyuncu", country: "İngiltere", contractStatus: "FREE" },
+            { name: "Layvin Kurzawa", pos: "SLB", ovr: 74, rawPrice: 0, club: "Serbest Oyuncu", country: "Fransa", contractStatus: "FREE" },
+            { name: "Serge Aurier", pos: "SĞB", ovr: 75, rawPrice: 0, club: "Serbest Oyuncu", country: "Fildişi Sahili", contractStatus: "FREE" },
+            { name: "Miralem Pjanić", pos: "OS", ovr: 76, rawPrice: 0, club: "Serbest Oyuncu", country: "Bosna Hersek", contractStatus: "FREE" },
+            { name: "Rachid Ghezzal", pos: "SğK", ovr: 74, rawPrice: 0, club: "Serbest Oyuncu", country: "Cezayir", contractStatus: "FREE" },
+            { name: "Dorukhan Toköz", pos: "OS", ovr: 72, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Emre Mor", pos: "SğK", ovr: 73, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Sinan Gümüş", pos: "SlK", ovr: 68, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Alper Potuk", pos: "OS", ovr: 66, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Ömer Bayram", pos: "SLB", ovr: 67, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Mehmet Topal Jr.", pos: "OS", ovr: 62, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Hasan Ali Kaldırım", pos: "SLB", ovr: 68, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Batuhan Karadeniz", pos: "SNT", ovr: 61, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Gökhan Töre", pos: "SğK", ovr: 67, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Volkan Babacan", pos: "KL", ovr: 70, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Yasin Öztekin", pos: "SlK", ovr: 65, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Muhammet Demir", pos: "SNT", ovr: 69, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Burak Kapacak", pos: "SĞB", ovr: 66, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Oğuzhan Özyakup", pos: "OS", ovr: 70, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Adem Büyük", pos: "SNT", ovr: 64, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Tolgay Arslan", pos: "OS", ovr: 71, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Erdem Seçgin", pos: "OS", ovr: 60, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Kaan Kanak", pos: "SLB", ovr: 63, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Sefa Yılmaz", pos: "SğK", ovr: 62, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Ahmet İlhan Özek", pos: "SğK", ovr: 61, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
+
+            // Düşük Seviyeli Gerçekçi Alt Lig Oyuncuları (54 - 66 OVR)
+            { name: "Oltan Karakullukçu", pos: "SNT", ovr: 64, rawPrice: 0.14, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Taha Balcı", pos: "SNT", ovr: 62, rawPrice: 0.11, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Bahattin Köse", pos: "SNT", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Erhan Çelenk", pos: "SlK", ovr: 64, rawPrice: 0.15, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Samed Ali Kaya", pos: "SNT", ovr: 65, rawPrice: 0.18, club: "1. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "İlhan Depe", pos: "SlK", ovr: 65, rawPrice: 0.16, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Mikail Okyar", pos: "OS", ovr: 63, rawPrice: 0.13, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Burak Süleyman", pos: "OOS", ovr: 65, rawPrice: 0.17, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Onur Eriş", pos: "OOS", ovr: 63, rawPrice: 0.12, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Mehmet Cansın Çiçek", pos: "STP", ovr: 61, rawPrice: 0.09, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Cengizhan Akgün", pos: "SğK", ovr: 64, rawPrice: 0.15, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Kubilay Yavuz", pos: "OS", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Serdar Deliktaş", pos: "SNT", ovr: 62, rawPrice: 0.10, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Emre Gemici", pos: "SNT", ovr: 61, rawPrice: 0.095, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Furkan Polat", pos: "OS", ovr: 59, rawPrice: 0.075, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Berkay Samancı", pos: "OS", ovr: 61, rawPrice: 0.09, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Yusuf Türk", pos: "SNT", ovr: 63, rawPrice: 0.14, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Gökhan Karadeniz", pos: "OOS", ovr: 65, rawPrice: 0.16, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Okan Derici", pos: "OS", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Muhammet Beşir", pos: "SNT", ovr: 62, rawPrice: 0.11, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Ömer Şişmanoğlu", pos: "SNT", ovr: 64, rawPrice: 0.13, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Harun Tekin", pos: "KL", ovr: 66, rawPrice: 0.15, club: "1. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Erten Ersu", pos: "KL", ovr: 62, rawPrice: 0.09, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Canberk Dilaver", pos: "SLB", ovr: 62, rawPrice: 0.10, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Uğur Arslan Kuru", pos: "STP", ovr: 61, rawPrice: 0.085, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+
+            // Kiralık Genç Yetenekler (Loan List)
+            { name: "Emirhan İlkhan", pos: "OS", ovr: 72, rawPrice: 0.45, club: "Torino (Kiralık)", country: "İtalya", contractStatus: "LOAN" },
+            { name: "Bartuğ Elmaz", pos: "OS", ovr: 71, rawPrice: 0.35, club: "Fenerbahçe (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Eyüp Aydın", pos: "OS", ovr: 70, rawPrice: 0.30, club: "Galatasaray (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Yusuf Demir", pos: "SğK", ovr: 73, rawPrice: 0.50, club: "Galatasaray (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Emir Ortakaya", pos: "STP", ovr: 69, rawPrice: 0.25, club: "Fenerbahçe (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Demir Ege Tıknaz", pos: "OS", ovr: 72, rawPrice: 0.40, club: "Beşiktaş (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Mustafa Hekimoğlu", pos: "SNT", ovr: 71, rawPrice: 0.45, club: "Beşiktaş (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Poyraz Efe Yıldırım", pos: "SNT", ovr: 68, rawPrice: 0.22, club: "Trabzonspor (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Salih Malkoçoğlu", pos: "OS", ovr: 67, rawPrice: 0.18, club: "Trabzonspor (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Efe Akman", pos: "OS", ovr: 68, rawPrice: 0.20, club: "Galatasaray (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Yusuf Akçiçek", pos: "STP", ovr: 70, rawPrice: 0.30, club: "Fenerbahçe (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Can Uzun", pos: "OOS", ovr: 76, rawPrice: 1.20, club: "Frankfurt (Kiralık)", country: "Almanya", contractStatus: "LOAN" },
+            { name: "Arda Kızıldağ", pos: "STP", ovr: 70, rawPrice: 0.30, club: "Gaziantep FK (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
+            { name: "Göktan Gürpüz", pos: "OOS", ovr: 69, rawPrice: 0.24, club: "Trabzonspor (Kiralık)", country: "Türkiye", contractStatus: "LOAN" }
+        ];
 
         const squadGenerator = (teamName, ovrBase, priceBase) => {
             let roster = [];
-            let positions = ["KL", "KL", "STP", "STP", "STP", "STP", "SĞB", "SĞB", "SLB", "SLB", "OS", "OS", "OS", "OS", "OOS", "OOS", "SğK", "SğK", "SlK", "SlK", "SNT", "SNT", "SNT", "OS", "STP", "SĞB", "SLB", "OOS", "SlK", "SNT"];
+            let positions = ["KL", "KL", "STP", "STP", "STP", "SĞB", "SĞB", "SLB", "SLB", "OS", "OS", "OS", "OOS", "OOS", "SğK", "SğK", "SlK", "SlK", "SNT", "SNT", "OS", "STP", "SNT"];
             
             positions.forEach((pos, idx) => {
                 let name = getRandomName();
-                let ovr = Math.max(48, ovrBase - Math.floor(idx / 4) + Math.floor(Math.random() * 5) - 2);
-                let rawPrice = Math.max(0.015, Number((priceBase * (ovr / 75)).toFixed(3)));
-                let priceText = rawPrice >= 1 ? rawPrice.toFixed(2) + "M €" : (rawPrice * 1000).toFixed(0) + " Bin €";
-                roster.push({ name: name, pos: pos, ovr: ovr, price: priceText, rawPrice: rawPrice });
+                let ovr = Math.max(50, ovrBase - Math.floor(idx / 5) + Math.floor(Math.random() * 5) - 2);
+                let rawPrice = Math.max(0.025, Number((priceBase * (ovr / 75)).toFixed(3)));
+                
+                // Rastgele sözleşme durumu dağıtımı
+                let rand = Math.random();
+                let status = "CONTRACT";
+                if (rand < 0.14) status = "LISTED";
+                else if (rand < 0.24) { status = "LOAN"; rawPrice = Number((rawPrice * 0.25).toFixed(3)); }
+
+                roster.push({
+                    name: name,
+                    pos: pos,
+                    ovr: ovr,
+                    rawPrice: rawPrice,
+                    price: formatEuro(rawPrice),
+                    contractStatus: status
+                });
             });
             return roster;
         };
 
-        const realSquadsDB = {
-            "Niğde Belediyespor": [
-                { name: "Tunahan Dikişci", pos: "KL", ovr: 58, price: "75 Bin €", rawPrice: 0.075 },
-                { name: "Yuşa Tığrak", pos: "KL", ovr: 56, price: "60 Bin €", rawPrice: 0.06 },
-                { name: "Ebrar Yıldırım", pos: "STP", ovr: 57, price: "70 Bin €", rawPrice: 0.07 },
-                { name: "Yusuf Balcı", pos: "STP", ovr: 56, price: "60 Bin €", rawPrice: 0.06 },
-                { name: "Samet Emlik", pos: "STP", ovr: 55, price: "55 Bin €", rawPrice: 0.055 },
-                { name: "Furkan Uslu", pos: "OS", ovr: 57, price: "70 Bin €", rawPrice: 0.07 },
-                { name: "İbrahim Bolat", pos: "OS", ovr: 56, price: "60 Bin €", rawPrice: 0.06 },
-                { name: "Burak Çolak", pos: "SlK", ovr: 58, price: "80 Bin €", rawPrice: 0.08 },
-                { name: "İbrahim Koca", pos: "SNT", ovr: 58, price: "85 Bin €", rawPrice: 0.085 },
-                { name: "Yusuf Atasoy", pos: "SNT", ovr: 57, price: "70 Bin €", rawPrice: 0.07 }
-            ],
-            "Beşiktaş": [
-                { name: "Mert Günok", pos: "KL", ovr: 79, price: "3.50M €", rawPrice: 3.5 },
-                { name: "Prince Oppong", pos: "OOS", ovr: 76, price: "4.00M €", rawPrice: 4.0 },
-                { name: "Gedson Fernandes", pos: "OS", ovr: 82, price: "17.00M €", rawPrice: 17.0 },
-                { name: "Rafa Silva", pos: "OOS", ovr: 84, price: "18.00M €", rawPrice: 18.0 },
-                { name: "Ciro Immobile", pos: "SNT", ovr: 81, price: "4.50M €", rawPrice: 4.5 }
-            ],
-            "Trabzonspor": [
-                { name: "N'Golo Kanté", pos: "OS", ovr: 83, price: "8.50M €", rawPrice: 8.5 },
-                { name: "Uğurcan Çakır", pos: "KL", ovr: 81, price: "11.00M €", rawPrice: 11.0 },
-                { name: "Enis Destan", pos: "SNT", ovr: 74, price: "2.50M €", rawPrice: 2.5 }
-            ],
-            "Fenerbahçe": [
-                { name: "Dominik Livaković", pos: "KL", ovr: 82, price: "11.00M €", rawPrice: 11.0 },
-                { name: "İrfan Can Eğribayat", pos: "KL", ovr: 75, price: "2.00M €", rawPrice: 2.0 },
-                { name: "Alexander Djiku", pos: "STP", ovr: 79, price: "9.00M €", rawPrice: 9.0 },
-                { name: "Rodrigo Becão", pos: "STP", ovr: 79, price: "9.50M €", rawPrice: 9.5 },
-                { name: "Samet Akaydin", pos: "STP", ovr: 74, price: "2.50M €", rawPrice: 2.5 },
-                { name: "Jayden Oosterwolde", pos: "SLB", ovr: 78, price: "11.00M €", rawPrice: 11.0 },
-                { name: "Bright Osayi-Samuel", pos: "SĞB", ovr: 78, price: "10.00M €", rawPrice: 10.0 },
-                { name: "Mert Müldür", pos: "SĞB", ovr: 76, price: "5.00M €", rawPrice: 5.0 },
-                { name: "İsmail Yüksek", pos: "OS", ovr: 78, price: "12.00M €", rawPrice: 12.0 },
-                { name: "Sofyan Amrabat", pos: "OS", ovr: 81, price: "18.00M €", rawPrice: 18.0 },
-                { name: "Fred", pos: "OS", ovr: 82, price: "17.00M €", rawPrice: 17.0 },
-                { name: "Sebastian Szymański", pos: "OOS", ovr: 81, price: "19.00M €", rawPrice: 19.0 },
-                { name: "İrfan Can Kahveci", pos: "SğK", ovr: 79, price: "10.00M €", rawPrice: 10.0 },
-                { name: "Dušan Tadić", pos: "SlK", ovr: 81, price: "4.00M €", rawPrice: 4.0 },
-                { name: "Allan Saint-Maximin", pos: "SlK", ovr: 82, price: "16.00M €", rawPrice: 16.0 },
-                { name: "Youssef En-Nesyri", pos: "SNT", ovr: 81, price: "20.00M €", rawPrice: 20.0 },
-                { name: "Edin Džeko", pos: "SNT", ovr: 82, price: "3.50M €", rawPrice: 3.5 },
-                { name: "Cengiz Ünder", pos: "SğK", ovr: 78, price: "11.00M €", rawPrice: 11.0 }
-            ],
-            "Galatasaray": [
-                { name: "Fernando Muslera", pos: "KL", ovr: 80, price: "2.00M €", rawPrice: 2.0 },
-                { name: "Günay Güvenç", pos: "KL", ovr: 74, price: "1.50M €", rawPrice: 1.5 },
-                { name: "Davinson Sánchez", pos: "STP", ovr: 83, price: "18.00M €", rawPrice: 18.0 },
-                { name: "Abdülkerim Bardakcı", pos: "STP", ovr: 79, price: "9.00M €", rawPrice: 9.0 },
-                { name: "Victor Nelsson", pos: "STP", ovr: 78, price: "13.00M €", rawPrice: 13.0 },
-                { name: "Kaan Ayhan", pos: "SĞB", ovr: 76, price: "4.00M €", rawPrice: 4.0 },
-                { name: "Ismail Jakobs", pos: "SLB", ovr: 77, price: "8.00M €", rawPrice: 8.0 },
-                { name: "Lucas Torreira", pos: "OS", ovr: 82, price: "15.00M €", rawPrice: 15.0 },
-                { name: "Gabriel Sara", pos: "OS", ovr: 81, price: "18.00M €", rawPrice: 18.0 },
-                { name: "Kerem Demirbay", pos: "OS", ovr: 77, price: "5.00M €", rawPrice: 5.0 },
-                { name: "Dries Mertens", pos: "OOS", ovr: 80, price: "2.50M €", rawPrice: 2.5 },
-                { name: "Barış Alper Yılmaz", pos: "SğK", ovr: 81, price: "21.00M €", rawPrice: 21.0 },
-                { name: "Roland Sallai", pos: "SğK", ovr: 78, price: "10.00M €", rawPrice: 10.0 },
-                { name: "Yunus Akgün", pos: "SlK", ovr: 78, price: "9.00M €", rawPrice: 9.0 },
-                { name: "Hakim Ziyech", pos: "SğK", ovr: 79, price: "7.00M €", rawPrice: 7.0 },
-                { name: "Victor Osimhen", pos: "SNT", ovr: 88, price: "75.00M €", rawPrice: 75.0 },
-                { name: "Mauro Icardi", pos: "SNT", ovr: 84, price: "17.00M €", rawPrice: 17.0 },
-                { name: "Michy Batshuayi", pos: "SNT", ovr: 79, price: "10.00M €", rawPrice: 10.0 }
-            ]
-        };
-
-        const freeAgentsPool = [
-            { name: "Sergio Ramos", pos: "STP", ovr: 80, price: "1.00M €", rawPrice: 1.0, club: "Serbest", country: "Serbest Havuz" },
-            { name: "Keylor Navas", pos: "KL", ovr: 79, price: "800 Bin €", rawPrice: 0.8, club: "Serbest", country: "Serbest Havuz" },
-            { name: "Adrien Rabiot", pos: "OS", ovr: 82, price: "3.50M €", rawPrice: 3.5, club: "Serbest", country: "Serbest Havuz" },
-            { name: "Anthony Martial", pos: "SNT", ovr: 77, price: "2.00M €", rawPrice: 2.0, club: "Serbest", country: "Serbest Havuz" }
-        ];
-
         const createFullTeams = (names, ovrBase, budgetBase) => {
             return names.map(name => {
-                let realPlayers = realSquadsDB[name] || [];
-                let generated = squadGenerator(name, ovrBase, budgetBase);
+                let realPlayers = (realSquadsDB[name] || []).map(p => ({
+                    ...p,
+                    price: formatEuro(p.rawPrice),
+                    contractStatus: p.contractStatus || "CONTRACT"
+                }));
+                let generated = squadGenerator(name, ovrBase, budgetBase * 0.15);
                 let combined = [...realPlayers];
                 generated.forEach(gp => {
-                    if(!combined.some(rp => rp.name.toLowerCase() === gp.name.toLowerCase())) {
+                    if (!combined.some(rp => rp.name.toLowerCase() === gp.name.toLowerCase())) {
                         combined.push(gp);
                     }
                 });
-                return { name: name, budget: budgetBase, squad: combined, points: 0, played: 0, won: 0, drawn: 0, lost: 0 };
+                return {
+                    name: name,
+                    budget: budgetBase,
+                    squad: combined,
+                    points: 0,
+                    played: 0,
+                    won: 0,
+                    drawn: 0,
+                    lost: 0,
+                    gf: 0,
+                    ga: 0
+                };
             });
         };
 
+        // 2026/2027 Güncel Ligler (Her grupta 20 takım = 38 haftalık tam sezon formatı!)
         const worldDB = {
             "Türkiye": {
-                "Süper Lig": createFullTeams([
-                    "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "Gençlerbirliği", "İstanbul Başakşehir", "Eyüpspor", "Samsunspor", "Göztepe", "Kasımpaşa", "Konyaspor", "Gaziantep FK", "Alanyaspor", "Çaykur Rizespor", "Kocaelispor", "Çorum FK", "Erzurumspor FK", "Amed SFK"
-                ], 78, 25.0),
-                "1. Lig": createFullTeams([
-                    "Sakaryaspor", "Ankaragücü", "Bandırmaspor", "Boluspor", "Ümraniyespor", "Manisa FK", "Keçiörengücü", "Esenler Erokspor", "Iğdır FK", "Pendikspor", "Fatih Karagümrük", "İstanbulspor", "Altay", "Vanspor", "Serikspor"
+                "Süper Lig (2026/27)": createFullTeams([
+                    "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "İstanbul Başakşehir",
+                    "Samsunspor", "Göztepe", "Eyüpspor", "Kasımpaşa", "Konyaspor",
+                    "Çaykur Rizespor", "Alanyaspor", "Antalyaspor", "Gaziantep FK", "Kayserispor",
+                    "Kocaelispor", "Gençlerbirliği", "Çorum FK", "Erzurumspor FK", "Amed SFK"
+                ], 77, 25.0),
+                "1. Lig (2026/27)": createFullTeams([
+                    "Fatih Karagümrük", "Ankaragücü", "Sakaryaspor", "Bandırmaspor", "Boluspor",
+                    "Ümraniyespor", "Manisa FK", "Keçiörengücü", "Esenler Erokspor", "Iğdır FK",
+                    "Pendikspor", "İstanbulspor", "Sivasspor", "Bodrum FK", "Hatayspor",
+                    "Adana Demirspor", "Vanspor FK", "Serik Belediyespor", "Sarıyer", "Kastamonuspor"
                 ], 68, 3.5),
-                "2. Lig Kırmızı": createFullTeams([
-                    "52 Orduspor", "Erzincanspor", "Adana 01 FK", "Ankara Demirspor", "Kahramanmaraş İstiklalspor", "1461 Trabzon FK", "Beyoğlu Yeni Çarşı", "12 Bingölspor", "Kütahyaspor", "Karacabey Belediyespor", "Fethiyespor", "Serik Belediyespor", "Kırklarelispor", "İnegölspor", "İskenderunspor"
-                ], 64, 1.2),
-                "2. Lig Beyaz": createFullTeams([
-                    "Elazığspor", "Güzide Gebzespor", "Muşspor", "Aliağa FK", "Çorluspor 1947", "İnegöl Kafkasspor", "Şanlıurfaspor", "Erbaaspor", "Menemen FK", "Sebat Gençlik Spor", "Ankaraspor", "Isparta 32 Spor", "Somaspor", "68 Aksaray Belediyespor", "Kastamonuspor", "Arnavutköy Belediyespor", "Hatayspor", "Adana Demirspor"
+                "2. Lig Beyaz Grup (2026/27)": createFullTeams([
+                    "Elazığspor", "Muşspor", "68 Aksaray Belediyespor", "Menemen FK", "Şanlıurfaspor",
+                    "Bucaspor 1928", "1461 Trabzon FK", "Ankara Demirspor", "İskenderunspor", "Karacabey Belediyespor",
+                    "Fethiyespor", "Kırklarelispor", "İnegölspor", "Isparta 32 Spor", "Somaspor",
+                    "Altay", "Giresunspor", "Ankaraspor", "Beyoğlu Yeni Çarşı", "Erbaaspor"
                 ], 63, 1.0),
-                "3. Lig 1. Grup": createFullTeams([
-                    "Silivrispor", "Düzcespor", "Karşıyaka", "Bornova 1877", "Aksaray Bld", "Yeni Mersin İY", "Karaman FK", "Edirnespor", "Bursa Yıldırım", "Kırıkkale FK", "Çankaya Spor", "Belediye Derince", "Kuşadasıspor", "Karaköprü Belediyespor", "Ağrı 1970", "Malatya Arguvan"
-                ], 56, 0.3),
-                "3. Lig 2. Grup": createFullTeams([
-                    "Adanaspor", "Giresunspor", "Bursa Nilüfer", "Eynesil Belediyespor", "Turgutluspor", "Efeler 09 SFK", "Alanya Kestel", "Ayvalıkgücü Belediyespor", "Kırşehir FSK", "Yozgat Bozokspor", "Kelkit Hürriyetspor", "Tokat Belediye Plevnespor", "Ordu 1967", "Sivas Dört Eylülspor", "Kahramanmaraşspor"
-                ], 56, 0.3),
-                "3. Lig 3. Grup": createFullTeams([
-                    "Yeşilyurt SK", "Erciyes 38 FSK", "Niğde Belediyespor", "Kırşehir FSK", "Bitlis Spor 1916", "Karaköprü Bld.", "Mazıdağı Fosfat", "Yeni Mersin İY", "Kırıkkale FK", "Osmaniyespor FK", "A.Adaletgücü", "Ağrı 1970", "Yozgat Bl Bozok", "1964 Silifkespor", "Diyarbekirspor", "Karaman FK", "Adanaspor"
-                ], 56, 0.3),
-                "3. Lig 4. Grup": createFullTeams([
-                    "Eskişehirspor", "Orduspor", "Mersin İY", "Kayseri Erciyes", "Siirt İl Özel İdare", "Mardin 1969", "Hakkari Zapspor", "Bitlis Özgüzelderespor", "Iğdır Es Spor", "Aksaray Gençlik", "Yalovaspor", "Bartınspor", "Kastamonu Özel İdare", "Çankırı FK", "Kars 36 Spor", "Amasyaspor 1968"
-                ], 55, 0.25)
-            },
-            "Serbest Havuz": {
-                "Serbest Oyuncular": [
-                    { name: "Serbest Kulüp Havuzu", budget: 0, squad: freeAgentsPool, points: 0, played: 0, won: 0, drawn: 0, lost: 0 }
-                ]
+                "3. Lig 3. Grup (2026/27)": createFullTeams([
+                    "Niğde Belediyespor", "Erciyes 38 FSK", "Karşıyaka", "Eskişehirspor", "Orduspor 1967",
+                    "52 Orduspor FK", "Kütahyaspor", "Düzcespor", "Silivrispor", "Kırşehir FSK",
+                    "Karaman FK", "Yeni Mersin İY", "Kırıkkale FK", "Osmaniyespor FK", "Ağrı 1970 Spor",
+                    "Yozgat Bozokspor", "1964 Silifkespor", "Diyarbekirspor", "Karaköprü Belediyespor", "Adanaspor"
+                ], 57, 0.35)
             },
             "İngiltere": {
-                "Premier League": createFullTeams(["Manchester City", "Arsenal", "Liverpool", "Manchester United", "Chelsea", "Tottenham", "Aston Villa", "Newcastle United", "Brighton", "West Ham"], 84, 80.0),
-                "Championship": createFullTeams(["Leeds United", "Burnley", "Sheffield United", "Luton Town", "Middlesbrough", "Coventry City", "West Bromwich", "Norwich City", "Hull City", "Sunderland"], 73, 12.0)
+                "Premier League (2026/27)": createFullTeams([
+                    "Liverpool", "Arsenal", "Manchester City", "Chelsea", "Newcastle United",
+                    "Aston Villa", "Nottingham Forest", "Brighton", "Tottenham", "Manchester United",
+                    "Bournemouth", "Fulham", "Brentford", "West Ham", "Crystal Palace",
+                    "Everton", "Wolverhampton", "Leeds United", "Burnley", "Sheffield United"
+                ], 84, 85.0)
             },
             "İspanya": {
-                "LaLiga": createFullTeams(["Real Madrid", "Barcelona", "Atletico Madrid", "Real Sociedad", "Villarreal", "Real Betis", "Athletic Club", "Girona", "Valencia", "Sevilla"], 84, 90.0)
+                "LaLiga (2026/27)": createFullTeams([
+                    "Real Madrid", "Barcelona", "Atletico Madrid", "Athletic Club", "Villarreal",
+                    "Real Sociedad", "Real Betis", "Girona", "Mallorca", "Osasuna",
+                    "Celta Vigo", "Sevilla", "Rayo Vallecano", "Getafe", "Valencia",
+                    "Espanyol", "Alaves", "Las Palmas", "Levante", "Real Zaragoza"
+                ], 83, 80.0)
             },
             "İtalya": {
-                "Serie A": createFullTeams(["Inter", "AC Milan", "Juventus", "Napoli", "Atalanta", "Roma", "Lazio", "Fiorentina", "Bologna", "Torino"], 84, 75.0)
+                "Serie A (2026/27)": createFullTeams([
+                    "Inter", "Napoli", "Atalanta", "Juventus", "AC Milan",
+                    "Lazio", "Fiorentina", "Bologna", "Roma", "Torino",
+                    "Udinese", "Genoa", "Cagliari", "Parma", "Como",
+                    "Lecce", "Empoli", "Verona", "Sassuolo", "Pisa"
+                ], 83, 75.0)
             },
             "Almanya": {
-                "Bundesliga": createFullTeams(["Bayern Munich", "Bayer Leverkusen", "Borussia Dortmund", "RB Leipzig", "VfB Stuttgart", "Eintracht Frankfurt", "Wolfsburg", "Borussia Mönchengladbach", "SC Freiburg", "TSG Hoffenheim"], 83, 70.0)
+                "Bundesliga (2026/27)": createFullTeams([
+                    "Bayern Munich", "Bayer Leverkusen", "Eintracht Frankfurt", "RB Leipzig", "Borussia Dortmund",
+                    "VfB Stuttgart", "SC Freiburg", "Mainz 05", "Borussia Mönchengladbach", "Wolfsburg",
+                    "Werder Bremen", "Augsburg", "Union Berlin", "TSG Hoffenheim", "St. Pauli",
+                    "Hamburger SV", "1. FC Köln", "Fortuna Düsseldorf", "Heidenheim", "Bochum"
+                ], 82, 70.0)
             },
             "Fransa": {
-                "Ligue 1": createFullTeams(["Paris Saint-Germain", "Monaco", "Marseille", "Lille", "Lyon", "Nice", "Lens", "Rennes", "Strasbourg", "Toulouse"], 82, 65.0)
+                "Ligue 1 (2026/27)": createFullTeams([
+                    "Paris Saint-Germain", "Marseille", "Monaco", "Lille", "Lyon",
+                    "Nice", "Lens", "Strasbourg", "Toulouse", "Brest",
+                    "Rennes", "Auxerre", "Nantes", "Reims", "Angers",
+                    "Saint-Étienne", "Montpellier", "Le Havre", "Paris FC", "Lorient"
+                ], 81, 65.0)
+            },
+            "Portekiz": {
+                "Primeira Liga (2026/27)": createFullTeams([
+                    "Sporting CP", "Benfica", "FC Porto", "SC Braga", "Vitória Guimarães",
+                    "Moreirense", "Famalicão", "Casa Pia", "Santa Clara", "Gil Vicente",
+                    "Estoril Praia", "Rio Ave", "Arouca", "Boavista", "Estrela Amadora",
+                    "Nacional", "Farense", "AVS Futebol", "Tondela", "Vizela"
+                ], 78, 35.0)
+            },
+            "Hollanda": {
+                "Eredivisie (2026/27)": createFullTeams([
+                    "PSV Eindhoven", "Ajax", "Feyenoord", "AZ Alkmaar", "FC Twente",
+                    "FC Utrecht", "Go Ahead Eagles", "NEC Nijmegen", "Heerenveen", "Sparta Rotterdam",
+                    "Fortuna Sittard", "Groningen", "PEC Zwolle", "Heracles Almelo", "NAC Breda",
+                    "Willem II", "RKC Waalwijk", "Almere City", "FC Volendam", "ADO Den Haag"
+                ], 77, 30.0)
+            },
+            "Belçika": {
+                "Pro League (2026/27)": createFullTeams([
+                    "Club Brugge", "RSC Anderlecht", "Union Saint-Gilloise", "KRC Genk", "Royal Antwerp",
+                    "KAA Gent", "Standard Liège", "Cercle Brugge", "KV Mechelen", "Charleroi",
+                    "OH Leuven", "Sint-Truiden", "Westerlo", "KV Kortrijk", "Dender",
+                    "Beerschot", "Zulte Waregem", "RWDM", "Lommel SK", "KAS Eupen"
+                ], 75, 22.0)
+            },
+            "İskoçya": {
+                "Premiership (2026/27)": createFullTeams([
+                    "Celtic", "Rangers", "Aberdeen", "Hearts", "Hibernian",
+                    "Dundee United", "Motherwell", "St Mirren", "Kilmarnock", "Dundee FC",
+                    "Ross County", "St Johnstone", "Livingston", "Falkirk", "Partick Thistle",
+                    "Ayr United", "Dunfermline", "Raith Rovers", "Queen's Park", "Greenock Morton"
+                ], 72, 15.0)
+            },
+            "Avusturya": {
+                "Bundesliga (2026/27)": createFullTeams([
+                    "Red Bull Salzburg", "Sturm Graz", "Rapid Wien", "LASK", "Austria Wien",
+                    "Wolfsberger AC", "TSV Hartberg", "Austria Klagenfurt", "Blau-Weiß Linz", "SCR Altach",
+                    "WSG Tirol", "Grazer AK", "SV Ried", "Admira Wacker", "SKN St. Pölten",
+                    "First Vienna", "Floridsdorfer AC", "Kapfenberger SV", "SV Lafnitz", "Schwarz-Weiß Bregenz"
+                ], 72, 14.0)
+            },
+            "İsviçre": {
+                "Super League (2026/27)": createFullTeams([
+                    "Young Boys", "FC Basel", "FC Zürich", "Servette FC", "FC Lugano",
+                    "FC St. Gallen", "FC Luzern", "Lausanne-Sport", "FC Sion", "Grasshoppers",
+                    "FC Winterthur", "Yverdon-Sport", "FC Thun", "FC Aarau", "FC Vaduz",
+                    "Neuchâtel Xamax", "FC Wil", "AC Bellinzona", "Étoile Carouge", "Stade Lausanne-Ouchy"
+                ], 72, 14.0)
+            },
+            "Yunanistan": {
+                "Super League (2026/27)": createFullTeams([
+                    "Olympiakos", "Panathinaikos", "AEK Atina", "PAOK", "Aris Selanik",
+                    "OFI Girit", "Asteras Tripolis", "Atromitos", "Panetolikos", "Volos NFC",
+                    "Panserraikos", "Lamia", "Levadiakos", "Athens Kallithea", "AEL Larissa",
+                    "Iraklis", "PAS Giannina", "Panionios", "Kifisia", "Apollon Smyrnis"
+                ], 74, 18.0)
+            },
+            "Danimarka": {
+                "Superliga (2026/27)": createFullTeams([
+                    "FC Kopenhag", "FC Midtjylland", "Brøndby IF", "FC Nordsjælland", "Aarhus GF",
+                    "Silkeborg IF", "Randers FC", "Viborg FF", "AaB Aalborg", "Sønderjyske",
+                    "Lyngby BK", "Vejle BK", "Odense BK", "Horsens", "Esbjerg fB",
+                    "FC Fredericia", "Kolding IF", "Hvidovre IF", "Hobro IK", "B.93"
+                ], 72, 14.0)
+            },
+            "Norveç": {
+                "Eliteserien (2026/27)": createFullTeams([
+                    "Bodø/Glimt", "Molde FK", "Rosenborg", "SK Brann", "Viking FK",
+                    "Vålerenga", "Lillestrøm", "Fredrikstad", "Strømsgodset", "Sarpsborg 08",
+                    "Tromsø IL", "FK Haugesund", "Kristiansund BK", "HamKam", "Sandefjord",
+                    "KFUM Oslo", "Odd", "Stabæk", "Start", "Bryne FK"
+                ], 71, 12.0)
+            },
+            "İsveç": {
+                "Allsvenskan (2026/27)": createFullTeams([
+                    "Malmö FF", "AIK", "Djurgårdens IF", "Hammarby IF", "IFK Göteborg",
+                    "BK Häcken", "IF Elfsborg", "IFK Norrköping", "Mjällby AIF", "IK Sirius",
+                    "Kalmar FF", "Halmstads BK", "GAIS", "IF Brommapojkarna", "Västerås SK",
+                    "Östers IF", "Degerfors IF", "Helsingborgs IF", "Örebro SK", "Landskrona BoIS"
+                ], 71, 12.0)
+            },
+            "Polonya": {
+                "Ekstraklasa (2026/27)": createFullTeams([
+                    "Legia Varşova", "Lech Poznań", "Raków Częstochowa", "Jagiellonia Białystok", "Pogoń Szczecin",
+                    "Górnik Zabrze", "Śląsk Wrocław", "Cracovia", "Widzew Łódź", "Piast Gliwice",
+                    "Zagłębie Lubin", "Korona Kielce", "Radomiak Radom", "Stal Mielec", "Motor Lublin",
+                    "GKS Katowice", "Lechia Gdańsk", "Wisła Kraków", "Arka Gdynia", "Wisła Płock"
+                ], 71, 11.0)
+            },
+            "Çekya": {
+                "Chance Liga (2026/27)": createFullTeams([
+                    "Sparta Prag", "Slavia Prag", "Viktoria Plzeň", "Baník Ostrava", "Slovan Liberec",
+                    "FK Mladá Boleslav", "Sigma Olomouc", "FK Jablonec", "Bohemians 1905", "FC Hradec Králové",
+                    "1. FC Slovácko", "FK Teplice", "MFK Karviná", "FK Pardubice", "SK Dynamo České Budějovice",
+                    "FK Dukla Prag", "FC Zlín", "Zbrojovka Brno", "Viktoria Žižkov", "SFC Opava"
+                ], 72, 13.0)
+            },
+            "Hırvatistan": {
+                "HNL (2026/27)": createFullTeams([
+                    "Dinamo Zagreb", "Hajduk Split", "HNK Rijeka", "NK Osijek", "NK Lokomotiva",
+                    "NK Varaždin", "NK Istra 1961", "Slaven Belupo", "HNK Gorica", "HNK Šibenik",
+                    "NK Rudeš", "HNK Vukovar 1991", "HNK Cibalia", "NK Dugopolje", "NK Solin",
+                    "NK Croatia Zmijavci", "NK Jarun", "NK Dubrava", "NK Sesvete", "NK Orijent"
+                ], 71, 11.0)
+            },
+            "Sırbistan": {
+                "SuperLiga (2026/27)": createFullTeams([
+                    "Kızılyıldız", "Partizan", "TSC Bačka Topola", "Vojvodina", "Čukarički",
+                    "Radnički 1923", "Mladost Lučani", "Napredak Kruševac", "Novi Pazar", "Spartak Subotica",
+                    "Železničar Pančevo", "IMT Belgrad", "OFK Belgrad", "Radnički Niš", "Jedinstvo Ub",
+                    "Tekstilac Odžaci", "Voždovac", "Javor Ivanjica", "Radnik Surdulica", "Mačva Šabac"
+                ], 71, 11.0)
+            },
+            "Ukrayna": {
+                "Premier Liha (2026/27)": createFullTeams([
+                    "Shakhtar Donetsk", "Dinamo Kiev", "Kryvbas Kryvyi Rih", "Dnipro-1", "Polissya Zhytomyr",
+                    "Rukh Lviv", "Zorya Luhansk", "LNZ Cherkasy", "Oleksandriya", "Vorskla Poltava",
+                    "Kolos Kovalivka", "Chornomorets Odesa", "Veres Rivne", "Obolon Kiev", "Karpaty Lviv",
+                    "Inhulets Petrove", "Livyi Bereh", "Metalist 1925", "Metalist Kharkiv", "Epitsentr"
+                ], 71, 12.0)
+            },
+            "Romanya": {
+                "SuperLiga (2026/27)": createFullTeams([
+                    "FCSB", "CFR Cluj", "Universitatea Craiova", "Rapid Bükreş", "Farul Constanța",
+                    "Sepsi OSK", "Universitatea Cluj", "Oțelul Galați", "FC Hermannstadt", "UTA Arad",
+                    "Petrolul Ploiești", "Politehnica Iași", "Dinamo Bükreş", "FC Botoșani", "Unirea Slobozia",
+                    "Gloria Buzău", "FC Voluntari", "FC U Craiova", "Csíkszereda", "Corvinul Hunedoara"
+                ], 70, 9.0)
             }
         };
 
         let gameState = {
-            teamName: "", country: "Türkiye", league: "3. Lig 3. Grup", budget: 0.3, points: 0, week: 1, squad: [],
+            teamName: "",
+            country: "Türkiye",
+            league: "3. Lig 3. Grup (2026/27)",
+            budget: 0.35,
+            points: 0,
+            week: 1,
+            squad: [],
             formation: "4-3-3",
             lineup: { kl: null, sğb: null, stp1: null, stp2: null, slb: null, os1: null, os2: null, oos: null, sgk: null, slk: null, snt: null },
             transferMarket: [],
-            pendingOffer: null
+            pendingOffer: null,
+            leagueTables: {} // Tüm liglerin puan durumunu kalıcı tutar
         };
 
         function buildGlobalTransferMarket() {
-            let pool = []; let idCounter = 1;
-            freeAgentsPool.forEach(p => {
-                pool.push({ id: idCounter++, name: p.name, pos: p.pos, ovr: p.ovr, price: p.price, rawPrice: p.rawPrice, club: "⭐ Serbest Oyuncu", country: "Serbest Havuz" });
+            let pool = [];
+            let idCounter = 1;
+
+            // 1. Önce özel serbest oyuncular, düşük seviye havuzu ve kiralıkları ekle
+            extraMarketPlayers.forEach(p => {
+                pool.push({
+                    id: idCounter++,
+                    name: p.name,
+                    pos: p.pos,
+                    ovr: p.ovr,
+                    rawPrice: p.rawPrice,
+                    price: formatEuro(p.rawPrice),
+                    club: p.club,
+                    country: p.country,
+                    contractStatus: p.contractStatus
+                });
             });
+
+            // 2. Dünya veritabanındaki tüm kulüplerin oyuncularını ekle
             Object.keys(worldDB).forEach(country => {
-                if(country === "Serbest Havuz") return;
                 Object.keys(worldDB[country]).forEach(league => {
                     worldDB[country][league].forEach(team => {
                         team.squad.forEach(p => {
-                            pool.push({ id: idCounter++, name: p.name, pos: p.pos, ovr: p.ovr, price: p.price, rawPrice: p.rawPrice, club: team.name, country: country });
+                            pool.push({
+                                id: idCounter++,
+                                name: p.name,
+                                pos: p.pos,
+                                ovr: p.ovr,
+                                rawPrice: p.rawPrice,
+                                price: formatEuro(p.rawPrice),
+                                club: team.name,
+                                country: country,
+                                contractStatus: p.contractStatus || "CONTRACT"
+                            });
                         });
                     });
                 });
             });
             return pool;
         }
-        gameState.transferMarket = buildGlobalTransferMarket();
 
-        let selectedCountry = "Türkiye"; let selectedLeague = "3. Lig 3. Grup";
+        let selectedCountry = "Türkiye";
+        let selectedLeague = "3. Lig 3. Grup (2026/27)";
         let currentMatchState = { opponent: "", homeScore: 0, awayScore: 0, minute: 0 };
         let activeLineupSlot = null;
         let pendingAcademyPlayer = null;
 
         function showToast(text) {
             const t = document.getElementById("toast-message");
-            t.innerText = text; t.style.display = "block";
+            t.innerText = text;
+            t.style.display = "block";
             setTimeout(() => { t.style.display = "none"; }, 3000);
         }
 
         window.onload = function() {
             checkSavedGameOnMenu();
-            renderLeagueTabs(); 
+            renderLeagueTabs();
             renderTeamSelect();
         };
 
+        const SAVE_KEY = "dfm_save_game_2026_2027_v25";
+
         function checkSavedGameOnMenu() {
-            const saved = localStorage.getItem("dfm_save_game_allleagues_v4");
+            const saved = localStorage.getItem(SAVE_KEY);
             const loadContainer = document.getElementById("load-game-container");
             if (saved) { loadContainer.style.display = "block"; } else { loadContainer.style.display = "none"; }
         }
 
         function saveGameProgress() {
-            localStorage.setItem("dfm_save_game_allleagues_v4", JSON.stringify(gameState));
-            showToast("Kariyer başarıyla kaydedildi!");
+            localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+            showToast("Kariyer kaydedildi!");
             checkSavedGameOnMenu();
         }
 
         function loadGame() {
-            const saved = localStorage.getItem("dfm_save_game_allleagues_v4");
-            if(saved) {
+            const saved = localStorage.getItem(SAVE_KEY);
+            if (saved) {
                 gameState = JSON.parse(saved);
                 selectedCountry = gameState.country;
                 selectedLeague = gameState.league;
+                // Kayıtlı lig tablosunu worldDB'ye senkronize et
+                if (gameState.leagueTables && gameState.leagueTables[gameState.country] && gameState.leagueTables[gameState.country][gameState.league]) {
+                    worldDB[gameState.country][gameState.league] = gameState.leagueTables[gameState.country][gameState.league];
+                }
                 applyLoadedGameState();
                 showToast("Kayıtlı kariyer yüklendi!");
             }
@@ -507,43 +949,49 @@
         }
 
         function applyLoadedGameState() {
-            let budgetText = gameState.budget >= 1 ? gameState.budget.toFixed(2) + 'M €' : (gameState.budget * 1000).toFixed(0) + ' Bin €';
+            let budgetText = formatEuro(gameState.budget);
             document.getElementById("header-team-name").innerText = gameState.teamName;
-            document.getElementById("header-budget").innerText = gameState.budget >= 1 ? gameState.budget.toFixed(2) : (gameState.budget * 1000).toFixed(0) + ' Bin';
+            document.getElementById("header-budget").innerText = gameState.budget >= 1 ? gameState.budget.toFixed(2) : Math.round(gameState.budget * 1000) + ' Bin';
             document.getElementById("header-points").innerText = gameState.points;
-            document.getElementById("header-week").innerText = gameState.week;
+            document.getElementById("header-week").innerText = Math.min(gameState.week, TOTAL_WEEKS);
             document.getElementById("info-league").innerText = `${gameState.country} - ${gameState.league}`;
             document.getElementById("info-budget").innerText = budgetText;
             
             let nextAcademyWeek = (Math.floor((gameState.week - 1) / 10) + 1) * 10;
-            document.getElementById("info-academy-status").innerText = `Aktif (Sonraki: ${nextAcademyWeek}. Hafta)`;
+            document.getElementById("info-academy-status").innerText = nextAcademyWeek <= TOTAL_WEEKS ? `Aktif (Sonraki: ${nextAcademyWeek}. Hafta)` : "Sezon Tamamlandı";
 
-            updateLeagueTargetDisplay(3);
             document.getElementById("app-header").style.display = "flex";
             document.getElementById("bottom-nav").style.display = "flex";
             document.getElementById("formation-select").value = gameState.formation || "4-3-3";
-            setupNextMatch(); 
+            setupNextMatch();
+            renderStandings();
             switchTab('dashboard');
         }
 
         function updateLeagueTargetDisplay(rank) {
-            let targetText = "🥇 Şampiyonluk & Üst Lige Çıkış";
             let elmt = document.getElementById("info-europe-target");
-            if(!elmt) return;
-            if (rank === 1) targetText = "🏆 Doğrudan Şampiyonluk";
-            else if (rank <= 5) targetText = "🔼 Play-Off Hattı";
-            elmt.innerText = targetText;
+            if (!elmt) return;
+            if (gameState.week > TOTAL_WEEKS) {
+                elmt.innerText = rank === 1 ? "🏆 SEZON ŞAMPİYONU!" : `🏁 Sezon Sonu: ${rank}. Sıra`;
+                return;
+            }
+            if (rank === 1) elmt.innerText = "🏆 1. Sıra — Doğrudan Şampiyonluk";
+            else if (rank <= 5) elmt.innerText = `🔼 ${rank}. Sıra — Play-Off Hattı`;
+            else if (rank >= 17) elmt.innerText = `⚠️ ${rank}. Sıra — Küme Düşme Hattı`;
+            else elmt.innerText = `📊 ${rank}. Sıra — Orta Sıralar`;
         }
 
         function onCountryChange() {
             selectedCountry = document.getElementById("country-select").value;
             const leagues = Object.keys(worldDB[selectedCountry]);
             selectedLeague = leagues[0];
-            renderLeagueTabs(); renderTeamSelect();
+            renderLeagueTabs();
+            renderTeamSelect();
         }
 
         function renderLeagueTabs() {
-            const container = document.getElementById("league-tabs-container"); container.innerHTML = "";
+            const container = document.getElementById("league-tabs-container");
+            container.innerHTML = "";
             Object.keys(worldDB[selectedCountry]).forEach(lg => {
                 const btn = document.createElement("button");
                 btn.className = "btn btn-secondary" + (lg === selectedLeague ? " active-tab" : "");
@@ -573,38 +1021,47 @@
             teams.forEach((team) => {
                 const targetCountry = team.foundCountry || selectedCountry;
                 const targetLeague = team.foundLeague || selectedLeague;
-                
-                // Escape quotes for safe inline string parameters
-                const safeCountry = targetCountry.replace(/'/g, "\\'");
-                const safeLeague = targetLeague.replace(/'/g, "\\'");
-                const safeName = team.name.replace(/'/g, "\\'");
+                const safeCountry = targetCountry.replace(/'/g, "\'");
+                const safeLeague = targetLeague.replace(/'/g, "\'");
+                const safeName = team.name.replace(/'/g, "\'");
                 
                 html += `
-                    <div class="team-card" onclick="selectTeam('${safeCountry}', '${safeLeague}', '${safeName}')" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 6px;">
+                    <div class="team-card" onclick="selectTeam('${safeCountry}', '${safeLeague}', '${safeName}')">
                         <div style="font-weight: bold; font-size: 0.95rem; color: #fff;">${team.name}</div>
                         <div style="font-size: 0.72rem; color: var(--primary);">${targetCountry} • ${targetLeague}</div>
-                        <div style="font-size: 0.72rem; color: var(--text-muted);">Puan: ${team.points || 0} | Kadro: ${team.squad.length} Oyuncu</div>
-                        <button class="btn" onclick="event.stopPropagation(); selectTeam('${safeCountry}', '${safeLeague}', '${safeName}');" style="background: var(--primary); color: white; border: none; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 4px; width: 100%;">Takımı Seç</button>
+                        <div style="font-size: 0.72rem; color: var(--text-muted);">Bütçe: ${formatEuro(team.budget)} | Kadro: ${team.squad.length} Oyuncu</div>
+                        <button class="btn" onclick="event.stopPropagation(); selectTeam('${safeCountry}', '${safeLeague}', '${safeName}');" style="margin-top: 4px; width: 100%;">Takımı Seç</button>
                     </div>
                 `;
             });
             container.innerHTML = html;
         }
 
-        function selectTeamByIndexGlobal(index) {
-            const team = currentRenderedTeams[index];
-            if(!team) return;
-            const targetCountry = team.foundCountry || selectedCountry;
-            const targetLeague = team.foundLeague || selectedLeague;
-            selectTeam(targetCountry, targetLeague, team.name);
-        }
-
         function selectTeam(country, league, name) {
+            // Tüm ligleri taze başlat
+            Object.keys(worldDB).forEach(ct => {
+                Object.keys(worldDB[ct]).forEach(lg => {
+                    worldDB[ct][lg].forEach(t => {
+                        t.points = 0; t.played = 0; t.won = 0; t.drawn = 0; t.lost = 0; t.gf = 0; t.ga = 0;
+                    });
+                });
+            });
+
             const teamList = worldDB[country][league];
             const team = teamList.find(t => t.name === name);
-            gameState.teamName = team.name; gameState.country = country; gameState.league = league;
-            gameState.budget = team.budget || 0.3; gameState.squad = JSON.parse(JSON.stringify(team.squad));
-            gameState.week = team.played ? team.played + 1 : 1; gameState.points = team.points || 0; gameState.formation = "4-3-3";
+            gameState.teamName = team.name;
+            gameState.country = country;
+            gameState.league = league;
+            gameState.budget = team.budget || 0.35;
+            gameState.squad = JSON.parse(JSON.stringify(team.squad));
+            gameState.week = 1;
+            gameState.points = 0;
+            gameState.formation = "4-3-3";
+            gameState.transferMarket = buildGlobalTransferMarket().filter(p => p.club !== team.name);
+            
+            if (!gameState.leagueTables[country]) gameState.leagueTables[country] = {};
+            gameState.leagueTables[country][league] = worldDB[country][league];
+
             autoAssignLineup();
             saveGameProgress();
             applyLoadedGameState();
@@ -612,27 +1069,21 @@
         }
 
         function autoAssignLineup() {
-            let kl = gameState.squad.filter(p => p.pos === 'KL');
-            let stp = gameState.squad.filter(p => p.pos === 'STP');
-            let sğb = gameState.squad.filter(p => p.pos === 'SĞB');
-            let slb = gameState.squad.filter(p => p.pos === 'SLB');
-            let os = gameState.squad.filter(p => p.pos === 'OS');
-            let oos = gameState.squad.filter(p => p.pos === 'OOS');
-            let sgk = gameState.squad.filter(p => p.pos === 'SğK');
-            let slk = gameState.squad.filter(p => p.pos === 'SlK');
-            let snt = gameState.squad.filter(p => p.pos === 'SNT');
-
-            gameState.lineup.kl = kl[0] || gameState.squad[0];
-            gameState.lineup.sğb = sğb[0] || gameState.squad[1];
-            gameState.lineup.stp1 = stp[0] || gameState.squad[2];
-            gameState.lineup.stp2 = stp[1] || gameState.squad[3];
-            gameState.lineup.slb = slb[0] || gameState.squad[4];
-            gameState.lineup.os1 = os[0] || gameState.squad[5];
-            gameState.lineup.os2 = os[1] || gameState.squad[6];
-            gameState.lineup.oos = oos[0] || gameState.squad[7];
-            gameState.lineup.sgk = sgk[0] || gameState.squad[8];
-            gameState.lineup.slk = slk[0] || gameState.squad[9];
-            gameState.lineup.snt = snt[0] || gameState.squad[10];
+            const pick = (pos, idx = 0) => {
+                let list = gameState.squad.filter(p => p.pos === pos);
+                return list[idx] || null;
+            };
+            gameState.lineup.kl = pick('KL', 0) || gameState.squad[0];
+            gameState.lineup.sğb = pick('SĞB', 0) || gameState.squad[1];
+            gameState.lineup.stp1 = pick('STP', 0) || gameState.squad[2];
+            gameState.lineup.stp2 = pick('STP', 1) || gameState.squad[3];
+            gameState.lineup.slb = pick('SLB', 0) || gameState.squad[4];
+            gameState.lineup.os1 = pick('OS', 0) || gameState.squad[5];
+            gameState.lineup.os2 = pick('OS', 1) || gameState.squad[6];
+            gameState.lineup.oos = pick('OOS', 0) || gameState.squad[7];
+            gameState.lineup.sgk = pick('SğK', 0) || gameState.squad[8];
+            gameState.lineup.slk = pick('SlK', 0) || gameState.squad[9];
+            gameState.lineup.snt = pick('SNT', 0) || gameState.squad[10];
         }
 
         function changeFormation(form) {
@@ -647,26 +1098,36 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('screen-' + tabId).classList.add('active');
             const navIndex = ['dashboard', 'squad', 'standings', 'transfer'].indexOf(tabId);
-            if(navIndex !== -1) document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
-            if(tabId === 'squad') { renderSquad(); renderTacticsPitch(); }
-            if(tabId === 'standings') renderStandings();
-            if(tabId === 'transfer') renderTransferMarket();
+            if (navIndex !== -1) document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+            if (tabId === 'squad') { renderSquad(); renderTacticsPitch(); }
+            if (tabId === 'standings') renderStandings();
+            if (tabId === 'transfer') renderTransferMarket();
+        }
+
+        function getStatusBadgeHTML(status) {
+            if (status === "FREE") return `<span class="status-badge status-free">Bonservisi Elinde</span>`;
+            if (status === "LISTED") return `<span class="status-badge status-listed">Transfer Listesinde</span>`;
+            if (status === "LOAN") return `<span class="status-badge status-loan">Kiralık</span>`;
+            return `<span class="status-badge status-contract">Sözleşmeli</span>`;
         }
 
         function renderSquad() {
-            const container = document.getElementById("squad-list-container"); container.innerHTML = "";
+            const container = document.getElementById("squad-list-container");
+            container.innerHTML = "";
             gameState.squad.forEach((player, idx) => {
-                const item = document.createElement("div"); item.className = "player-item";
+                const item = document.createElement("div");
+                item.className = "player-item";
+                let loanTag = player.isLoanedIn ? `<span class="status-badge status-loan">Kiralık Geldi</span>` : "";
                 item.innerHTML = `
                     <div class="player-details">
                         <div class="player-ovr">${player.ovr}</div>
                         <div class="player-pos">${player.pos}</div>
                         <div>
-                            <strong>${player.name}</strong>
-                            <div style="font-size: 0.68rem; color: var(--text-muted);">Değer: ${player.price}</div>
+                            <strong>${player.name}</strong> ${loanTag}
+                            <div style="font-size: 0.68rem; color: var(--text-muted);">Değer: ${formatEuro(player.rawPrice)}</div>
                         </div>
                     </div>
-                    <button class="btn" style="padding: 3px 6px; font-size: 0.72rem; background: var(--primary);" onclick="quickAssignToTeam(${idx})">11'e Koy</button>
+                    <button class="btn" style="padding: 4px 8px; font-size: 0.72rem;" onclick="quickAssignToTeam(${idx})">11'e Koy</button>
                 `;
                 container.appendChild(item);
             });
@@ -674,16 +1135,16 @@
 
         function quickAssignToTeam(playerIdx) {
             const p = gameState.squad[playerIdx];
-            if(!p) return;
-            if(p.pos === 'KL') gameState.lineup.kl = p;
-            else if(p.pos === 'SĞB') gameState.lineup.sğb = p;
-            else if(p.pos === 'SLB') gameState.lineup.slb = p;
-            else if(p.pos === 'STP') { if(!gameState.lineup.stp1) gameState.lineup.stp1 = p; else gameState.lineup.stp2 = p; }
-            else if(p.pos === 'OS') { if(!gameState.lineup.os1) gameState.lineup.os1 = p; else gameState.lineup.os2 = p; }
-            else if(p.pos === 'OOS') gameState.lineup.oos = p;
-            else if(p.pos === 'SğK') gameState.lineup.sgk = p;
-            else if(p.pos === 'SlK') gameState.lineup.slk = p;
-            else if(p.pos === 'SNT') gameState.lineup.snt = p;
+            if (!p) return;
+            if (p.pos === 'KL') gameState.lineup.kl = p;
+            else if (p.pos === 'SĞB') gameState.lineup.sğb = p;
+            else if (p.pos === 'SLB') gameState.lineup.slb = p;
+            else if (p.pos === 'STP') { if (!gameState.lineup.stp1) gameState.lineup.stp1 = p; else gameState.lineup.stp2 = p; }
+            else if (p.pos === 'OS') { if (!gameState.lineup.os1) gameState.lineup.os1 = p; else gameState.lineup.os2 = p; }
+            else if (p.pos === 'OOS') gameState.lineup.oos = p;
+            else if (p.pos === 'SğK') gameState.lineup.sgk = p;
+            else if (p.pos === 'SlK') gameState.lineup.slk = p;
+            else if (p.pos === 'SNT') gameState.lineup.snt = p;
             else { gameState.lineup.os1 = p; }
             
             renderTacticsPitch();
@@ -696,63 +1157,98 @@
             const l = gameState.lineup;
             const form = gameState.formation || "4-3-3";
             
-            let html = `<div class="pitch-line-box-left"></div><div class="pitch-line-box-right"></div>`;
+            const node = (slotPos, slotIdx, label, pObj) => `
+                <div class="pitch-player-node" onclick="openLineupModal('${slotPos}', ${slotIdx})">
+                    <div class="pos-badge">${label}</div>
+                    <div class="name-badge">${pObj ? pObj.name.split(' ').pop() : "Seç"}</div>
+                    <div class="ovr-badge">${pObj ? 'OVR ' + pObj.ovr : ''}</div>
+                </div>
+            `;
+
+            let html = `<div class="pitch-line-box-left"></div><div class="pitch-line-box-right"></div><div class="pitch-formation-container">`;
             
             if (form === "4-3-3") {
                 html += `
-                    <div class="pitch-formation-container">
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('KL', 0)">
-                                <div class="pos-badge">KL</div>
-                                <div class="name-badge">${l.kl ? l.kl.name.split(' ').pop() : "Seç"}</div>
-                                <div class="ovr-badge">${l.kl ? 'OVR ' + l.kl.ovr : ''}</div>
-                            </div>
-                        </div>
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('SĞB', 0)"><div class="pos-badge">SĞB</div><div class="name-badge">${l.sğb ? l.sğb.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.sğb ? 'OVR ' + l.sğb.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('STP', 0)"><div class="pos-badge">STP</div><div class="name-badge">${l.stp1 ? l.stp1.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.stp1 ? 'OVR ' + l.stp1.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('STP', 1)"><div class="pos-badge">STP</div><div class="name-badge">${l.stp2 ? l.stp2.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.stp2 ? 'OVR ' + l.stp2.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('SLB', 0)"><div class="pos-badge">SLB</div><div class="name-badge">${l.slb ? l.slb.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.slb ? 'OVR ' + l.slb.ovr : ''}</div></div>
-                        </div>
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('OS', 0)"><div class="pos-badge">OS</div><div class="name-badge">${l.os1 ? l.os1.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.os1 ? 'OVR ' + l.os1.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('OOS', 0)"><div class="pos-badge">OOS</div><div class="name-badge">${l.oos ? l.oos.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.oos ? 'OVR ' + l.oos.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('OS', 1)"><div class="pos-badge">OS</div><div class="name-badge">${l.os2 ? l.os2.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.os2 ? 'OVR ' + l.os2.ovr : ''}</div></div>
-                        </div>
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('SlK', 0)"><div class="pos-badge">SlK</div><div class="name-badge">${l.slk ? l.slk.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.slk ? 'OVR ' + l.slk.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('SNT', 0)"><div class="pos-badge">SNT</div><div class="name-badge">${l.snt ? l.snt.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.snt ? 'OVR ' + l.snt.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('SğK', 0)"><div class="pos-badge">SğK</div><div class="name-badge">${l.sgk ? l.sgk.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.sgk ? 'OVR ' + l.sgk.ovr : ''}</div></div>
-                        </div>
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'SĞB', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                        ${node('SLB', 0, 'SLB', l.slb)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OOS', 0, 'OOS', l.oos)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
+                        ${node('SNT', 0, 'SNT', l.snt)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
                     </div>
                 `;
             } else if (form === "4-4-2") {
                 html += `
-                    <div class="pitch-formation-container">
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('KL', 0)"><div class="pos-badge">KL</div><div class="name-badge">${l.kl ? l.kl.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.kl ? 'OVR ' + l.kl.ovr : ''}</div></div>
-                        </div>
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('SĞB', 0)"><div class="pos-badge">SĞB</div><div class="name-badge">${l.sğb ? l.sğb.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.sğb ? 'OVR ' + l.sğb.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('STP', 0)"><div class="pos-badge">STP</div><div class="name-badge">${l.stp1 ? l.stp1.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.stp1 ? 'OVR ' + l.stp1.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('STP', 1)"><div class="pos-badge">STP</div><div class="name-badge">${l.stp2 ? l.stp2.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.stp2 ? 'OVR ' + l.stp2.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('SLB', 0)"><div class="pos-badge">SLB</div><div class="name-badge">${l.slb ? l.slb.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.slb ? 'OVR ' + l.slb.ovr : ''}</div></div>
-                        </div>
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('SlK', 0)"><div class="pos-badge">SlK</div><div class="name-badge">${l.slk ? l.slk.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.slk ? 'OVR ' + l.slk.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('OS', 0)"><div class="pos-badge">OS</div><div class="name-badge">${l.os1 ? l.os1.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.os1 ? 'OVR ' + l.os1.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('OS', 1)"><div class="pos-badge">OS</div><div class="name-badge">${l.os2 ? l.os2.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.os2 ? 'OVR ' + l.os2.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('SğK', 0)"><div class="pos-badge">SğK</div><div class="name-badge">${l.sgk ? l.sgk.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.sgk ? 'OVR ' + l.sgk.ovr : ''}</div></div>
-                        </div>
-                        <div class="pitch-col">
-                            <div class="pitch-player-node" onclick="openLineupModal('SNT', 0)"><div class="pos-badge">SNT</div><div class="name-badge">${l.snt ? l.snt.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.snt ? 'OVR ' + l.snt.ovr : ''}</div></div>
-                            <div class="pitch-player-node" onclick="openLineupModal('OOS', 0)"><div class="pos-badge">SNT</div><div class="name-badge">${l.oos ? l.oos.name.split(' ').pop() : "Seç"}</div><div class="ovr-badge">${l.oos ? 'OVR ' + l.oos.ovr : ''}</div></div>
-                        </div>
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'SĞB', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                        ${node('SLB', 0, 'SLB', l.slb)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
+                        ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SNT', 0, 'SNT', l.snt)}
+                        ${node('OOS', 0, 'SNT', l.oos)}
+                    </div>
+                `;
+            } else if (form === "3-5-2") {
+                html += `
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'STP', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
+                        ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OOS', 0, 'OOS', l.oos)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SNT', 0, 'SNT', l.snt)}
+                        ${node('SLB', 0, 'SNT', l.slb)}
                     </div>
                 `;
             } else {
-                html += `<div style="text-align:center; padding:30px; color:white;">Diziliş Aktif</div>`;
+                html += `
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'SĞB', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                        ${node('OOS', 0, 'STP', l.oos)}
+                        ${node('SLB', 0, 'SLB', l.slb)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                        ${node('SğK', 0, 'OOS', l.sgk)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SNT', 0, 'SNT', l.snt)}
+                        ${node('SlK', 0, 'SNT', l.slk)}
+                    </div>
+                `;
             }
+            html += `</div>`;
             pitch.innerHTML = html;
         }
 
@@ -763,7 +1259,9 @@
             document.getElementById('modal-title').innerText = `${posGroup} pozisyonu için Oyuncu Seç`;
             listContainer.innerHTML = "";
             gameState.squad.forEach(player => {
-                const item = document.createElement("div"); item.className = "player-item"; item.style.cursor = "pointer";
+                const item = document.createElement("div");
+                item.className = "player-item";
+                item.style.cursor = "pointer";
                 item.innerHTML = `<div class="player-details"><div class="player-ovr">${player.ovr}</div><div class="player-pos">${player.pos}</div><div><strong>${player.name}</strong></div></div><button class="btn" style="padding: 3px 6px; font-size: 0.7rem;">Seç</button>`;
                 item.onclick = () => assignPlayerToSlot(player);
                 listContainer.appendChild(item);
@@ -784,32 +1282,53 @@
             else if (posGroup === 'SğK') gameState.lineup.sgk = player;
             else if (posGroup === 'SlK') gameState.lineup.slk = player;
             else if (posGroup === 'SNT') gameState.lineup.snt = player;
-            closeLineupModal(); renderTacticsPitch(); saveGameProgress(); showToast(player.name + " ilk 11'e yerleştirildi!");
+            closeLineupModal();
+            renderTacticsPitch();
+            saveGameProgress();
+            showToast(player.name + " ilk 11'e yerleştirildi!");
         }
 
         function renderTransferMarket() {
             const container = document.getElementById("transfer-list-container");
             const searchQuery = (document.getElementById("transfer-search-input").value || "").toLowerCase().trim();
+            const statusFilter = document.getElementById("transfer-status-filter").value;
             const posFilter = document.getElementById("transfer-pos-filter").value;
+            const ovrFilter = document.getElementById("transfer-ovr-filter").value;
+
             let filtered = gameState.transferMarket.filter(p => {
                 const matchesSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery) || p.club.toLowerCase().includes(searchQuery) || p.country.toLowerCase().includes(searchQuery);
+                const matchesStatus = statusFilter === "ALL" || p.contractStatus === statusFilter;
                 const matchesPos = posFilter === "ALL" || p.pos === posFilter;
-                return matchesSearch && matchesPos;
+                let matchesOvr = true;
+                if (ovrFilter === "LOW") matchesOvr = p.ovr <= 66;
+                else if (ovrFilter === "MID") matchesOvr = p.ovr >= 67 && p.ovr <= 77;
+                else if (ovrFilter === "HIGH") matchesOvr = p.ovr >= 78;
+
+                return matchesSearch && matchesStatus && matchesPos && matchesOvr;
             });
+
+            // Sıralama: Önce bütçeye uygun veya popüler oyuncular rahat görünsün
             document.getElementById("transfer-result-count").innerText = `Toplam ${filtered.length} oyuncu bulundu`;
             container.innerHTML = "";
-            filtered.slice(0, 60).forEach(player => {
-                const item = document.createElement("div"); item.className = "player-item";
+            filtered.slice(0, 80).forEach(player => {
+                const item = document.createElement("div");
+                item.className = "player-item";
+                let btnLabel = "Transfer Et";
+                let btnColor = "var(--primary)";
+                if (player.contractStatus === "FREE") { btnLabel = "İmza Attır (Ücretsiz)"; btnColor = "var(--success)"; }
+                else if (player.contractStatus === "LOAN") { btnLabel = "Kirala"; btnColor = "var(--info)"; }
+                else if (player.contractStatus === "LISTED") { btnLabel = "Satın Al (Listede)"; btnColor = "var(--warning)"; }
+
                 item.innerHTML = `
                     <div class="player-details">
                         <div class="player-ovr">${player.ovr}</div>
                         <div class="player-pos">${player.pos}</div>
                         <div>
-                            <strong>${player.name}</strong>
-                            <div style="font-size: 0.68rem; color: var(--text-muted);">${player.club} (${player.country}) • Fiyat: <strong>${player.price}</strong></div>
+                            <strong>${player.name}</strong> ${getStatusBadgeHTML(player.contractStatus)}
+                            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">${player.club} (${player.country}) • Bedel: <strong style="color:#fff;">${formatEuro(player.rawPrice)}</strong></div>
                         </div>
                     </div>
-                    <button class="btn" onclick="buyPlayer(${player.id})">Transfer Et</button>
+                    <button class="btn" style="background:${btnColor}; color:${player.contractStatus === 'LISTED' ? '#000' : '#fff'}; white-space:nowrap;" onclick="buyPlayer(${player.id})">${btnLabel}</button>
                 `;
                 container.appendChild(item);
             });
@@ -819,90 +1338,245 @@
             const pIndex = gameState.transferMarket.findIndex(p => p.id === id);
             if (pIndex === -1) return;
             const player = gameState.transferMarket[pIndex];
-            if(gameState.budget >= player.rawPrice) {
-                gameState.budget -= player.rawPrice;
-                let budgetText = gameState.budget >= 1 ? gameState.budget.toFixed(2) + 'M €' : (gameState.budget * 1000).toFixed(0) + ' Bin €';
-                document.getElementById("header-budget").innerText = gameState.budget >= 1 ? gameState.budget.toFixed(2) : (gameState.budget * 1000).toFixed(0) + ' Bin';
+            if (gameState.budget >= player.rawPrice) {
+                gameState.budget = Number((gameState.budget - player.rawPrice).toFixed(3));
+                let budgetText = formatEuro(gameState.budget);
+                document.getElementById("header-budget").innerText = gameState.budget >= 1 ? gameState.budget.toFixed(2) : Math.round(gameState.budget * 1000) + ' Bin';
                 document.getElementById("info-budget").innerText = budgetText;
-                gameState.squad.push({ name: player.name, pos: player.pos, ovr: player.ovr, price: player.price, rawPrice: player.rawPrice });
+                
+                gameState.squad.push({
+                    name: player.name,
+                    pos: player.pos,
+                    ovr: player.ovr,
+                    price: formatEuro(player.rawPrice),
+                    rawPrice: player.rawPrice,
+                    isLoanedIn: player.contractStatus === "LOAN"
+                });
                 gameState.transferMarket.splice(pIndex, 1);
-                renderTransferMarket(); saveGameProgress(); showToast(player.name + " kadroya katıldı!");
-            } else { showToast("Yetersiz bütçe!"); }
+                renderTransferMarket();
+                saveGameProgress();
+                
+                if (player.contractStatus === "FREE") showToast(player.name + " bonservissiz kadroya katıldı!");
+                else if (player.contractStatus === "LOAN") showToast(player.name + " sezon sonuna kadar kiralandı!");
+                else showToast(player.name + " transfer edildi!");
+            } else {
+                showToast("Yetersiz bütçe! Daha uygun veya bonservisi elinde oyuncu seç.");
+            }
         }
 
         function setupNextMatch() {
-            if(!worldDB[gameState.country] || !worldDB[gameState.country][gameState.league]) return;
+            const btn = document.getElementById("btn-play-match");
+            if (gameState.week > TOTAL_WEEKS) {
+                document.getElementById("dashboard-match-week").innerText = "2026/27 Sezonu Tamamlandı (38/38 Hafta)";
+                document.getElementById("dashboard-match-fixture").innerText = "Lig Sona Erdi!";
+                btn.innerText = "Yeni Sezona Başla (2027/28)";
+                btn.onclick = startNewSeason;
+                return;
+            }
+            btn.innerText = "Maça Çık";
+            btn.onclick = startMatch;
+
+            if (!worldDB[gameState.country] || !worldDB[gameState.country][gameState.league]) return;
             const leagueTeams = worldDB[gameState.country][gameState.league].filter(t => t.name !== gameState.teamName);
-            const opponent = leagueTeams[Math.floor(Math.random() * leagueTeams.length)] || { name: "Rakip SK" };
+            // Round-robin fikstür mantığıyla sıradaki rakibi belirle
+            const opponent = leagueTeams[(gameState.week - 1) % leagueTeams.length] || { name: "Rakip SK" };
             currentMatchState.opponent = opponent.name;
-            document.getElementById("dashboard-match-week").innerText = `Hafta ${gameState.week}`;
+            document.getElementById("dashboard-match-week").innerText = `Hafta ${gameState.week} / ${TOTAL_WEEKS}`;
             document.getElementById("dashboard-match-fixture").innerText = `${gameState.teamName} vs ${opponent.name}`;
         }
 
+        function startNewSeason() {
+            gameState.week = 1;
+            gameState.points = 0;
+            const leagueTeams = worldDB[gameState.country][gameState.league];
+            leagueTeams.forEach(t => {
+                t.points = 0; t.played = 0; t.won = 0; t.drawn = 0; t.lost = 0; t.gf = 0; t.ga = 0;
+            });
+            // Kiralık gelen oyuncuları sezon sonu gönder
+            gameState.squad = gameState.squad.filter(p => !p.isLoanedIn);
+            gameState.budget = Number((gameState.budget + (gameState.country === "Türkiye" && gameState.league.includes("3. Lig") ? 0.25 : 2.0)).toFixed(3));
+            saveGameProgress();
+            applyLoadedGameState();
+            showToast("2027/28 Yeni Sezonu Başladı!");
+        }
+
+        function getTeamAverageOvr(team) {
+            if (!team || !team.squad || team.squad.length === 0) return 65;
+            let sorted = [...team.squad].sort((a, b) => b.ovr - a.ovr).slice(0, 11);
+            let sum = sorted.reduce((acc, p) => acc + p.ovr, 0);
+            return sum / sorted.length;
+        }
+
         function startMatch() {
+            if (gameState.week > TOTAL_WEEKS) return;
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-match').classList.add('active');
-            currentMatchState.homeScore = 0; currentMatchState.awayScore = 0; currentMatchState.minute = 0;
+            currentMatchState.homeScore = 0;
+            currentMatchState.awayScore = 0;
+            currentMatchState.minute = 0;
             document.getElementById("match-home-name").innerText = gameState.teamName;
             document.getElementById("match-away-name").innerText = currentMatchState.opponent;
             document.getElementById("match-home-score").innerText = "0";
             document.getElementById("match-away-score").innerText = "0";
             document.getElementById("match-minute").innerText = "Dakika: 0'";
             const commBox = document.getElementById("match-commentary-box");
-            commBox.innerHTML = `<div class="commentary-item">Hakem düdüğü çaldı ve mücadele başladı!</div>`;
+            commBox.innerHTML = `<div class="commentary-item">Hakem düdüğü çaldı ve ${gameState.week}. hafta mücadelesi başladı!</div>`;
             document.getElementById("match-action-btn").innerText = "Maçı İlerlet";
             document.getElementById("match-action-btn").onclick = progressMatch;
         }
 
         function progressMatch() {
             currentMatchState.minute += 15;
-            if(currentMatchState.minute > 90) currentMatchState.minute = 90;
+            if (currentMatchState.minute > 90) currentMatchState.minute = 90;
             document.getElementById("match-minute").innerText = `Dakika: ${currentMatchState.minute}'`;
             const commBox = document.getElementById("match-commentary-box");
-            let eventText = `Dakika ${currentMatchState.minute}: Orta saha mücadelesi sürüyor.`;
-            if(Math.random() > 0.4) {
-                if(Math.random() > 0.5) { currentMatchState.homeScore++; eventText = `⚽ GOOOL! ${gameState.teamName} öne geçiyor!`; }
-                else { currentMatchState.awayScore++; eventText = `⚽ GOL... ${currentMatchState.opponent} golü buldu.`; }
+
+            const leagueTeams = worldDB[gameState.country][gameState.league];
+            const myTeam = leagueTeams.find(t => t.name === gameState.teamName);
+            const oppTeam = leagueTeams.find(t => t.name === currentMatchState.opponent);
+            const myOvr = getTeamAverageOvr(myTeam);
+            const oppOvr = getTeamAverageOvr(oppTeam);
+            const diff = (myOvr - oppOvr) * 0.025;
+
+            let eventText = `Dakika ${currentMatchState.minute}: Orta saha mücadelesi devam ediyor.`;
+            if (Math.random() > 0.42) {
+                let homeChance = Math.min(0.8, Math.max(0.2, 0.52 + diff));
+                if (Math.random() < homeChance) {
+                    currentMatchState.homeScore++;
+                    let scorers = Object.values(gameState.lineup).filter(p => p && p.pos !== 'KL');
+                    let scorer = scorers.length ? scorers[Math.floor(Math.random() * scorers.length)].name : gameState.teamName;
+                    eventText = `⚽ GOOOL! ${gameState.teamName} (${scorer}) ağları sarstı!`;
+                } else {
+                    currentMatchState.awayScore++;
+                    eventText = `⚽ GOL... ${currentMatchState.opponent} golü buldu.`;
+                }
             }
             commBox.innerHTML += `<div class="commentary-item">${eventText}</div>`;
             commBox.scrollTop = commBox.scrollHeight;
             document.getElementById("match-home-score").innerText = currentMatchState.homeScore;
             document.getElementById("match-away-score").innerText = currentMatchState.awayScore;
-            if(currentMatchState.minute === 90) {
-                document.getElementById("match-action-btn").innerText = "Maçı Bitir";
+            if (currentMatchState.minute === 90) {
+                document.getElementById("match-action-btn").innerText = "Maçı Bitir ve Haftayı Tamamla";
                 document.getElementById("match-action-btn").onclick = finishMatch;
+            }
+        }
+
+        // TÜM LİG TAKIMLARININ EŞZAMANLI MAÇ SİMÜLASYONU
+        function simulateOtherLeagueMatches(leagueTeams, userTeamName, opponentName) {
+            // Kullanıcı ve rakibi hariç kalan takımları eşleştir
+            let otherTeams = leagueTeams.filter(t => t.name !== userTeamName && t.name !== opponentName);
+            // Karıştır ki her hafta farklı eşleşmeler olsun
+            for (let i = otherTeams.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [otherTeams[i], otherTeams[j]] = [otherTeams[j], otherTeams[i]];
+            }
+
+            for (let i = 0; i < otherTeams.length - 1; i += 2) {
+                let t1 = otherTeams[i];
+                let t2 = otherTeams[i + 1];
+                let ovr1 = getTeamAverageOvr(t1);
+                let ovr2 = getTeamAverageOvr(t2);
+                let advantage = (ovr1 - ovr2) * 0.06;
+
+                let g1 = Math.max(0, Math.round((Math.random() * 2.4) + advantage));
+                let g2 = Math.max(0, Math.round((Math.random() * 2.2) - advantage));
+
+                t1.played = (t1.played || 0) + 1;
+                t2.played = (t2.played || 0) + 1;
+                t1.gf = (t1.gf || 0) + g1;
+                t1.ga = (t1.ga || 0) + g2;
+                t2.gf = (t2.gf || 0) + g2;
+                t2.ga = (t2.ga || 0) + g1;
+
+                if (g1 > g2) {
+                    t1.points = (t1.points || 0) + 3;
+                    t1.won = (t1.won || 0) + 1;
+                    t2.lost = (t2.lost || 0) + 1;
+                } else if (g2 > g1) {
+                    t2.points = (t2.points || 0) + 3;
+                    t2.won = (t2.won || 0) + 1;
+                    t1.lost = (t1.lost || 0) + 1;
+                } else {
+                    t1.points = (t1.points || 0) + 1;
+                    t2.points = (t2.points || 0) + 1;
+                    t1.drawn = (t1.drawn || 0) + 1;
+                    t2.drawn = (t2.drawn || 0) + 1;
+                }
             }
         }
 
         function finishMatch() {
             const leagueTeams = worldDB[gameState.country][gameState.league];
             let myTeam = leagueTeams.find(t => t.name === gameState.teamName);
-            if(!myTeam) {
-                myTeam = { name: gameState.teamName, points: 0, played: 0, won: 0, drawn: 0, lost: 0 };
+            let oppTeam = leagueTeams.find(t => t.name === currentMatchState.opponent);
+
+            if (!myTeam) {
+                myTeam = { name: gameState.teamName, points: 0, played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0 };
                 leagueTeams.push(myTeam);
             }
-            myTeam.played = (myTeam.played || 0) + 1;
-            if(currentMatchState.homeScore > currentMatchState.awayScore) { myTeam.points += 3; myTeam.won = (myTeam.won||0)+1; gameState.points += 3; showToast("Kazandınız!"); }
-            else if(currentMatchState.homeScore === currentMatchState.awayScore) { myTeam.points += 1; myTeam.drawn = (myTeam.drawn||0)+1; gameState.points += 1; showToast("Berabere!"); }
-            else { myTeam.lost = (myTeam.lost||0)+1; showToast("Kaybettiniz."); }
-            document.getElementById("header-points").innerText = gameState.points;
-            document.getElementById("header-week").innerText = gameState.week;
 
-            // AKADEMİ KONTROLÜ (Her 10 haftada bir)
-            if(gameState.week % 10 === 0) {
+            // Kullanıcının maçını işle
+            myTeam.played = (myTeam.played || 0) + 1;
+            myTeam.gf = (myTeam.gf || 0) + currentMatchState.homeScore;
+            myTeam.ga = (myTeam.ga || 0) + currentMatchState.awayScore;
+
+            if (oppTeam) {
+                oppTeam.played = (oppTeam.played || 0) + 1;
+                oppTeam.gf = (oppTeam.gf || 0) + currentMatchState.awayScore;
+                oppTeam.ga = (oppTeam.ga || 0) + currentMatchState.homeScore;
+            }
+
+            if (currentMatchState.homeScore > currentMatchState.awayScore) {
+                myTeam.points += 3;
+                myTeam.won = (myTeam.won || 0) + 1;
+                if (oppTeam) oppTeam.lost = (oppTeam.lost || 0) + 1;
+                gameState.points += 3;
+                showToast("Tebrikler, 3 puan sizin!");
+            } else if (currentMatchState.homeScore === currentMatchState.awayScore) {
+                myTeam.points += 1;
+                myTeam.drawn = (myTeam.drawn || 0) + 1;
+                if (oppTeam) {
+                    oppTeam.points = (oppTeam.points || 0) + 1;
+                    oppTeam.drawn = (oppTeam.drawn || 0) + 1;
+                }
+                gameState.points += 1;
+                showToast("Maç berabere bitti (+1 Puan)");
+            } else {
+                myTeam.lost = (myTeam.lost || 0) + 1;
+                if (oppTeam) {
+                    oppTeam.points = (oppTeam.points || 0) + 3;
+                    oppTeam.won = (oppTeam.won || 0) + 1;
+                }
+                showToast("Maalesef mağlup oldunuz.");
+            }
+
+            // AYNI HAFTADA LİGDEKİ DİĞER TÜM TAKIMLARIN MAÇLARINI OYNAT!
+            simulateOtherLeagueMatches(leagueTeams, gameState.teamName, currentMatchState.opponent);
+
+            // Lig tablosunu kayıt için güncelle
+            if (!gameState.leagueTables[gameState.country]) gameState.leagueTables[gameState.country] = {};
+            gameState.leagueTables[gameState.country][gameState.league] = leagueTeams;
+
+            // Akademi kontrolü (Her 10 haftada bir)
+            if (gameState.week % 10 === 0 && gameState.week <= TOTAL_WEEKS) {
                 triggerAcademyGraduate();
             }
 
-            // TRANSFER TEKLİFİ KONTROLÜ (Her maç sonrası %45 ihtimalle)
-            if(Math.random() < 0.45 && gameState.squad.length > 11) {
+            // Transfer teklifi kontrolü (%40 ihtimalle)
+            if (Math.random() < 0.40 && gameState.squad.length > 12 && gameState.week < TOTAL_WEEKS) {
                 triggerTransferOffer();
             }
 
-            gameState.week++; 
+            gameState.week++;
+            document.getElementById("header-points").innerText = gameState.points;
+            document.getElementById("header-week").innerText = Math.min(gameState.week, TOTAL_WEEKS);
+
             saveGameProgress();
-            setupNextMatch(); 
+            setupNextMatch();
+            renderStandings();
+
             let nextAcademyWeek = (Math.floor((gameState.week - 1) / 10) + 1) * 10;
-            document.getElementById("info-academy-status").innerText = `Aktif (Sonraki: ${nextAcademyWeek}. Hafta)`;
+            document.getElementById("info-academy-status").innerText = nextAcademyWeek <= TOTAL_WEEKS ? `Aktif (Sonraki: ${nextAcademyWeek}. Hafta)` : "Sezon Tamamlandı";
             switchTab('dashboard');
         }
 
@@ -910,21 +1584,19 @@
             let positions = ["KL", "STP", "OS", "SNT", "OOS", "SlK", "SğK"];
             let pos = positions[Math.floor(Math.random() * positions.length)];
             let name = getRandomName();
-            let ovr = 62 + Math.floor(Math.random() * 8); // 62-69 arası potansiyelli genç
-            let rawPrice = Number((0.15 * (ovr / 70)).toFixed(3));
-            let priceText = (rawPrice * 1000).toFixed(0) + " Bin €";
+            let ovr = 60 + Math.floor(Math.random() * 9);
+            let rawPrice = Number((0.12 * (ovr / 70)).toFixed(3));
             
-            pendingAcademyPlayer = { name: name, pos: pos, ovr: ovr, price: priceText, rawPrice: rawPrice };
-            
+            pendingAcademyPlayer = { name: name, pos: pos, ovr: ovr, price: formatEuro(rawPrice), rawPrice: rawPrice };
             document.getElementById("academy-player-card").innerHTML = `
                 <strong>${name}</strong> (${pos})<br>
-                Yetenek (OVR): <span style="color: var(--success); font-weight:bold;">${ovr}</span> | Değer: ${priceText}
+                Yetenek (OVR): <span style="color: var(--success); font-weight:bold;">${ovr}</span> | Değer: ${formatEuro(rawPrice)}
             `;
             document.getElementById("academy-modal").style.display = "flex";
         }
 
         function acceptAcademyPlayer() {
-            if(pendingAcademyPlayer) {
+            if (pendingAcademyPlayer) {
                 gameState.squad.push(pendingAcademyPlayer);
                 showToast(pendingAcademyPlayer.name + " altyapıdan A takıma katıldı!");
                 pendingAcademyPlayer = null;
@@ -934,30 +1606,29 @@
         }
 
         function triggerTransferOffer() {
-            let targetPlayer = gameState.squad[Math.floor(Math.random() * gameState.squad.length)];
-            let multiplier = (1.2 + Math.random() * 0.8); // Değerinin 1.2 - 2 katı teklif
-            let offerRaw = Number((targetPlayer.rawPrice * multiplier).toFixed(3));
-            let offerText = offerRaw >= 1 ? offerRaw.toFixed(2) + "M €" : (offerRaw * 1000).toFixed(0) + " Bin €";
-            let buyingClubs = ["Lyon", "Villarreal", "Atalanta", "Ajax", "Sporting CP", "Marsilya", "Fiorentina", "Real Betis"];
+            let sellable = gameState.squad.filter(p => !p.isLoanedIn);
+            if (sellable.length === 0) return;
+            let targetPlayer = sellable[Math.floor(Math.random() * sellable.length)];
+            let multiplier = (1.15 + Math.random() * 0.65);
+            let offerRaw = Number((Math.max(0.05, targetPlayer.rawPrice) * multiplier).toFixed(3));
+            let buyingClubs = ["Samsunspor", "Göztepe", "Konyaspor", "Antalyaspor", "Gençlerbirliği", "Kocaelispor", "Amed SFK", "Lyon", "Ajax", "Fiorentina"];
             let buyingClub = buyingClubs[Math.floor(Math.random() * buyingClubs.length)];
 
             gameState.pendingOffer = { player: targetPlayer, rawPrice: offerRaw, club: buyingClub };
-
             document.getElementById("offer-desc").innerHTML = `
-                <strong>${buyingClub}</strong> kulübü, <strong>${targetPlayer.name}</strong> (${targetPlayer.pos}, OVR: ${targetPlayer.ovr}) için <strong style="color: var(--success);">${offerText}</strong> bonservis teklif etti!
+                <strong>${buyingClub}</strong> kulübü, <strong>${targetPlayer.name}</strong> (${targetPlayer.pos}, OVR: ${targetPlayer.ovr}) için <strong style="color: var(--success);">${formatEuro(offerRaw)}</strong> bonservis teklif etti!
             `;
             document.getElementById("offer-modal").style.display = "flex";
         }
 
         function acceptOffer() {
-            if(gameState.pendingOffer) {
+            if (gameState.pendingOffer) {
                 let offer = gameState.pendingOffer;
-                gameState.budget += offer.rawPrice;
+                gameState.budget = Number((gameState.budget + offer.rawPrice).toFixed(3));
                 gameState.squad = gameState.squad.filter(p => p.name !== offer.player.name);
                 
-                let budgetText = gameState.budget >= 1 ? gameState.budget.toFixed(2) + 'M €' : (gameState.budget * 1000).toFixed(0) + ' Bin €';
-                document.getElementById("header-budget").innerText = gameState.budget >= 1 ? gameState.budget.toFixed(2) : (gameState.budget * 1000).toFixed(0) + ' Bin';
-                document.getElementById("info-budget").innerText = budgetText;
+                document.getElementById("header-budget").innerText = gameState.budget >= 1 ? gameState.budget.toFixed(2) : Math.round(gameState.budget * 1000) + ' Bin';
+                document.getElementById("info-budget").innerText = formatEuro(gameState.budget);
 
                 showToast(offer.player.name + ", " + offer.club + " kulübüne satıldı!");
                 gameState.pendingOffer = null;
@@ -968,62 +1639,55 @@
 
         function rejectOffer() {
             showToast("Transfer teklifi reddedildi.");
-            gameState.pendingOutput = null;
+            gameState.pendingOffer = null;
             document.getElementById("offer-modal").style.display = "none";
         }
 
         function renderStandings() {
-            const tbody = document.getElementById("standings-table-body"); tbody.innerHTML = "";
-            if(!worldDB[gameState.country] || !worldDB[gameState.country][gameState.league]) return;
-            const leagueTeams = worldDB[gameState.country][gameState.league].sort((a,b) => (b.points || 0) - (a.points || 0));
+            const tbody = document.getElementById("standings-table-body");
+            tbody.innerHTML = "";
+            if (!worldDB[gameState.country] || !worldDB[gameState.country][gameState.league]) return;
+            
+            const leagueTeams = [...worldDB[gameState.country][gameState.league]].sort((a, b) => {
+                if ((b.points || 0) !== (a.points || 0)) return (b.points || 0) - (a.points || 0);
+                let gdB = (b.gf || 0) - (b.ga || 0);
+                let gdA = (a.gf || 0) - (a.ga || 0);
+                if (gdB !== gdA) return gdB - gdA;
+                return (b.gf || 0) - (a.gf || 0);
+            });
             
             let myRank = leagueTeams.findIndex(t => t.name === gameState.teamName) + 1;
-            if(myRank > 0) updateLeagueTargetDisplay(myRank);
+            if (myRank > 0) updateLeagueTargetDisplay(myRank);
 
             leagueTeams.forEach((t, index) => {
                 const tr = document.createElement("tr");
-                let badge = "";
                 let rankNum = index + 1;
-                
-                if(rankNum === 1) badge = " 🏆 Şampiyonluk";
-                else if(rankNum <= 5) badge = " 🔼 Play-Off";
+                let badge = "";
+                if (rankNum === 1) badge = " 🏆";
+                else if (rankNum <= 5) badge = " 🔼";
+                else if (rankNum >= 17) badge = " 🔻";
 
-                if(t.name === gameState.teamName) tr.style.background = "rgba(5, 150, 105, 0.15)";
-                tr.innerHTML = `<td>${rankNum}</td><td><strong>${t.name}</strong>${badge}</td><td>${t.played || 0}</td><td>${t.won || 0}</td><td>${t.drawn || 0}</td><td>${t.lost || 0}</td><td><strong>${t.points || 0}</strong></td>`;
+                let gf = t.gf || 0;
+                let ga = t.ga || 0;
+                let av = gf - ga;
+                let avStr = av > 0 ? `+${av}` : `${av}`;
+
+                if (t.name === gameState.teamName) tr.style.background = "rgba(5, 150, 105, 0.22)";
+                tr.innerHTML = `
+                    <td><strong>${rankNum}</strong></td>
+                    <td><strong>${t.name}</strong>${badge}</td>
+                    <td>${t.played || 0}</td>
+                    <td>${t.won || 0}</td>
+                    <td>${t.drawn || 0}</td>
+                    <td>${t.lost || 0}</td>
+                    <td>${gf}</td>
+                    <td>${ga}</td>
+                    <td>${avStr}</td>
+                    <td><strong style="color:var(--primary);">${t.points || 0}</strong></td>
+                `;
                 tbody.appendChild(tr);
             });
         }
-    
-        function selectTeamDirect(btn) {
-            const country = btn.getAttribute('data-country');
-            const league = btn.getAttribute('data-league');
-            const name = btn.getAttribute('data-team');
-            selectTeam(country, league, name);
-        }
-
-        function selectTeamByIndex(country, league, name) {
-            selectTeam(country, league, name);
-        }
-
-        // Kesin çözüm: Event Delegation ile tıklama kontrolü
-        document.addEventListener('click', function(e) {
-            const btn = e.target.closest('button');
-            if (btn && btn.innerText === "Takımı Seç") {
-                // Hangi kartta veya butonda olduğumuzu bulalım
-                const card = btn.closest('.team-card');
-                if (card && card.dataset.country && card.dataset.league && card.dataset.team) {
-                    selectTeam(card.dataset.country, card.dataset.league, card.dataset.team);
-                }
-            } else if (e.target.closest('.team-card')) {
-                const card = e.target.closest('.team-card');
-                if (card && card.dataset.country && card.dataset.league && card.dataset.team) {
-                    selectTeam(card.dataset.country, card.dataset.league, card.dataset.team);
-                }
-            }
-        });
-</script>
-
-
-
+    </script>
 </body>
 </html>
