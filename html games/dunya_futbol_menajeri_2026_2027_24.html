@@ -21,6 +21,79 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
         body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        
+        /* ARMOR GAMES TARZI AÇILIŞ EKRANI STİLLERİ */
+        #armor-splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0b0f19;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+        }
+        .armor-logo-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            animation: armorPulse 2s infinite ease-in-out;
+        }
+        .armor-logo-img {
+            width: 160px;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(5, 150, 105, 0.4));
+        }
+        .armor-brand-text {
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .armor-loader-bar-bg {
+            width: 220px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+        }
+        .armor-loader-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.2s linear;
+        }
+        .armor-start-btn {
+            margin-top: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .armor-start-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        @keyframes armorPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
         header { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 0.95rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 6px; }
         .header-stats { display: flex; gap: 8px; font-size: 0.78rem; }
@@ -96,116 +169,19 @@
     </style>
 </head>
 <body>
-    <!-- MSM CLUB INTRO SCREEN -->
-    <style>
-        #msm-intro-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle at center, #111827 0%, #070a12 100%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        #msm-intro-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        .msm-intro-content {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            animation: introScaleUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            padding: 24px;
-            max-width: 450px;
-            width: 90%;
-        }
-        .msm-logo-img {
-            width: 250px;
-            height: auto;
-            filter: drop-shadow(0 15px 35px rgba(5, 150, 105, 0.4));
-            border-radius: 16px;
-            transform: scale(0.95);
-            animation: logoPulse 2s ease-in-out infinite alternate;
-        }
-        .msm-intro-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #f9fafb;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-        .msm-intro-subtitle {
-            font-size: 0.9rem;
-            color: var(--primary, #059669);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        @keyframes introScaleUp {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes logoPulse {
-            0% { filter: drop-shadow(0 15px 35px rgba(5, 150, 105, 0.3)); transform: scale(1); }
-            100% { filter: drop-shadow(0 20px 45px rgba(5, 150, 105, 0.6)); transform: scale(1.03); }
-        }
-        .msm-skip-btn {
-            margin-top: 20px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #9ca3af;
-            padding: 8px 22px;
-            border-radius: 25px;
-            font-size: 0.78rem;
-            cursor: pointer;
-            transition: all 0.25s;
-        }
-        .msm-skip-btn:hover {
-            background: var(--primary, #059669);
-            color: #fff;
-            border-color: var(--primary, #059669);
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
-        }
-    </style>
-
-    <div id="msm-intro-screen" onclick="dismissMsmIntro()">
-        <div class="msm-intro-content" onclick="event.stopPropagation()">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqMAAAI7CAYAAADYqpJGAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAGHaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pg0KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyI+PHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj48cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0idXVpZDpmYWY1YmRkNS1iYTNkLTExZGEtYWQzMS1kMzNkNzUxODJmMWIiIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj48dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPjwvcmRmOkRlc2NyaXB0aW9uPjwvcmRmOlJERj48L3g6eG1wbWV0YT4NCjw/eHBhY2tldCBlbmQ9J3cnPz4slJgLAABSq0lEQVR4Xu3dd5xkV33n/W/nNNNpkmYUURgJRZQDEkEiGzAGYwysvTg9Tgu212n92FgIr22M/Sxm7V2HlyMLxl5AZCRAEgLlnFCWUEKa1NMznWNVPX/UqZmaO939u1V147mf9+t10VC3u7qq7jm/861zkwQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJA3bcEHgCy78sorK7V/X3XVVbRfAJlDnQIaQydBbtQX+BoKPYAsoU4BjaODIBdWKvA1FHoAWUCdAppD50DmrVXgayj0ANJEnQKaR8dApoUp8DUUegBpoE4BraFTILMaKfA1FHoASaJOAa2jQyCTminwNRR6AEmgTgHRaA8+AKTNKvBXnfDLwYcOYf0+ALTKqjM33vG24EOHsH4fKBK+mSFTrAJdH0SvfPpvDlkXxMwDgDhYdao+iL7mwq8esi6IOgUQRpEhVoFfaUaUQAogSVadWmlGlEAKrI0OgEywCvxKQbSGQAogCVadWimI1hBIgdXR+JE6q8CvFURrCKQA4mTVqbWCaA2BFFgZDR+psgp8mCBaQyAFEAerToUJojUEUuBwNHqkxirwjQTRGgIpgChZdaqRIFpDIAUORYNHKqwC30wQrSGQAoiCVaeaCaI1BFLgIBo7EmcV+FaCaA2BFEArrDrVShCtIZACVTR0JMoq8FEE0RoCKYBmWHUqiiBaQyAFCKNIkFXgowyiNQRSAI2w6lSUQbSGQIqio4EjEVaBjyOI1hBIAYRh1ak4gmgNgRRFRuNG7KwCH2cQrSGQAliLVafiDKI1BFIUFQ0bsbIKfBJBtIZACmAlVp1KIojWEEhRRDRqxMYq8EkG0RoCKYB6Vp1KMojWEEhRNDRoxMIq8GkE0RoCKQCFqFNpBNEaAimKhMaMyFkFPs0gWkMgBYrNqlNpBtEaAimKgoaMSFkFPgtBtIZAChSTVaeyEERrCKQoAhoxImMV+CwF0RoCKVAsVp3KUhCtIZDCdzRgRMIq8FkMojUEUqAYrDqVxSBaQyCFz2i8aJlV4LMcRGsIpIDfrDqV5SBaQyCFr2i4aIlV4PMQRGsIpICfrDqVhyBaQyCFj2i0aJpV4PMURGsIpIBfrDqVpyBaQyCFb2iwaIpV4PMYRGsIpIAfrDqVxyBaQyCFT2isaJhV4PMcRGsIpEC+WXUqz0G0hkAKX9BQ0RCrwPsQRGsIpEA+WXXKhyBaQyCFD2ikCM0q8D4F0RoCKZAvVp3yKYjWEEiRdzRQhGIVeB+DaA2BFMgHq075GERrCKTIMxonTFaB9zmI1hBIgWyz6pTPQbSGQIq8omFiTVaBL0IQrSGQAtlk1akiBNEaAinyiEaJVVkFvkhBtIZACmSLVaeKFERrCKTIGxokVmQV+CIG0RoCKZANVp0qYhCtIZAiT2iMOIxV4IscRGsIpEC6rDpV5CBaQyBFXtAQcQirwBNEDyKQAumw6hRB9CACKfKARogDrAJPED0cgRRIllWnCKKHI5Ai62iAkEIUeILo6gikQDKsOkUQXR2BFFlG44NZ4AmiNgIpEC+rThFEbQRSZBUNr+CsAk8QDY9ACsTDqlME0fAIpMgiGl2BWQWeINo4AikQLatOEUQbRyBF1tDgCsoq8ATR5hFIgWhYdYog2jwCKbKExlZAVoEniLaOQAq0xqpTBNHWEUiRFTS0grEKPEE0OgRSoDlWnSKIRodAiiygkRWIVeAJotEjkAKNseoUQTR6BFKkjQZWEFaBJ4jGh0AKhGPVKYJofAikSBONqwCsAk8QjR+BFFibVacIovEjkCItNCzPWQWeIJocAimwMqtOEUSTQyBFGmhUHrMKPEE0eQRS4FBWnSKIJo9AiqTRoDxlFXiCaHoIpECVVacIoukhkCJJNCYPWQWeIJo+AimKzqpTBNH0EUiRFBqSZ6wCTxDNDgIpisqqUwTR7CCQIgk0Io9YBZ4gmj0EUhSNVacIotlDIEXcaECesAo8QTS7CKQoCqtOEUSzi0CKONF4PGAVeIJo9hFI4TurThFEs49AirjQcHLOKvAE0fwgkMJXVp0iiOYHgRRxoNHkmFXgCaL5QyCFb6w6RRDNHwIpokaDySmrwBNE84tACl9YdYogml8EUkSJxpJDVoEniOYfgRR5Z9Upgmj+EUgRFRpKzlgFniDqDwIp8sqqUwRRfxBIEQUaSY5YBZ4g6h8CKfLGqlMEUf8QSNEqGkhOWAWeIOovAinywqpTBFF/EUjRChpHDlgFniDqPwIpss6qUwRR/xFI0SwaRsZZBZ4gWhwEUmSVVacIosVBIEUzaBQZZhV4gmjxEEiRNVadIogWD4EUjaJBZJRV4AmixUUgRVZYdYogWlwEUjSCxpBBVoEniIJAirRZdYogCgIpwqIhZIxV4AmiqCGQIi1WnSKIooZAijBoBBliFXiCKIIIpEiaVacIoggikMJCA8gIq8ATRLEaAimSYtUpgihWQyDFWtj4GWAVeIIoLARSxM2qUwRRWAikWA0bPmVWgSeIIiwCKeJi1SmCKMIikGIlbPQUWQWeIIpGEUgRNatOEUTRKAIpgtjgKbEKPEEUzSKQIipWnSKIolkEUtRjY6fAKvAEUbSKQIpWWXWKIIpWEUhRw4ZOmFXgCaKICoEUzbLqFEEUUSGQQoTRZFkFniCKqBFI0SirThFEETUCKdjACbEKPEEUcSGQIiyrThFEERcCabGxcRNgFXiCKOJGIIXFqlMEUcSNQFpcbNiYWQWeIIqkEEixGqtOEUSRFAJpMbFRY2QVeIIokkYgRZBVpwiiSBqBtHjYoDGxCjxBFGkhkKLGqlMEUaSFQFosbMwYWAWeIIq0EUhh1SmCKNJGIC0ONmTErAJPEEVWEEiLy6pTBFFkBYG0GNiIEbIKPEEUWUMgLR6rThFEkTUEUv+xASNiFXiCKLKKQFocVp0iiCKrCKR+Y+NFwCrwBFFkHYHUf1adIogi6wik/mLDtcgq8ARR5AWB1F9WnSKIIi8IpH5io7XAKvAEUeQNgdQ/Vp0iiCJvCKT+YYM1ySrwBFHkFYHUH1adIogirwikfmFjNcEq8ARR5B2BNP+sOkUQRd4RSP3BhmqQVeAJovAFgTS/rDpFEIUvCKR+YCM1wCrwBFH4hkCaP1adIojCNwTS/GMDhWQVeIIofEUgzQ+rThFE4SsCab6xcUKwCjxBFL4jkGafVacIovAdgTS/2DAGq8ATRFEUBNLssuoUQRRFQSDNJzbKGqwCTxBF0RBIs8eqUwRRFA2BNH/YIKuwCjxBFEVFIM0Oq04RRFFUBNJ8YWOswCrwBFEUHYE0fVadIoii6Aik+cGGCLAKPEEUqCKQpseqUwRRoIpAmg9shDpWgSeIAocikCbPqlMEUeBQBNLsYwM4VoEniAIrI5Amx6pTBFFgZQTSbOPDD1HgCaLA2gik8bPqFEEUWBuBNLsK/8FbBZ4gCoRDII2PVacIokA4BNJsKvSHbhV4gijQGAJp9Kw6RRAFGkMgzZ7CfuBWgSeIAs0hkEbHqlMEUaA5BNJsKeSHbRV4gijQGgJp66w6RRAFWkMgzY7CfdBWgSeIAtEgkDbPqlMEUSAaBNJsKNSHbBV4gigQLQJp46w6RRAFokUgTV9hPmCrwBNEgXgQSMOz6hRBFIgHgTRdhfhwrQJPEAXiRSC1WXWKINqc2ZnnND3xiErlBbW1tR8Y9trUVv1328GmV31MqlRK6uoZ1dDwK9TR2X9gfVaUSwvat/cOLS9PH7qiUq7+R7WmVFHtn5VKSe3t3dqw+TJ1dg0e/B0cQCBNj/cfrFXgCaJAMgikq7PqFEG0ebt3XKtnnvjfWlwYU1tbhwugtbVtBwJoNZS6MFpeUk/vZh1/8q9pw+ZXHXiurBgfu1VPPfoXWpwfU1t7h1SpNp9qCK2lzwP/o4oqqpSX1d2zUWee/9fqHziu7tlQj0CajvbgAz6xCjxBFEiO1d+s/uor630TRFtUqahUmle5vKhSaU6l0qxKy7VlRsvL09VlaUrLS5NaXppUqTSn2ZnntHvnt7W0uD/4jKkql+a1+6VrNTfzvEql2errdu+htDxz8L2VZt37nVO5NK9KZVnl8mLw6RBg9Terv6I53oZRq8FYAyOA6Fn9zuq3vrHerzUwIoS2Nrd7vnH79tyq/eP3HJxtzIDxsVu1f/zu4MOh1B+mgNVZ/c7qt2hccz0046yGYg2IAOJj9T+r//rCep/WgIj4LS1NaM/Ob2lxYTy4KhXLS5PavfM6LczvDq5CxKz+Z/VfNMa7r0hWA7EGQtTZ8bT0zP3S4rzU3nHwQP8V/+v+XS5Jgxul7RdIvevcE2XI4rz08Pek2Ynq63bHWq38X/fvcknq7JbOfoM0MOyeCK0q8jGkVp2yBkKEt3vHtXr6sb/U4sJYcFUonV3rddKpv6vNW98UXJW43S9doycf/XMtL00GV4XS3bNRZ13wd+ofODa4CqvgGNJkePUhWgWeINqg266WPven0v5dUkfnoaGzrf4s1LoTApaXpNGt0nv+UDrnjbVnyo4Hb5A+/WFp/06pvbPuYP/KwSCqun9XKlJpWRreLP3Of0hbTzzwVGhdEQOpVacIotFqNYxK0oZNl2r76R9Wd8+G4KrELC7s0RPf/xPt3XNTcFVohNHmEEjj581ueqvAE0SbUKlIi3PS8qK0MCvNz0jz09VlbkqanXTLhDTjloXZ6ozqnV+RprKxa+uAxTnp1qulnU9X38vsxMH3MDd18L3Nz1Tfx8Js9XdKS9LSQvDZEAGrX1r9Om+s90MQzab9++7T+NgtwYcTNb7nNnf8KpJm9UurX8PmRRi1GoI14GEVbW3V3fPNePAG6bFb62YbM+DBG6RHmxxQ2t0lYRA5q39a/TsvrPdhDXhIT2l5Rnt2pHes5sL8Tu166RsqlWaDq5AQq39a/Rtry30YtRqANdAhJtP7pNu/JE3uCa5Jx8x+6Y6vSPt2BNcgA6x+avXzrLNevzXQIX37992r8T03Bx9OxNiu72pq4uHgw0iY1U+tfo7V5TqMWhveGuAQs4dvkh5Jp3gf5oHrpe9/N/goMsTqr1Z/zyrrdVsDHLKhXJrX7p3f1tzsD4OrYjU3+0Pt2fltlUpzwVVIgdVfrf6OleU2jFob3BrYkIDZiepJUBPp7No6YN/O6iztTLYuXo3DWf3W6vdZY71ea2BDtkzsu1/7xm5XpVIKropHpayxnddrevLx4BqkyOq3Vr/H4XIZRq0NbQ1oSNDjd0gP3BB8NFkPfad6/Cpyweq/Vv/PCut1WgMasqdSXtKul76uudkXgqtiMTPzjPbsuoFZ0Qyy+q/V/3Go3IVRawNbAxkSNjdVPbN+PKVjNfe+KN3y+eoZ8sgNqx9bdSBt1uuzBjJk19TEw9q7+yZVKsvBVZGqVEras/N6TU89EVyFjLD6sVUHcFCuwqi1Ya0BDCl57DbpgW8HH03GvddKP7gv+ChywOrPVj1Ii/W6rAEM2VaplLX7pWs0N/N8cFWkZqae1N5dN6pSXgquQoZY/dmqB6jKTRi1Nqg1cCFFi3PVM9l3PxtcE6/dz1b/7gKXQ8krq19bdSFp1uuxBi7kw8z0D7Rn53WxzY5WKiXt3vEtzUz/ILgKGWT1a6suICdh1NqQ1oCFDHjiDumhG6t3M0pCpSzd+TXpuYeCa5AzVv+26kNSrNdhDVjIj0plWXt2fUczU08FV0ViauIR7d39vdjCLqJn9W+rPhRd5sOotQGtgQoZsbwk3fK55GZHX3xCuvvrzIp6wurnVp2Im/X3rYEK+TM7/bT27Lxe5fJicFVLKpVS9TCA2XgPA0D0rH5u1Ykiy3QYtTacNUAhY35wv3Tft6q314xTaVm662vS898PrkGOWf3dqhdxsf6uNUAhnyqVssZ23xj5ZZcmxu/V+NhtqlTKwVXIAau/W/WiqDIbRq0NZg1MyKBySbr1C9LOZ4JrovXCo9I911RnY+EVq99bdSNq1t+zBibk2+z0Mxrb9Z3ILr104ML6cy8GVyFHrH5v1Y0iymQYtTaUNSAhw158onqpp7hmR0vL0h1fqv4deMnq/1b9iIr1d6wBCX4Y2/UdTU08Gny4KfvG79b4nluqx7wj16z+b9WPoslcGLU2kDUQIeNKS9Ld35BeeCy4JhrPPCDd+834wi4ywaoDVh1plfX81kAEf8zNvqCxndepVGrt+PTlpUnt2fEtLczvCq5CTll1wKojRZKpMGptGGsAQk68+Lh011elpYXgmtaUlqXbviDtivkwAGSCVQ+setIs63mtAQj+2bvnJk3ub+0Y9X1779L4GHeK841VD6x6UhSZCaPWBrEGHuRIuVQ9pvO51or3YR6/XXrwO9XnRyFYdcGqK42yns8aeOCn+bkd2rPzOpWWm7vT29LiPu3e8U0tLe4ProIHrLpg1ZUiyEQYtTaENeAgh156MtpLLy3OSXd8Wdr9XHANPGfVB6u+hGU9jzXgID/a2jrU0dEnqS24alXje27WxL77gw+Hsm/sdu0fvzv48NraMjF8IySrPlj1xXept2ZrA1gDDXLsnmuqx3hG4ZFbpAeu58D/grLqhFVnLNbvWwMN8qWre1iDw2eovb0ruGpVC/O7tWfndQ3Pbi4ujGnXjmu1vDQZXLWqru4RDY+co/b27uAqZJhVJ6w647NUw6j1wVsDDHJu1zPVY0fnm9u1dcDMfun2L0njLwXXoECsemHVm9VYv2cNMMifjo5+jW56pfoGjg2uWtPePbdocv+DktZsMofYu/smTe5v7E5xA+tO0MYtryaM5pBVL6x646vUwqj1gVsDCzxx37ekp+8JPtqYR26WHroh+CgKyKobVt0Jsn7eGliQT5VKSesGT9bw6HkN7apfWhzX7h3XamlxX3DVimrHmjYyKypJIxsvUE/vEcGHkRNW3bDqjo9SCaPWB20NKPDI2A+lO78qzU0F14QztVe67YvS1HhwDQrKqh9W/amxfs4aUJBflcqyurqGNbrpYvX0bg6uXtO+sTs0sf+hULOj43tu1uREY7OiPb2bNbLxYnV09nOXphyz6odVf3yTeBi1PmBrIEHGdXRKPf1SW/jZBD1wnfTEncFHw3noRunRW4KPro0D/71n1RGrDlnrrYEEedemSqWkoZGzNThyVnDlmpaWJjS283otL639BXt+7qXq3ZuWGzuJc3TTK7Vu/XY3Y7tmM0XGWXXEqkM+SXRUtj5YawBBDqwblU48T+ps4Fim8R3VuzI1Oru5f5d029XVY0bDWr9BOuViqasnuAaeserJavVotcdrrAEEfqhUSuro6NPGTZepq3s4uHpN+/beZV53dHzPLebPBPX0btaGza9WW1sHJ2t6wqonVj3yRWJh1PpArYEDOdE7IJ11uXTECcE1a3vgeunJu6TKms3kUPd/W3qqweNNjzpFOudNhNGCsOpKsC4F/3+QNXDAPyMbL9bg0BkNHTu6uLBHY7tXn/WsHit6fcN3bRrZcKGGhs+UJFWYFfWGVVesuuSDRMKo9UFaAwZypLQsHXuGdOorG9tVPzkm3f7F6jGgYdSONW1kVlSSTnuVtPHI4KPwmFVfavXJqlPWgAHfVJtDV/ewthz51iZmR+/U1OQjwYclNys6NdnY/ey7ezZq4xGXq7Nr0D2yZnNFzlj1xapPeRd7GLU+QGugQM6Ul6u76s94rTSyNbh2bd//rvTU3eFmRx+4rvFZ0ZGt0pmvlXoGuEtTwVh1xqpT1kABv41sOF8jG84PPrym+dmXtHf391QqzR3y+ML8Lo3tuqHhuzWNbrxYQ8ONHb+KfLHqjFWn8izWMGp9cNYAgTxqqwbSky+STmqseGt6n3Tn16RZ4zInYy9U7940Px1cs7azrpCOPrU6Yxsm8MIrzdYba4CA/zq7BrV565vU3T0aXLWGisb33KKZqScPebQ6K/rYIY9ZurtHA7Oi8JVVb6xclVexhVHrA2t2YEAOlErVM+rPfoO0vpHiLenRm+3rjj5wvfT0vcFH1zaytXqsaEcnB/4XWKN1xxoYUBxDI6/QyKaLgw+vaXbmOe0fv0eV8pLk7kE/PnZr49cV3XSxBt2xovCfVXesfJVHsYRR64NqdEBATp3xWumEcxs7dnTfTunub6w+61k7VrTRuzad/irppPOq/2ZWtNDC1h9rQECxdHYNatOWK9Tdsym4ak37xm7XwvxuSdLUxKOammjsWNGu7lFt2nKFurqGgqvgMav+WDkrb2IJo1ddddWa6ePKp/8m+BC84vrI+lHpsvdUjyFtxCM3rX7P+geuk559MPjo2oa3SOe/VRpwJyAQRgstbP15zYVfDT6EghvecF7Dx45WA+jDKpcXNbHvvgPBNKzRTRdrcPiM4MPwnFV/rJyVN7GEUYX4oMIOCMi5Uy+VTrss+Oja9jwv3ftNaSFw2ZPxl6qzpo3eremM10gnXRB8FAXUaN2xBgQUS0dHvzYd8bqG7spUKs1q756bNTXxqCb23dfQWfDd3aPauPk16uoeCa6Cx6y6Y+WrPIotjCrEB9bowIAcGhiWLn6nNNTArq1KRXrweumFwGVRHrheenaVGdPVDG1ys6Ls4iq6ZuuNNTCgWEY2XKCh0XMbupPbxP4HtPPFL2s6cDKTZXjDBRoaeUXwYXjMqjdWrsqr8L2pSdYH1+wAgRzZfmH1+NFG7HhaevRWabl64L+m9koP3iDNTAR/cm1nvLZ6RygUWqt1xhogUBztHb3asvXNDZ1ZvzC3U3t2XrfqRfBX0tU9oo1HXM6saIFYdcbKU3kWexhViA+w1YECGTcwJJ33I9LIEcE1a/v+jdVd81L1GNLVjiNdzeDG6t9dRzEvsjD15d1XfSr40GGsgQLFMTTyCo1sCH/oT6VSckE0/C76kQ3na3jknODD8JRVX6wclXeJhFGF+CDDDBjIsVMvlU5t8NjRZx6QnrlfWl6UHr9d2rcj+BNrO/Pyg2fQo5DC1JVaECWQIqyOzn5t3vpGdfdsDK6KRFf3sDYd8bqG7/qEfLLqipWffJBYGFWIDzTMwIGc6h2oHrs52sBdmeZnpPuvqwbSx+9o7Cz4oU3SuW+S1m8IrkFBhKknwQAa/P8rsQYOFMPgyFka3XhJ8OFIDI+ez7GiBWHVEys3+SLRMKoQH2yYAQQ5dfqrpFMuaejAfz15p/Tdzx5+MpPl1Muqx6qikMLUkdWC52qP17MGEPivs3OdNh7x2obOrA+js2vQzYpyeJHvrDpi5SWfNJAKomN9wGEGEuRQd590ybsaO7N+74vuIverXAR/Jes3SOe9hVnRggpTP6zAaa1XiIEE/hsePU/DDRw7GsbIhgvdrOiawyRyzqofVk7yTSphVCE+6DADCnJo+wXSaa8KPrq60nI1iDayi/60y6ozsCicMHUjTNBUyJ+zBhT4raOjz113dEtwVVOqd3l6rbp7+CLtM6tuWPnIR6mFUYX4wMMMLMiZ3nXSRe+o3hUpDutHpQveVv0vCiVMvQgTMOuF+XlrYIHfRkbP1/CG8xo7/GgVIxvO19AoZ9D7zKoXVi7yVeu9p0XWBx9mgEHOnHS+dGaD1x0N69RLOVa0gMLUiTDBciVhfs8aYOCv9o4ebd76JvW0eGZ9Z9egNm65PLYz9JE+q05YechnqYdRhdgAYQYa5Ej/oLvuaANn1ocxMCRd8HaOFS2YMPUhTKBcS5jftwYa+Gto+KyWjx2tHn/a2H3vkR9WfbBykO8yEUYVYkOEGXCQI83cs95y+qurx6S2rdmU4JEwdSFMkAwjzPNYAw781NHZr81HvEHdPQ2cnFmnegb9FQ3d1Qn5YdUFK/8UQWbCqEJskDADD3Kiu686izm6LbimOQPD1dnWoWgvs4LsClMPwgTIRoR5PmvggZ+GRs7S6KaLgw+HMjTyCg2PcoMOH1n1wMo9RZGpMKoQGybMAIScOPXS6hLBgf869VLp5IuCj8JTYepAmODYjDDPaw1A8E9H54A2brm84TPrD97NiVlR31h1wMo7RRJBCoietYHCDETIge5e6eIfa/3M+oGh6qxoq8+DXAjT/8MExlaEeX5rIIJ/hkfPbeie9ZI0suECDY2czXVFPWP1fyvnFE0mw6hCbKgwAxJy4KTzWz929OVuhhXeC9PvwwTFKIT5O9aABL9Urzv6evUPHKeOjj51dPSvsfSpu3tUm7ZcEfldnJAuq99b+aaIMhtGFWKDhRmYkHG1646OHBFcE87AUPWe943c1Qm5FKa/hwmIUQrz96yBCX4ZHj1XL9v+qzr+5A/q+FN+bfXl5A/phFN+o3qNUnjD6u9WrimqTIdRhdhwYQYoZNxJ50tnNHnd0ZMvkk59ZfBReCZMPw8TDOMQ5u9aAxT80d7Ro41bXqNtR/+4th31Y6svR79Lm7e9qekz8JE9Vj+38kyRZT6MKsQGDDNQIcP61leP+Wz0zPreddKF75AGKeY+C9O/wwTCOIX5+9ZABZ+0VU/MtBaOE/WG1b+tHFN0uQijCrEhwwxYyLCXX9L4saOnXSadchHXFfVYmH4dJggmIczrsAYsAPlj9WsrvyBHYVQhNmiYgQsZ1dMvXfij0tYTq//uHVh96emvHiN6/lujv4sTMiNMfw4TAJMU5vVYAxeA/LD6s5VbUJWrMKoQGzbMAIaMOuUS6Sf+X+k9H5Z+8g/XXt77EenlHCvqqzD9OEzwS0OY12UNYACyz+rHVl7BQbkLowqxgcMMZMig7l7pnDdLV/xn6bU/tfpy+U9LF7+z+TPwkWlh+m+YwJemMK/PGsgQjUq5pHJ5IfjwmsrlBVUq5eDDmVKplFVq4n1JleDDaILVf62cgkPlMowqxIYOM6Ahg9pCHvjPcaJeCtNvwwS9LAjzOq0BDa3r7Fqv/oFj1du3LfTSP3CsOjp6g0+VKR0d/RoYOO6w177W0j9wrNrbuoJPhQZZ/dbKJzhc7j+wK6+8cs2veVed8MvBhxDWbVdLn71K2r8ruGZ1o9ukD/2jdPzZwTXZ8eAN0l/9vLQwG1yzuuEt0u9dLW09IbgGEfEpiNb73JU/HXzoMDfe8bbgQ4hIaXlWS4v7VK4sqy3EkFdRWe3t3eru2aj29u7g6swolea0uDCmSqUc8n1V1NbWod7eLWprJ5A2iyAaj9zOjNZYGz7MAAcgXWH6aR6DqEK+bmuAQ/M6OvvV23+k+geOVd/AMebS72YbsxxE5e721Nd/dAPv61j19R9FEG2B1U+tPILV5T6MKkQDCDPQAUhHmP4ZJtBlWZjXbw10ANJj9U8rh2BtXoRRhWgIYQY8BJSWpcX54KNrW5qXytk+8F/lcuPva3GeA/9jEKZfhglyeRDmfVgDHoDkWf3Syh+wefcBcgxphO79pvTVT0qTY8E1qxs+QvrAx6SjTw2uyY7HbpP+9b9Ji3PBNasb3Cj98t9Im48NrkGTihRE63EMKZAfBNFkePkhEkgjMj8tTe6tzpCGaSmVitTZXb3kUmeGj7damK2elFUuh3xfkjo6pNEjpU6Ot4pCUYNoDYEUyD6CaHK8/SAJpEA2FT2I1hBIgewiiCbL6w+TQApkC0H0UARSIHsIosnz/gMlkALZQBBdGYEUyA6CaDoK8aESSIF0EUTXRiAF0kcQTU9hPlgCKZAOgmg4BFIgPQTRdBXqwyWQAskiiDaGQAokjyCavsJ9wARSIBkE0eYQSIHkEESzoZAfMoEUiBdBtDUEUiB+BNHsKOwHTSAF4kEQjQaBFIgPQTRbCv1hE0iBaBFEo0UgBaJHEM2ewn/gBFIgGgTReBBIgegQRLOJD51ACrSMIBovAinQOoJodvHBOwRSoDkE0WQQSIHmEUSzjQ+/DoEUaAxBNFkEUqBxBNHsYwMEEEiBcAii6SCQAuERRPOBjbACAimwNoJougikgI0gmh9siFUQSIGVEUSzgUAKrI4gmi9sjDUQSIFDEUSzhUAKHI4gmj9sEAOBFKgiiGYTgRQ4iCCaT2yUEAikKDqCaLYRSAGCaJ6xYUIikKKoCKL5QCBFkRFE842N0wACKYqGIJovBFIUEUE0/9hADSKQoigIovlEIEWREET9wEZqAoEUviOI5huBFEVAEPUHG6pJBFL4iiDqBwIpfEYQ9QsbqwUEUviGIOoXAil8RBD1DxusRQRS+IIg6icCKXxCEPUTGy0CBFLkHUHUbwRS+IAg6i82XEQIpMgrgmgxEEiRZwRRv7HxIkQgRd4QRIuFQIo8Ioj6jw0YMQIp8oIgWkwEUuQJQbQY2IgxIJAi6wiixUYgRR4QRIuDDRkTAimyiiAKEUiRcQTRYmFjxohAiqwhiKIegRRZRBAtHjZozAikyAqCKFZCIEWWEESLiY2aAAIp0kYQxVoIpMgCgmhxsWETQiBFWgiiCINAijQRRIuNjZsgAimSRhBFIwikSANBFGzghBFIkRSCKJpBIEWSCKIQYTQdBFLEjSCKVhBIkQSCKGrY0CkhkCIuBFFEgUCKOBFEUY+NnSICKaJGEEWUCKSIA0EUQWzwlBFIERWCKOJAIEWUCKJYCRs9AwikaBVBFHEikCIKBFGshg2fEQRSNIsgiiQQSNEKgijWwsbPEAIpGkUQRZIIpGgGQRQWGkDGEEgRFkEUaSCQohEEUYRBI8ggAiksBFGkiUCKMAiiCIuGkFEEUqyGIIosIJBiLQRRNILGkGEEUgQRRJElBFKshCCKRtEgMo5AihqCKLKIQIp6BFE0g0aRAwRSEESRZQRSiCCKFtAwcoJAWlwEUeQBgbTYCKJoBY0jRwikxUMQRZ4QSIuJIIpW0UByhkBaHARR5BGBtFgIoogCjSSHCKT+I4gizwikxUAQRVRoKDlFIPUXQRQ+IJD6jSCKKNFYcoxA6h+CKHxCIPUTQRRRo8HkHIHUHwRR+IhA6heCKOJAo/EAgTT/CKLwGYHUDwRRxIWG4wkCaX4RRFEEBNJ8I4giTjQejxBI84cgiiIhkOYTQRRxowF5hkCaHwRRFBGBNF8IokgCjchDBNLsI4iiyAik+UAQRVJoSJ4ikGYXQRQgkGYdQRRJojF5jECaPQRR4CACaTYRRJE0GpTnCKTZQRAFDkcgzRaCKNJAoyoAAmn6CKLA6gik2UAQRVpoWAVBIE0PQRSwEUjTRRBFmmhcBUIgTR5BFAiPQJoOgijSRgMrGAJpcgiiQOMIpMkiiCILaGQFRCCNH0EUaB6BNBkEUWQFDa2gCKTxIYgCrSOQxosgiiyhsRUYgTR6BFEgOgTSeBBEkTU0uIIjkEaHIApEj0AaLYIosohGBwJpBAiiQHwIpNEgiCKraHiQCKQtIYgC8SOQtoYgiiyj8eEAAmnjCKJAcgikzSGIIutogDgEgTQ8giiQPAJpYwiiyAMaIQ5DILURRIH0EEjDIYgiL2iIWBGBdHUEUSB9BNK1EUSRJzRGrIpAejiCKJAdBNKVEUSRNzRIrIlAehBBFMgeAumhCKLIIxolTARSgiiQZQTSKoIo8oqGiVCKHEgJokD2FT2QEkSRZ+3BB4CVWIUsTGDLozDviyDqj2VVVNKa37uQUWH6oRXY8sp6X1b9BtJGA0VDijRDShD104zK2qWS9qukOVU0rbKm3DKtstolrVe7BtWh9WrXgNo0oHaNqkNb1KFOymamFW2GlCAKH9BI0bAiBFKCqD/Kkp7Xkp51y9Na0jNa0g4ta0ZlLbmZ0LJb5HYZtbsC2aM2jahDR6pTx6lLx6lLR6pTx6hLx6qLIppBRQmkBFH4goaKpvgcSAmifhhXSXdrXrdrTk9pSS9qWXu0fCBwNqtTbdqsDh2hTm1Xty5Sr85WrzaoI/ijSJHvgZQgCp/QWNE0HwMpQTT/9qmkmzSnazWjR7WgPSoFfyRSm9Whk9StS9SnS9SnY9SlHkprJvgaSAmi8A0NFi3xKZASRPPvXs3r3zSp2zSniZbnQBvTpzZtU6cuUp9erwGdo17OEM0A3wIpQRQ+otGiZT4EUoJovs2roq9pWp/RpJ7UYnB14o5Rl96iAb1BA9qu7uBqJMyXQEoQha9ouIhEngMpQTTfZlTWZzWpf9Wk9sW8S74RHWrTy9WtN2tAr9eAjlAnM6UpynsgJYjCZzReRCaPgZQgmm9zquhfNaFPa0L7E94tH1a32vQ+DeoXNKwh4miq8hpICaLwHZURkbEKYpjgl6Qwr4cgmm1fd7vmsxpEJalLbTpR3VrHd//UhenPVvBLmvV6rLoL5AFhFJGyCmOYAJiEMK8jzMCF9DysBX1OU5naNR/UJulHNKDXq18dhNFMCNOvrQCYFOt1WPUWyAvCKCJnFcgwQTBOYf5+mAEL6VlSRV/RtB7VQnBVppyuHv2kBjVAqc2UMP3bCoJxs/6+VWeBPKExIzZZPIaUIOqHB7SgKzWmp1o4c752Z6Vt6tSR6tSg2tWtNi2pohlVNKmSJlTWTi1rUmVNNngoQL/a9fvaoLezgz6zsnoMKUEURUODRqyyFEgJov74R03okxpvMB5WdatN56pXl6lPZ6lXW9WpHrWpw+0qqkgqSSqpomVJ+1XSk1rUo1rUY1rUk1rUWIhDA35C6/UhjWqYWdFMy1ogJYiiiGjUiF0WAilB1B9TKuuPtVdf03RwlalXbXqPBvU+DWprg5daWlZF+1XWA1rQ7ZrTnZrT01oK/pgk6VR16ypt0su5xmguZCWQEkRRVDRsJCLNQEoQ9cuTWtSHNabvN3G86Du1Xh/SiDa2eB/5OVX0hBZ1q+Z0nWb0eN3hAoNq13/VqH5c6w/5HWRb2oGUIIoia2RiAGiaVUjDBMZmhHlegmi+TKqs3VoOPmw6Sp16h9a1HETlbv15lnr08xrSVdqo92vwwPNe4e68hHwJUweswNgs63mt+gnkHWEUibEKapjg2IgwzxdmAEK2zKqiWa050b6ik9Wto9QVfLglXWrT6erRr2tUH9ZGvVeDeq/Wa5DSmkth6oEVHBtlPZ9VNwEfUDGRKKuwhgmQYYR5njADD7JnTmUtNRFG+9QewZzoyvrUpivUr9/WqE5VT3A1ciRMXbACZFjW81j1EvAFYRSJswpsmCC5ljC/H2bAQTY1W7Qe16LGQ5wF34puDsP3Qpj6YAVJi/X7Vp0EfNJsXQdaYhXaMIFyJWF+L8xAg+zqVbu6mgh9z2qpqZOeUExh6oQVKFdj/Z5VHwHfEEaRGqvghgmW9cL8fJgBBtnWrzata6J0LamiL2taDxBIEVKYemEFyyDr5626CPio8YoORMgqvGECpkL+XJiBBdk3rA5tafLoz3s0rz9z1yida+K4UxRPmLphBcwa6+esegj4ijCK1FkF2Aqa1nqFHFCQDxvUoaObPCu+IulBLegvNK6/1Lju13xTJ0OhWMLUDytoWuutOgj4jMaPzGjmwvgE0WL6lCb0Ce1rKUh2qk3HqFOXqE+v04BOUXdTu/9RHM1eGJ8gCqyNDoBMaSSQEkSL6yEt6MMa01N1dz5qVofatE2dOlc9ukh9Ol09Oq7JmVf4r9FAShAFbHQCZE6YQEoQLbYlVfQJ7dO/aVLLLcyOBvWrXaeoWxeoV+eoVy9Xt0aaPD4V/gobSAmiQDh0BGSSFUgtBFH/Pa5FfVRjsZwd3y5pqzp1krp1tnr1SvXpRHWpk5IJJ0wgXQtBFDiIzoDMajaQEkSL4xrN6OPaqz0xXsy+V206Wl06V716lfp0mnq0gdlStBBICaLAoegQyLRGAylBtFgWVNGnNam/137NqBxcHal2SaPq0Knq0aXq04Xq0wkcW1p4jQZSgihwODoFMi9sICWIFtOUyvpnTejfNKnpmANpTbfadLK69Wr16zXq1ynqDv4ICiRsICWIAiujYyAXrEBKEC22SZX1VU3r3zWpZ7QUXB2bDrVpu7p0ifr0Nq3TiYTSwrICKUEUWB2dA7lBIMVallXR3ZrXZzSpmzQX6Vn2lg616Sz16N1ar9drQL2U1kIhiAKtoYMgVwiksLyoZX1D07pWM3o8guuQNmJUHfoxrdN7NKht6gyuhocIokDr6CTIHQIpLGVJj2pB12lWN2pWTyYYSrvUplerXx/UCCc4eY4gCkSDjoJcIpAijCVV9IQWdavm9B3N6nEtaiGh3fdv1Tr9hka0hRlSLxFEgejQWZBbBFKEtaSKXtCy7tCcbtSsHtaC9sd85n232vRurdcvaZi7OHmGIApEiw6DXCOQohElVbRXZT2kBd2iWd2vBT2rJS3GNFvar3b9nIb0AQ2ph3LrBYIoED06DXKPQIpmLKqip7WkezSvuzSnh7Sg3THcyekYdemj2qjz1BtchZwhiALxoOPACwRStGKPSnpCi7pDc7pZc3pKi5HtxG+T9D4N6oMa0Tq1B1cjJwiiQHzoPPAGgRStmlVZz2lZd2pO12lWj2lBcxHswj9J3fojbdTp6gmuQg4QRIF40YHgFQIporCsinappFs1p29qRvdpvqWz8DvVpg9rg35M65kbzRmCKBA/OhG8QyBFlF7Ssq7RjL6uaT3ZwqlO79OgPsSu+lwhiALJoCrCO9YAYQ0wQL1t6tQHNKgrtVGvUn/TRfMFLWkisiNRETerTlh1BkB4zdZVINOsgcIaaIB6tXvP/xeNNH3c506VNE0YzQWrPlj1BUBjCKPwljVgWAMOEHSKuvV6Dai7iSOcplXWUtM7+ZEUqy5YdQVA4wij8Jo1cFgDD1CvTdIr1KONTdxRaV4VLRNGM82qB1Y9AdAcwii8Zw0g1gAE1BtRR1P3m19WhSiaYVYdsOoIgOYRRlEI1kBiDURATZvUxLxo9dagnU3s3kf8rP5v1Q8ArSGMojCsAcUakJA9d2teV2tKL2k5uCo2+1Vu6rah69TW1LGmiJfV7626AaB1hFEUijWwWAMTsmOnlvVPmtDHNK4/0pi+qZlI7pZkeUQL2tlE+B1Vh3oJo5li9XerXgCIBmEUhWMNMNYAhWy4WlO6Q3OaVVk3aU5/pr26SmP6hqZju4TSI1rQ1zTd1KXvj1KXBim5mWH1c6tOAIgOlRGFZA001kCFdN2hOX1dM4fconO3SvqapvUxjesPNKYvaVo/1HIkZ7CXJd2jef219utBLQRXh3IcYTQzrP5t1QcA0aLDodC4dWj+7FVJV2lMN2g2uOoQ69Wu49WlC9Wn09WjberUJnVoQwOnH42ppOe0pDs1r29rpunbgW5Shz6qTbpMfcFVSBhBFMgeOh0Kj0CaH2VJn9aE/lL7QsfCdkkDatc2depYdel4dekIdWq92tWvdq1Xm3rUrmVVtKCKJlXWPpW0Q8t6Skt6XIva0eIM6+s0oD/QhqauT4roEESBbKLjAQTS3LhP8/qIxvS0loKrGtKjNvWrXf1q04Da1a22A2F0RmVNqqz5FsJnvXVq1+9oVO/U+uAqJIggCmQXnQ9wCKTZNqOyPqIxXaOZ4KpMe4vW6fc0qhFmRVNDEAWyjaPpAccakKwBDfEpqaIva1q3aC64KtOOU5feqXUE0RRZ/dbq9wDiRxgF6lgDkzWwIR7PaVlf17QmY7pkUxw2q0M/pyGdp97gKiTE6q9WfweQDMIoEGANUNYAh+gNqV1v1zqdoZ7gqkwaUYd+VsN6i9ZxC9CUWP3U6ucAkkNnBFbBMaTZUpb0lBb1BU3pW5rRniZuyZmEberUz2lIb9d69VFiU0EQBfKFDgmsgUCaPbMq627N6/Oa0l2a11RGdt13qE2nq1s/rSFdrn51UV5TQRAF8odOCRgIpNm0Q8u6U/O6Q3O6Xwt6vsXLPbXiOHXpjRrQW7ROxxNDU0MQBfKJjgmEQCDNrkmV9aQWdZ/mdavm9H0tajaB2dJOtel4delV6tdl6tNp6lEvJTU1BFEgv+icQEgE0mxbUkU7taxHtaiHtKCntKgXtKwJlTWjcug7Nq2mQ21apzaNqkOnqUfnqFenq0cvUxfHhqaMIArkGx0UaACBNB/mVNGcytqvsl7Qkn7glp1a1qwLpouqaN79d0EVlVxBbHfBs8/dnWmd2rVZHTpBXTpR3TpB3dqoDq1XO5cjyQCCKJB/dFKgQQTS/Cm7mdMFF0Br/64u5TXDaO0e9t3ucWQHQRTwAx0VaAKBFEgXQRTwB50VaBKBFEgHQRTwCx0WaAGBFEgWQRTwD50WaBGBFEgGQRTwEx0XiACBFIgXQRTwF50XiAiBFIgHQRTwGx0YiBCBFIgWQRTwH50YiBiBFIgGQRQoBjoyEAMCKdAagihQHHRmICYEUqA5BFGgWOjQQIwIpEBjCKJA8dCpgZgRSIFwCKJAMdGxgQQQSIG1EUSB4qJzAwkhkAIrI4gCxUYHBxJEIAUORRAFQCcHEkYgBaoIogBEGAXSQSBF0RFEAdTQ2YGUEEhRVARRAPXo8ECKCKQoGoIogCA6PZAyAimKgiAKYCV0fCADCKTwHUEUwGro/EBGEEjhK4IogLVQAIAMIZDCNwRRABaKAJAxBFL4giAKIAwKAZBBBFLkHUEUQFgUAyCjCKTIK4IogEZQEIAMI5AibwiiABpFUQAyjkCKvCCIAmgGhQHIAQIpso4gCqBZFAcgJwikyCqCKIBWUCCAHCGQImsIogBaRZEAcoZAiqwgiAKIAoUCyCECKdJGEAUQFYoFkFMEUqSFIAogShQMIMcIpEgaQRRA1CgaQM4RSJEUgiiAOFA4AA8QSBE3giiAuFA8AE8QSBEXgiiAOFFAAI8QSBE1giiAuFFEAM8QSBEVgiiAJFBIAA8RSNEqgiiApFBMAE8RSNEsgiiAJFFQAI8RSNEogiiApFFUAM8RSBEWQRRAGigsQAEQSGEhiAJIC8UFKAgCKVZDEAWQJgoMUCAEUgQRRAGkjSIDFAyBFDUEUQBZQKEBCohACoIogKyg2AAFRSAtLoIogCyh4AAFRiAtHoIogKyh6AAFRyAtDoIogCyi8AAgkBYAQRRAVlF8AEgEUq8RRAFkGQUIwAEEUv8QRAFkHUUIwCEIpP4giALIAwoRgMMQSPOPIAogLyhGAFZEIM0vgiiAPKEgAVgVgTR/CKIA8oaiBGBNBNL8IIgCyCMKEwATgTT7CKIA8oriBCAUAml2EUQB5BkFCkBoBNLsIYgCyDuKFICGEEizgyAKwAcUKgANI5CmjyAKwBcUKwBNIZCmhyAKwCcULABNI5AmjyAKwDcULQAtIZAmhyAKwEcULgAtI5DGjyAKwFcULwCRIJDGhyAKwGcUMACRIZBGjyAKwHcUMQCRIpBGhyAKoAgoZAAiRyBtHUEUQFFQzADEgkDaPIIogCKhoAGIDYG0cQRRAEVDUQMQKwJpeARRAEVEYQMQOwKpjSAKoKgobgASQSBdHUEUQJFR4AAkhkB6OIIogKKjyAFIFIH0IIIoABBGAaSAQEoQBYAaih2AVBQ5kBJEAeAgCh6A1BQxkBJEAeBQFD0AqSpSICWIAsDhKHwAUleEQEoQBYCVUfwAZILPgZQgCgCrowACyAwfAylBFADWRhEEkCk+BVKCKADYKIQAMseHQEoQBYBwKIYAMinPgZQgCgDhURABZFYeAylBFAAaQ1EEkGl5CqQEUQBoHIURQOblIZASRAGgORRHALmQ5UBKEAWA5lEgAeRGFgMpQRQAWkORBJArWQqkBFEAaB2FEkDuZCGQEkQBIBoUSwC5lGYgJYgCQHQomAByK41AShAFgGhRNAHkWpKBlCAKANGjcALIvSQCKUEUAOJB8QTghTgDKUEUAOJDAQXgjTgCKUEUAOJFEQXglSgDKUEUAOJHIQXgnSgCKUEUAJJBMQXgpVYCKUEUAJJDQQXgrWYCKUEUAJJFUQXgtUYCKUEUAJJHYQXgvTCBlCAKAOmguAIoBCuQroUgCgDxocACKIxmAilBFADiRZEFUCiNBFKCKADEj0ILoHDCBFKCKAAkg2ILoJDWCqQEUQBIDgUXQGGtFEgJogCQLIougEKrD6QEUQAAACRupRlSAAAAAADgOXZJAfFqd/2sttSUJVXcfwEAKCzCKBCNXklDkoYlbZJ0hKStkjZK6pfUI6lPUoekBUlzkmYl7ZH0glt2SJqQNBV88ib1SjpRUqekR93fDep0P9ceXJFhFVe7FiXNB1cmpL1ue+ZFm2t3i8EVTrdrp211n3Fcas9fcp/lau2v1cMn6n/fej9h11cCS+2LZW0pSVoO/C6ANVidD8Dqjpb0MkknS3q5W46XtM4N7N2SuuoG29osabluWaoLVT+U9LCkByTd4wLkePCPNuASSZ90A+N7JD0f/AH32n9e0lF1A2htgK0NsrXHklKrS/UzyrWwUvv/fZK+IOnf6n4vSZsl/Zyk0134qH1eSvkzq/27/nNrc6G5IulvJd1U97P1zpb0Afdlqvaeam1BgfcT5r2t9Jpqr6fdtbe7JJ3g2l8pEO7qQ17NSn/XWl+vvm2t9FhH3WdVE9x7UakLnCXXh2v/f9l96Ztyy4Rb5iRNStop6aXA8wGFV98hAdg2S7pY0vmSXuGWjW6GMcpZsucl3Sbp25K+5WZOG/VeSf/HDYCvkvSD4A9IOlPSRySd5gbZLhf0ht1/61kDfVTq61KlbjBfcMF9yX3e/1vS/6z72SRtk/RhSW+SNOBmvweCP5TSZ1Yz6ZYp97ktum39jeAPOpdI+gP3BaXDzZKuc8tK1npvK72estuW05Jm3L+/5trgae5neiStd0vS7a8iaZ/bY9Huvkyutl21SlCu/f/6IL3s3u8eSU9LeswtT0u6z30eQKGtVDAAHO5ESW+U9HpJF7hd8M1acrvkn3KzJNNu8Bt0IfBlbul2M6Y3SfpHSde6ATysD7qw9oykyyU9G/wBN9Ce6P5uW91u+3UucJ0j6TWSjgz+YoxKkm6RdLsbsPcGguiSG+xrhzekodfN6G11n2HtMI1jJZ3nwn9v8JdiNCPpXjez/gP3mU3XBb9F97k+40LRSkZcW1jvvpR0uTA2KGmLpGPc7OnpKwTFleyum+F/SdJY3euZddt0l/t7g3UBsBbuh93ehovdZxr3eDUr6ROSvufCeLfbhgNutvgkSae6978++MsNmpL0opsZ/qL70kkoBQCs6GhJv+FmKSfqZjuaWaZdoPxlSRe6MHOEpFFJG1ywOU7SWZLeIem/u5mTZfe3PyPpUjd7ZOlxu+grLpwcF/yBkDa62b/rV3g/cSwzkj4u6ZSQgSdrelxo+yVJT67w/uJYnpH065K2132piFqHa6fb3SEfN9btVg8uU+5L0KvdZ7HazGIYA27m9B9deA3+rSiXfZLeGnwBTpvro9td3/y/Eb6eH0r6rKS3hOzbAICCGJX0k27GYnKFAaTR5SFJv+oG59VO1gjqdTNDvyXpEfc8z7iwdlbwhwO2u5nFipuBbTaM1rzNzeQE31fUy6danHXOik63S3x2hfcY5bIg6XfcTGKSTnO7+4OvZ0rSH7kvMVE6RtLVK/y9KJd9kn40+IdXcaykf3YzzsHnaXZ5XtJV7gsqAKDgzpH0D24XYnDAaGa5WdLrGgihQe3uGNVPuVnSitu995tuUFzJz7pgUHEzdK2G0RF3slDwvUW5TEt6f/AP59jZku5e4X1GuTzijltOwzvcrF796/m8OxkpDj8ZYZ9cadnn3lNYp7m+HXyeVpZZF3K3B/8YAKAYht3ZxLeuMEg0u9zqjh+MwhZJf1x3uMC0pOsk/ZQ7XrHTzZD9qDt+sPYaogijkvR7K7y/KJeH3OELvlgn6XMrvM8oly/GGP4sA5I+Xfda9riT5uJyWsR9M7g0GkYl6VfcFS+Cz9Xq8gW3VwQAUCBbJf0PN6AGB4Zml8ckvTn4h1o0LOmj7sSm2t/Z6WakPinpq5KeC7yOqMLof5K0f4X3GdVyvYczQv9rhfcZ5fKX7otIWn7bfSmqSPqOO8knLkMx76pvJoweKemGFa41GsXy926PBOC9ZncbAj45wc04/lKEx7rNS/o7d1mmKO2X9Nfukk21C75vkfQud2LUW93xdXHY6wbsuMy6Szj5ZGyNi8xHYY/73NLyVN21cH8Q8zU0J1q87m4cXnR7J+LYBj/hlq7gCsA3hFEU3XZJf+p2dUd59vY1brayFFwRgd3uepCfDTx/3INW7fJKcalduskntcsqxWUu5bv9PF93x7Bn3fuN00p3EUvbbTFdlmlI0ockXRRcAfiGMIoiO96d8fxOd7xlVMYl/WvM18Dc5a6JeHdwRYyWYg4+cT9/GmZjfk9LbpduWibd+yvHPGteE2ewb9aT7ioXcThV0tsj/qIMZA5hFEW11Z2Q866I75wkdwzZ7cEHY/CQpL9yuwqTEPfMZdzPn4bZmN9T2jOFiy6IlhIKigsx7W1oxV73pTB429CoXJHwTSeAxBFGUUR9kn5N0vvcXVaiNO9ucbjaXW6idrVbkhiga/fejkvcz5+GuHejxxl0w6iF0eWEXstCjKGvWXPu6hVxhfGT3BU5GK/hLRo3iujd7hJOcVwo/FF3C8SkBsw5Sf/hTiSJW+0s37jE+dxpKcfcFtL+zOrDaFxhrF4l5s+zWc/HdBKT3CXCLk3gmHAgNYRRFM0r3azoluCKiNzkBqYk3e1OmMriIN2IOG5jiXjVjhdNajd9Vs24K13E5UiOG4XPCKMoko2SPujusBSHCUm3uJM6krTgwuiO4AogZrWZ2bhnzbNuJubLTq3nmqPwGWEURdHuLmj9huCKCD3gljTc6y4xk2dtzI4ip+KeGV0naUPwQcAXhFEUxWmSfjHm2YUH3bUW0zAm6bsJXOcxboRR5NFczHtE+t3d1wAvEUZRBO2S3ibp7OCKCM25k5fSvNTObZKeCD4IIHZxn6hWSuhqBUAqCKMogmPcbTKjvp5ovZ2SHg8+mLAHJd2X42P3mBVFXnXGfLZ73IcBAKkijKII3uzuZBKnFzIwK7kk6Ua3yx5AcjpiuGZxvbmE7nAFpIIwCt8NuzA6FFwRsccTvND9Wr6XgRlaoGj63ElGcXmJmVH4jDAK350r6fTggxFbdBedz8IxXc+7QJrmsatA0fTFeILRsjsEJ66L6gOpI4zCZ22SXpPAfZ1n3TU+4zyBIayKpOvYVQ8kashdxzgO4+6ubnHeVhZIFWEUPtviLnAf57Fccvej35mhE4ceknRH8EEAsTk2xpnRG9xd1gBvEUbhs+PdmfRxW8jY3Y/2utlRdtUD8euSdEpMX3p3SPq3jByPDsSGMAqfvUzSUcEHY7DP3Qo0KyqSbq87u59LJgHxGZZ0VgyXjtst6WNuZjQre12AWBBG4as2SSfEuOus3k53ElOWPCHpFvdvwigQn1NiOEnyJUl/IukfPLirGmAijMJX/QmcuFQzkcGTC2Yk3epCcieBFIjNFe749ChU3PHe/1XS33MGPYqCMApfDUnaHHwwJvMZOZM+6HZJ92YwKAO+OFfSj0rqCa5owlOSPi7pFyT9X3ehe6AQCKPw1SBhVD+Q9LuSfpNLPQGRO03SH0g6M7iiAcuSHpb0/7kQepW7GgbHiKJQCKPw1XpJG4IPxmQho4NHyV0A/0uSpoIrARyi4r5YrmWdpKMl/bSk/yXpRxoYR0uSJt0Z8o9K+g9Jvy7pAy6E3shsKIoqbCcC8qbb3RUlCbNuoAGQX12SznDXJn6Fm/G8wB0T+l5Jvy3pL1yI/ISkV7vfqTcu6WZJX5f0ZUlfkPRZSX/jZlF/UdI7Jb3R/ftv3TVE+bKIQiOMwlddMV33byXrYrisC4Bk9Uv6LRcePy3pM5L+XdLV7v9/3AXIiyWNBn/Z2e9u3XmzpOslXeOW70r6vpsVnaubheVLLEAYhcc6IzqpIIxSRnfTAwhvVtJjkh5wgfJ+Fyq/4gLpNyXdJekZt7t9pSB5tKT/5ELt70v6qKQ/dtcL/YTbtf8Pkj7lwu7HJf2MpPPdSZcAAI+80Q0YlQSWj0kaCL4AD53jBuPg+49q+Rd3rG/WbHM3T+gMrgjhPZJ+uMJ7jWr5QPAPJmzQXYpoXNKPB1fG4CNuRjH4OUSxjLvPc0vdslnSJklbJR0n6eWuH1zhTgy80528GHyusEvJXdz+MRd6f9MdGkAwRaEwMwpflRK8pFEvfclb2yT9k6S/ivBaksimNncr3V11y253K84dkp51Jx7d63bBf1LSr0r6YvCJGtDuwu7Jkt7mTmT6nJtBfXuCx70DqWIAha+WQpwZG5Ue+pK33iXpdW73azMzo8iXRo79XnZ7Cj7qdudHYUDSMZLe705u+n13W2PAawyg8NWSu+RSEgijfjpW0jtcQMnqtWSRvgck/aW7hWeUtkr6HTcDe25wJeATBlD4al7SdPDBmHRzu03vtEl6s6QLgyuAFXxL0tdWOampFV1u9/2fu5OcAC8RRuGrqQTvOjTQ4O49ZN8x7oSc2olplcB6oN6UpM+7M+3j8Fp3N7WjgisAHxBG4asJd+JBErYleE1TJOP1ki4KPgis4XZJ9wUfjNBbJf1UQa7cgYIhjMJXkwmG0c0J3noU8TvK3XGHQd/WziEqB0xJutXVnjj0SPp/3KWlAK8QRuGrebfLLImTTvrd2dbww8+5u+zA1unGkXIMx0vm0e3uMlBxOc7dTrQ/uALIM8IofPZ4DGe4rqTfHWOYxf7U7i5N9G4Ccyjb3e5Qru8YTodrY0leSi3LHpb0dPDBiL3eXekB8EYWB08gKk+4C1XHrTYzmsWTmDok/Yq7S9SZwZU4RLe7leNpwRVYVbtbFgmjkttV/2DMl5V7maRXM37DJzRm+OxpNzsat3Y3M5rFMDok6SQXFOKescm7C9wMMrOi4fW4XfWE0YOeljQXfDBC/e6SY13BFUBeEUbhs2V37+jx4IoYnJDRy66cKGlE0guSXgyuxAFD7r7k24MrsKZBF94XYw5gefJ8AsH8WEnrgg8CeUUYhe9udoND3I6VdHrwwQw42c1cPZLAAJlnb3AXF6cmNmbUzdTNStofXFlQe9wX4Thtcp894AUKL3z3pKR7EjirfrOkM4IPZsCZbnfeIwkMkHl1rKSfd9sQjRmV1Ctpn1sgzbiZ4jj1MzMKnxBG4bslSV+RtDe4ImIdkk51u8SzYqu7p/WSpIe4i9Cq3i3p0uCDEYn7S1DaNrm2vzvmk3byZMktcep1x+sCXiCMoghulvSd4IMxON0do5kV57vd9HfHeJvCvHuDpJ+J8bqNpZgDado1/Hg38/4sM+8HdCVwclESfwNITNqFDEjCuKTPJTA7+nJJr8jIHWk6Jb3SzVx9i12oKzpe0m+5Ge24zMQ8S9YZfCBBfe5KDWVJT3HR+wPWJRAUy+zpgE8IoyiKb0n6fMwFvMMFwCycWHCMpMvcRf9vjzkQ5dGAu7Xiq4MrIvZMjLeHVMq7ao917WzGXdM3zr6VJ4MJfElYTOC4VCAxhFEUxaSkf5b0/eCKiF0R80xbWK93x4vezC76Ff2kpP/sLnQfpxdivvHCUAKzcKs5VtI29/5+GFxZYEmE0QWO0YVPCKMokrtcIJ0IrojQUZJek/KM1ZGS3ud25V3jLjWDgy6R9BuSjgiuiMGcu9ZtXNfg3Bjj8a6WEyVtkHQvl3U6xPoExtb9CV0/GUhE3B0GyJKypP8j6cvBFRF7ozuTPS3vcHcT+qakG4IrC26jpP+S8Oz1LTF+IdiSUhgdlHSROzTlTknTwR8osM0JzLjv4jhw+IQwiqIZk/RXku4IrojQmW52NA0vk/RTLhz8C3ddOsSIO2HprQmfZPaApO8FH4zIESldb3K7Oz76WUn3x3zFgDzpcDPGcX5BKLnDjbiJBbxBGEUR3S3pT9wZwHFYL+m9ko4LrohZv6Rfl3SepC/GcDmr9hzXjPWSfk3SL7l/J2lC0mdjOq5yawphtF3S69wXn1sTusNZTUfG22CfC6MdwRURGpf0XS6lBZ9kuVMDcfqKpKskPRdcEZFLJb094T72ZndSznOS/imGY2O7EjgxIw59kj4k6YPuhJ803Oi+IER9xvm2FO4cdbykn3An0Fzn9jYkpTvmoNeqoxLYHve42WjAG0kOlEDWfFbSH7vLH0WtX9IvSHpVcEVMzpL0265Pf8KdVBK1PF5ou1fSr7gZ4zQvuTUr6e9ceIvSOndYSFJfErolvd/9zTvdzGiSejI+bp0gaTj4YIT2SfqMu+MV4I0sd2ogbiVJ/yrpv8e0q/F0F4KOD66I2CnuPZwp6ZOSPhXTNQjzNjPa7b4Q/LY7cSltD0v6iKTbgita0CbpR9z1PpPwakk/644R/bKkHwR/IGZxnxjUqu3uCgNx+Yykb3CDAQDwT4e7FNIjbjdqlMuCpL+J8TJCZ0n6uvtbf+/uuBSXH3GhPfgeo1r+JcLjObsk/aKb9Q7+nWaWmyQdHfwjTXqtm1UM/o1ml1l3GELcJ2Ud5wJoRdK1CQbgev+8wvuPatnnrkTRrAF3tY7g80a13Oa+cAIAPPZ2d5Z9cBBodZmV9D8jHrzb3PUyv+3+xjfdfejj9AvuvQTfX1RLVGF0UNLvRhhEKxGHUUm63IWL4N9pdnkw5rtJbXaHGVTcLuJ3Bn8gAZskfXWF9x7V0moYvcTNfgefN4rlKUnvSuALBwAgA86vO/knOCC0ssxL+g93/c9WHSnpN91M7qKkf5d0dvCHItYh6eMrvK8olyjC6DGS/ocLFsHnb2WJOoxK0sURh6sbYmoHG9xnuuhu/fnf3Cxg0mrHqQbfd1RLK2G0U9KfutvuBp+31eUpt+cm64coAAAiNOrOvH5ohYGh1eVOSb/a5GWfjnGzI19yg960C4jbgj8Yg5dHPJO30tJKGO12n803Ypq9jSOMyh1j+GeSnl7hbzazfMPdBjYqJ0j6WxdE513givOYyLX8oqS9K7znqJZWwugbJT2+wnO2utziZqHzduIgACACnW6W9OPuUknBQaKVZVLS9ZKulPQGF3L6XKDqcv/tcxdp3y7pxyX9ufud2ozfC+66mXGeuVszIOmP3PGvwfcS5fJP7uz3RvS5GcZPuM8k+JxRLXGFUbn38DpJ/yBp5wp/u9Hle65dtXIJpEFJb5P0NfecY5L+MMUTwV7hrq0ZfK9RLvvcoTqN6HQ3uLh5hedrZRlzs9Gns2seRUAjB9a2TtKFkt4t6Qp3oe9WBvl685J2uGPwdrr7Tc+5v7nRzRL2u1s+1mY/97qTRz7trl0Zx11YOlwAHXRn6r/P3bUozpOj5N7Tb7oZ39rFzdvq/t3hwnqvOyHsbHfprNPdFQvinD262X0OLwRXRGiDez/vd/9t5fN+3J1sdLXbzTvuQs5ahtyXm4vdF6DXui9EN7qT8K5J8LafPS6kD7lZx/e724/Guat6n6SfCdwuuNb+Ouu+KPa6PnmKuwvV5e7frVpyt429xR16c4OrCYD3CKNAOOvcruq3ulB6Sgy7Kyvukjkrhd1n3Mzo590dpPYGf6AJR0g6rW42ss+9pyMkHevu336cO3kliVrxiJv9Krsw0l239LrHhtxhFH0urCd196Fb3F214gyjNUe4k2Fe5Xa5n+TCT6MW3az+g+5C6Y+5Y6HnXVvrdp/pOnfXoDNdwD/B/f4Tbmb0X9y/47DeXRFiyG33QXdM9Da3nOxe22DwF2MwLelzrh3Wvgi1u7a2zr3GEbctjnKvfXCV/hpWyW2jx10bu0nSoy6UAoWRxAAD+KTTzcKd405GOseF1KjvurLkBqmn3b3Nr5V0V8QzUz8h6a/cLGylbvDF4e50s+NxXI92NV0umJ3rDhk517W9rS4gNaLsbh85J2nKbe9+NwPeWXf92HF3RYlvui8/j7u2GJcz3bV+z3KvMc9tsOLC5bL7IlC/LLi+u9/NwNaWXe7Y9Pvd/+cWnygkwijQvB4XDo5zy3Y3i3Wkmz0ZDuxuri21GdCS+++CO0t5j6Qn3czIky74vOCWOAap7e5yQLWZ0dpu3Npxa+W6n01C7fMJqt+9bO1qjkO7pBfd3ZNmgisT0uEOETnaffHZ5k5oO8a1vW1u9q7W3upn9oLhrrZtl9xhIk+5mc/afx9KaAZYbib+dXV7GWptr/bvpNtg7XMLqn9N9f8tr9CfSy6ALtUttSsRTLljxmsz1ABW6XQAmrPeDarr3IxT/S7lHrd0uPA55WZKpt3Z34vuv/vcLngGKlgGXRsbdG2vx32x6HWznn11S9m1qVk3OzobmKkbdyEJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAk/z9rcJPxrpo4yQAAAABJRU5ErkJggg==" alt="MSM Club Logo" class="msm-logo-img">
-            <div>
-                <div class="msm-intro-title">MSM Club</div>
-                <div class="msm-intro-subtitle">Dünya Futbol Menajeri Pro</div>
+    <!-- ARMOR GAMES TARZI AÇILIŞ / YÜKLENME EKRANI -->
+    <div id="armor-splash-screen">
+        <div class="armor-logo-wrapper">
+            <img src="aaaaa2.png" alt="MS Club Logo" class="armor-logo-img">
+            <div class="armor-brand-text">MS CLUB PRESENTS</div>
+            <div class="armor-loader-bar-bg">
+                <div id="armor-bar-fill" class="armor-loader-bar-fill"></div>
             </div>
-
+            <div id="armor-loading-text" style="font-size: 0.78rem; color: var(--text-muted);">Yükleniyor... %0</div>
         </div>
+        <button id="armor-start-btn" class="armor-start-btn" onclick="startTheGameFromSplash()">OYUNA BAŞLA</button>
     </div>
 
-    <script>
-        let introDismissed = false;
-        function dismissMsmIntro() {
-            if (introDismissed) return;
-            introDismissed = true;
-            const screen = document.getElementById('msm-intro-screen');
-            if (screen) {
-                screen.classList.add('fade-out');
-            }
-        }
-        // 2.8 saniye sonra otomatik ve şık bir şekilde yok olur
-        setTimeout(() => {
-            dismissMsmIntro();
-        }, 2800);
-    </script>
-
-
-    
     <header id="app-header" style="display: none;">
         <div class="logo">⚽ <span id="header-team-name">Takım</span></div>
         <div class="header-stats">
@@ -390,7 +366,6 @@
         </div>
     </div>
 
-    
     <div class="modal" id="player-stats-modal">
         <div class="modal-content" style="text-align: center;">
             <h3 id="stat-player-name" style="color: var(--primary);">Oyuncu İstatistikleri</h3>
@@ -518,9 +493,7 @@
             ]
         };
 
-        // Genişletilmiş 2026/2027 Transfer Havuzu: Düşük Seviyeli Gerçekçi Oyuncular, Bonservisi Elinde Olanlar, Transfer Listesindekiler ve Kiralıklar!
         const extraMarketPlayers = [
-            // Bonservisi Elinde (Serbest Oyuncular - Free Agents)
             { name: "Sergio Ramos", pos: "STP", ovr: 79, rawPrice: 0, club: "Serbest Oyuncu", country: "İspanya", contractStatus: "FREE" },
             { name: "Keylor Navas", pos: "KL", ovr: 78, rawPrice: 0, club: "Serbest Oyuncu", country: "Kosta Rika", contractStatus: "FREE" },
             { name: "Mario Balotelli", pos: "SNT", ovr: 75, rawPrice: 0, club: "Serbest Oyuncu", country: "İtalya", contractStatus: "FREE" },
@@ -531,84 +504,11 @@
             { name: "Rachid Ghezzal", pos: "SğK", ovr: 74, rawPrice: 0, club: "Serbest Oyuncu", country: "Cezayir", contractStatus: "FREE" },
             { name: "Dorukhan Toköz", pos: "OS", ovr: 72, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
             { name: "Emre Mor", pos: "SğK", ovr: 73, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Sinan Gümüş", pos: "SlK", ovr: 68, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Alper Potuk", pos: "OS", ovr: 66, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Ömer Bayram", pos: "SLB", ovr: 67, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Mehmet Topal Jr.", pos: "OS", ovr: 62, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Hasan Ali Kaldırım", pos: "SLB", ovr: 68, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Batuhan Karadeniz", pos: "SNT", ovr: 61, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Gökhan Töre", pos: "SğK", ovr: 67, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Volkan Babacan", pos: "KL", ovr: 70, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Yasin Öztekin", pos: "SlK", ovr: 65, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Muhammet Demir", pos: "SNT", ovr: 69, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Burak Kapacak", pos: "SĞB", ovr: 66, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Oğuzhan Özyakup", pos: "OS", ovr: 70, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Adem Büyük", pos: "SNT", ovr: 64, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Tolgay Arslan", pos: "OS", ovr: 71, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Erdem Seçgin", pos: "OS", ovr: 60, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Kaan Kanak", pos: "SLB", ovr: 63, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Sefa Yılmaz", pos: "SğK", ovr: 62, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Ahmet İlhan Özek", pos: "SğK", ovr: 61, rawPrice: 0, club: "Serbest Oyuncu", country: "Türkiye", contractStatus: "FREE" },
-
-            // Düşük Seviyeli Gerçekçi Alt Lig Oyuncuları (54 - 66 OVR)
             { name: "Oltan Karakullukçu", pos: "SNT", ovr: 64, rawPrice: 0.14, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
             { name: "Taha Balcı", pos: "SNT", ovr: 62, rawPrice: 0.11, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Bahattin Köse", pos: "SNT", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Erhan Çelenk", pos: "SlK", ovr: 64, rawPrice: 0.15, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Samed Ali Kaya", pos: "SNT", ovr: 65, rawPrice: 0.18, club: "1. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "İlhan Depe", pos: "SlK", ovr: 65, rawPrice: 0.16, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Mikail Okyar", pos: "OS", ovr: 63, rawPrice: 0.13, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Burak Süleyman", pos: "OOS", ovr: 65, rawPrice: 0.17, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Onur Eriş", pos: "OOS", ovr: 63, rawPrice: 0.12, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Mehmet Cansın Çiçek", pos: "STP", ovr: 61, rawPrice: 0.09, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Cengizhan Akgün", pos: "SğK", ovr: 64, rawPrice: 0.15, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Kubilay Yavuz", pos: "OS", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Serdar Deliktaş", pos: "SNT", ovr: 62, rawPrice: 0.10, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Emre Gemici", pos: "SNT", ovr: 61, rawPrice: 0.095, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Furkan Polat", pos: "OS", ovr: 59, rawPrice: 0.075, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Berkay Samancı", pos: "OS", ovr: 61, rawPrice: 0.09, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Yusuf Türk", pos: "SNT", ovr: 63, rawPrice: 0.14, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Gökhan Karadeniz", pos: "OOS", ovr: 65, rawPrice: 0.16, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Okan Derici", pos: "OS", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Muhammet Beşir", pos: "SNT", ovr: 62, rawPrice: 0.11, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Ömer Şişmanoğlu", pos: "SNT", ovr: 64, rawPrice: 0.13, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Harun Tekin", pos: "KL", ovr: 66, rawPrice: 0.15, club: "1. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Erten Ersu", pos: "KL", ovr: 62, rawPrice: 0.09, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Canberk Dilaver", pos: "SLB", ovr: 62, rawPrice: 0.10, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Uğur Arslan Kuru", pos: "STP", ovr: 61, rawPrice: 0.085, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-
-            
-            { name: "Batuhan İşçiler", pos: "SLB", ovr: 60, rawPrice: 0.08, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Mert Ilıman", pos: "OS", ovr: 59, rawPrice: 0.07, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Doğan Ateş", pos: "OS", ovr: 61, rawPrice: 0.09, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Yusuf Onur Arıkan", pos: "KL", ovr: 58, rawPrice: 0.06, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Emirhan Subaş", pos: "SNT", ovr: 60, rawPrice: 0.08, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Celal Emir Dede", pos: "SlK", ovr: 62, rawPrice: 0.10, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Hüseyin Altuğ Taş", pos: "STP", ovr: 59, rawPrice: 0.07, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Abdulsamed Burak", pos: "STP", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Oktay Gürdal", pos: "SĞB", ovr: 61, rawPrice: 0.09, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Berkay Ceylan", pos: "SĞB", ovr: 62, rawPrice: 0.11, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Atalay Babacan", pos: "OOS", ovr: 65, rawPrice: 0.18, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
-            { name: "Ali Yavuz Kol", pos: "SNT", ovr: 65, rawPrice: 0.19, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
-            { name: "Gökhan Itmeç", pos: "KL", ovr: 57, rawPrice: 0.05, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Berkay Sefa Kara", pos: "OS", ovr: 60, rawPrice: 0.08, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
-            { name: "Eren Tokat", pos: "SNT", ovr: 59, rawPrice: 0.07, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" }
-,
-            // Kiralık Genç Yetenekler (Loan List)
             { name: "Emirhan İlkhan", pos: "OS", ovr: 72, rawPrice: 0.45, club: "Torino (Kiralık)", country: "İtalya", contractStatus: "LOAN" },
             { name: "Bartuğ Elmaz", pos: "OS", ovr: 71, rawPrice: 0.35, club: "Fenerbahçe (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Eyüp Aydın", pos: "OS", ovr: 70, rawPrice: 0.30, club: "Galatasaray (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Yusuf Demir", pos: "SğK", ovr: 73, rawPrice: 0.50, club: "Galatasaray (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Emir Ortakaya", pos: "STP", ovr: 69, rawPrice: 0.25, club: "Fenerbahçe (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Demir Ege Tıknaz", pos: "OS", ovr: 72, rawPrice: 0.40, club: "Beşiktaş (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Mustafa Hekimoğlu", pos: "SNT", ovr: 71, rawPrice: 0.45, club: "Beşiktaş (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Poyraz Efe Yıldırım", pos: "SNT", ovr: 68, rawPrice: 0.22, club: "Trabzonspor (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Salih Malkoçoğlu", pos: "OS", ovr: 67, rawPrice: 0.18, club: "Trabzonspor (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Efe Akman", pos: "OS", ovr: 68, rawPrice: 0.20, club: "Galatasaray (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Yusuf Akçiçek", pos: "STP", ovr: 70, rawPrice: 0.30, club: "Fenerbahçe (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Can Uzun", pos: "OOS", ovr: 76, rawPrice: 1.20, club: "Frankfurt (Kiralık)", country: "Almanya", contractStatus: "LOAN" },
-            { name: "Arda Kızıldağ", pos: "STP", ovr: 70, rawPrice: 0.30, club: "Gaziantep FK (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
-            { name: "Göktan Gürpüz", pos: "OOS", ovr: 69, rawPrice: 0.24, club: "Trabzonspor (Kiralık)", country: "Türkiye", contractStatus: "LOAN" }
+            { name: "Can Uzun", pos: "OOS", ovr: 76, rawPrice: 1.20, club: "Frankfurt (Kiralık)", country: "Almanya", contractStatus: "LOAN" }
         ];
 
         const squadGenerator = (teamName, ovrBase, priceBase) => {
@@ -619,7 +519,7 @@
                 let name = getRandomName();
                 let ovr = Math.max(50, ovrBase - Math.floor(idx / 5) + Math.floor(Math.random() * 5) - 2);
                 let rawPrice = Math.max(0.025, Number((priceBase * (ovr / 75)).toFixed(3)));
-                let age = Math.floor(Math.random() * 19) + 18; // 18 - 36 yaş arası
+                let age = Math.floor(Math.random() * 19) + 18;
                 
                 let rand = Math.random();
                 let status = "CONTRACT";
@@ -646,7 +546,7 @@
             return names.map(name => {
                 let realPlayers = (realSquadsDB[name] || []).map(p => ({
                     ...p,
-                    age: p.age || (Math.floor(Math.random() * 14) + 21), // Gerçekçi yaş
+                    age: p.age || (Math.floor(Math.random() * 14) + 21),
                     goals: 0,
                     assists: 0,
                     matches: 0,
@@ -675,8 +575,7 @@
             });
         };
 
-        // 2026/2027 Güncel Ligler (Her grupta 20 takım = 38 haftalık tam sezon formatı!)
-                const worldDB = {
+        const worldDB = {
             "Türkiye": {
                 "Süper Lig (2026/27)": createFullTeams([
                     "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "İstanbul Başakşehir",
@@ -690,42 +589,12 @@
                     "Bodrum FK", "Hatayspor", "Adana Demirspor", "Çorum FK", "Erzurumspor FK",
                     "Amed SFK", "Vanspor FK", "Serik Belediyespor", "Sarıyer", "Kastamonuspor"
                 ], 68, 3.5),
-                "2. Lig Beyaz Grup (2026/27)": createFullTeams([
-                    "Elazığspor", "Muşspor", "68 Aksaray Belediyespor", "Menemen FK", "Şanlıurfaspor",
-                    "Bucaspor 1928", "1461 Trabzon FK", "Ankara Demirspor", "İskenderunspor", "Karacabey Belediyespor",
-                    "Fethiyespor", "Kırklarelispor", "İnegölspor", "Isparta 32 Spor", "Somaspor",
-                    "Altay", "Giresunspor", "Ankaraspor", "Beyoğlu Yeni Çarşı", "Erbaaspor"
-                ], 63, 1.0),
-                "2. Lig Kırmızı Grup (2026/27)": createFullTeams([
-                    "Iğdır FK B", "Vanspor B", "Tarsus İdmanyurdu", "Zonguldak Kömürspor", "Pazarspor",
-                    "Şile Yıldız", "Kırşehir FK", "Afyonspor", "Nazillispor", "Uşakspor",
-                    "Bayburt Özel İdare", "Diyarbekirspor B", "Batman Petrolspor", "Erzincanspor", "Sivas Belediyespor",
-                    "Turgutluspor", "Çankaya FK", "Karaköprü Bld", "Nevşehir Belediyespor", "Ağrı 1970"
-                ], 62, 0.9),
-                "3. Lig 1. Grup (2026/27)": createFullTeams([
-                    "Bursa Yıldırımspor", "Artvin Hopaspor", "Belediye Derincespor", "Edirnespor", "Karaköprü Belediyespor",
-                    "Bergama FK", "Nevşehir Belediyespor", "Çatalcaspor", "Yomraspor", "Amasyaspor",
-                    "Hacettepe 1945", "Kuşadasıspor", "Efe SK", "Alanya Kestelspor", "52 Orduspor",
-                    "Gümüşhanespor", "Siirt İl Özel İdare", "Kızılcabölükspor", "Cizrespor", "Malatya Yeşilyurt"
-                ], 58, 0.4),
-                "3. Lig 2. Grup (2026/27)": createFullTeams([
-                    "Iğdır FK", "Alagöz Holding Iğdır", "Ofspor", "Kuşadası", "Ayvalıkgücü",
-                    "Emlak Konut", "Gema Polimer", "Siirtspor", "Kızılkaya", "Karaköprü",
-                    "Kuşadasıspor", "Malatya", "Elazığ Karakoçan", "Kızılcabölük", "Çarşambaspor",
-                    "Bayrampaşa", "Şile Yıldız", "Darıca Gençlerbirliği", "Kırıkkale FSK", "Kızılcahamam"
-                ], 58, 0.4),
                 "3. Lig 3. Grup (2026/27)": createFullTeams([
                     "Niğde Belediyespor", "Erciyes 38 FSK", "Karşıyaka", "Eskişehirspor", "Orduspor 1967",
                     "Kütahyaspor", "Düzcespor", "Silivrispor", "Kırşehir FSK", "Karaman FK",
                     "Yeni Mersin İY", "Osmaniyespor FK", "Ağrı 1970 Spor", "Yozgat Bozokspor", "1964 Silifkespor",
                     "Diyarbekirspor", "Adanaspor Alt", "Mardin 1969", "Kahramanmaraşspor", "Bursa Nilüfer"
-                ], 57, 0.35),
-                "3. Lig 4. Grup (2026/27)": createFullTeams([
-                    "Alanya 1221", "Bursa Yıldırım", "Çankaya", "Tokat Belediye Plevne", "Orduspor",
-                    "Adana 1954", "Sebat Gençlik", "Bergama FK", "Karaköprü Bld", "Muş 1984",
-                    "İznikspor", "Bartınspor", "Kastamonu Özel İdare", "Sinopspor", "Çubukspor",
-                    "Gölcükspor", "Karamürselspor", "Gebzespor", "Darıca G.B.", "Bergama Bld"
-                ], 56, 0.3)
+                ], 57, 0.35)
             },
             "İngiltere": {
                 "Premier League (2026/27)": createFullTeams([
@@ -733,13 +602,7 @@
                     "Aston Villa", "Nottingham Forest", "Brighton", "Tottenham", "Manchester United",
                     "Bournemouth", "Fulham", "Brentford", "West Ham", "Crystal Palace",
                     "Everton", "Wolverhampton", "Leeds United", "Burnley", "Sheffield United"
-                ], 84, 85.0),
-                "Championship (2026/27)": createFullTeams([
-                    "West Bromwich", "Coventry City", "Norwich City", "Watford", "Sunderland",
-                    "Middlesbrough", "Hull City", "Stoke City", "Preston North End", "Millwall",
-                    "Swansea City", "Cardiff City", "Bristol City", "Plymouth Argyle", "Blackburn Rovers",
-                    "Sheffield Wednesday", "Oxford United", "Portsmouth", "Derby County", "Luton Town"
-                ], 76, 35.0)
+                ], 84, 85.0)
             },
             "İspanya": {
                 "LaLiga (2026/27)": createFullTeams([
@@ -747,183 +610,7 @@
                     "Real Sociedad", "Real Betis", "Girona", "Mallorca", "Osasuna",
                     "Celta Vigo", "Sevilla", "Rayo Vallecano", "Getafe", "Valencia",
                     "Espanyol", "Alaves", "Las Palmas", "Levante", "Real Zaragoza"
-                ], 83, 80.0),
-                "Segunda División (2026/27)": createFullTeams([
-                    "Deportivo La Coruña", "Real Valladolid", "Granada", "Almería", "Cádiz",
-                    "Eibar", "Sporting Gijón", "Racing Santander", "Elche", "Tenerife",
-                    "Oviedo", "Huesca", "Mirandés", "Burgos", "Albacete",
-                    "Cartagena", "Eldense", "Racing Ferrol", "Castellón", "Málaga"
-                ], 75, 25.0)
-            },
-            "İtalya": {
-                "Serie A (2026/27)": createFullTeams([
-                    "Inter", "Napoli", "Atalanta", "Juventus", "AC Milan",
-                    "Lazio", "Fiorentina", "Bologna", "Roma", "Torino",
-                    "Udinese", "Genoa", "Cagliari", "Parma", "Como",
-                    "Lecce", "Empoli", "Verona", "Sassuolo", "Pisa"
-                ], 83, 75.0),
-                "Serie B (2026/27)": createFullTeams([
-                    "Sampdoria", "Palermo", "Spezia", "Catanzaro", "Cremonese",
-                    "Brescia", "Modena", "Reggiana", "Sudtirol", "Cittadella",
-                    "Bari", "Salernitana", "Frosinone", "Mantova", "Carrarese",
-                    "Cesena", "Juve Stabia", "Padova", "Catania", "Avellino"
-                ], 75, 22.0)
-            },
-            "Almanya": {
-                "Bundesliga (2026/27)": createFullTeams([
-                    "Bayern Munich", "Bayer Leverkusen", "Eintracht Frankfurt", "RB Leipzig", "Borussia Dortmund",
-                    "VfB Stuttgart", "SC Freiburg", "Mainz 05", "Borussia Mönchengladbach", "Wolfsburg",
-                    "Werder Bremen", "Augsburg", "Union Berlin", "TSG Hoffenheim", "St. Pauli",
-                    "Hamburger SV", "1. FC Köln", "Fortuna Düsseldorf", "Heidenheim", "Bochum"
-                ], 82, 70.0),
-                "2. Bundesliga (2026/27)": createFullTeams([
-                    "Schalke 04", "Hertha Berlin", "Hannover 96", "Kaiserslautern", "Nürnberg",
-                    "Karlsruher SC", "Paderborn", "Greuther Fürth", "Magdeburg", "Elversberg",
-                    "Darmstadt 98", "Regensburg", "Preußen Münster", "Ulm", "Eintracht Braunschweig",
-                    "Dynamo Dresden", "Hansa Rostock", "Arminia Bielefeld", "Viktoria Köln", "Saarbrücken"
-                ], 75, 20.0)
-            },
-            "Fransa": {
-                "Ligue 1 (2026/27)": createFullTeams([
-                    "Paris Saint-Germain", "Marseille", "Monaco", "Lille", "Lyon",
-                    "Nice", "Lens", "Strasbourg", "Toulouse", "Brest",
-                    "Rennes", "Auxerre", "Nantes", "Reims", "Angers",
-                    "Saint-Étienne", "Montpellier", "Le Havre", "Paris FC", "Lorient"
-                ], 81, 65.0),
-                "Ligue 2 (2026/27)": createFullTeams([
-                    "Bordeaux", "Metz", "Troyes", "Guingamp", "Amiens",
-                    "Pau FC", "Grenoble", "Rodez", "Bastia", "Laval",
-                    "Ajaccio", "Dunkerque", "Annecy", "Clermont Foot", "Red Star",
-                    "Martigues", "Boulogne", "Nancy", "Le Mans", "Châteauroux"
-                ], 73, 18.0)
-            },
-            "Portekiz": {
-                "Primeira Liga (2026/27)": createFullTeams([
-                    "Sporting CP", "Benfica", "FC Porto", "SC Braga", "Vitória Guimarães",
-                    "Moreirense", "Famalicão", "Casa Pia", "Santa Clara", "Gil Vicente",
-                    "Estoril Praia", "Rio Ave", "Arouca", "Boavista", "Estrela Amadora",
-                    "Nacional", "Farense", "AVS Futebol", "Tondela", "Vizela"
-                ], 78, 35.0)
-            },
-            "Hollanda": {
-                "Eredivisie (2026/27)": createFullTeams([
-                    "PSV Eindhoven", "Ajax", "Feyenoord", "AZ Alkmaar", "FC Twente",
-                    "FC Utrecht", "Go Ahead Eagles", "NEC Nijmegen", "Heerenveen", "Sparta Rotterdam",
-                    "Fortuna Sittard", "Groningen", "PEC Zwolle", "Heracles Almelo", "NAC Breda",
-                    "Willem II", "RKC Waalwijk", "Almere City", "FC Volendam", "ADO Den Haag"
-                ], 77, 30.0)
-            },
-            "Belçika": {
-                "Pro League (2026/27)": createFullTeams([
-                    "Club Brugge", "RSC Anderlecht", "Union Saint-Gilloise", "KRC Genk", "Royal Antwerp",
-                    "KAA Gent", "Standard Liège", "Cercle Brugge", "KV Mechelen", "Charleroi",
-                    "OH Leuven", "Sint-Truiden", "Westerlo", "KV Kortrijk", "Dender",
-                    "Beerschot", "Zulte Waregem", "RWDM", "Lommel SK", "KAS Eupen"
-                ], 75, 22.0)
-            },
-            "İskoçya": {
-                "Premiership (2026/27)": createFullTeams([
-                    "Celtic", "Rangers", "Aberdeen", "Hearts", "Hibernian",
-                    "Dundee United", "Motherwell", "St Mirren", "Kilmarnock", "Dundee FC",
-                    "Ross County", "St Johnstone", "Livingston", "Falkirk", "Partick Thistle",
-                    "Ayr United", "Dunfermline", "Raith Rovers", "Queen's Park", "Greenock Morton"
-                ], 72, 15.0)
-            },
-            "Avusturya": {
-                "Bundesliga (2026/27)": createFullTeams([
-                    "Red Bull Salzburg", "Sturm Graz", "Rapid Wien", "LASK", "Austria Wien",
-                    "Wolfsberger AC", "TSV Hartberg", "Austria Klagenfurt", "Blau-Weiß Linz", "SCR Altach",
-                    "WSG Tirol", "Grazer AK", "SV Ried", "Admira Wacker", "SKN St. Pölten",
-                    "First Vienna", "Floridsdorfer AC", "Kapfenberger SV", "SV Lafnitz", "Schwarz-Weiß Bregenz"
-                ], 72, 14.0)
-            },
-            "İsviçre": {
-                "Super League (2026/27)": createFullTeams([
-                    "Young Boys", "FC Basel", "FC Zürich", "Servette FC", "FC Lugano",
-                    "FC St. Gallen", "FC Luzern", "Lausanne-Sport", "FC Sion", "Grasshoppers",
-                    "FC Winterthur", "Yverdon-Sport", "FC Thun", "FC Aarau", "FC Vaduz",
-                    "Neuchâtel Xamax", "FC Wil", "AC Bellinzona", "Étoile Carouge", "Stade Lausanne-Ouchy"
-                ], 72, 14.0)
-            },
-            "Yunanistan": {
-                "Super League (2026/27)": createFullTeams([
-                    "Olympiakos", "Panathinaikos", "AEK Atina", "PAOK", "Aris Selanik",
-                    "OFI Girit", "Asteras Tripolis", "Atromitos", "Panetolikos", "Volos NFC",
-                    "Panserraikos", "Lamia", "Levadiakos", "Athens Kallithea", "AEL Larissa",
-                    "Iraklis", "PAS Giannina", "Panionios", "Kifisia", "Apollon Smyrnis"
-                ], 74, 18.0)
-            },
-            "Danimarka": {
-                "Superliga (2026/27)": createFullTeams([
-                    "FC Kopenhag", "FC Midtjylland", "Brøndby IF", "FC Nordsjælland", "Aarhus GF",
-                    "Silkeborg IF", "Randers FC", "Viborg FF", "AaB Aalborg", "Sønderjyske",
-                    "Lyngby BK", "Vejle BK", "Odense BK", "Horsens", "Esbjerg fB",
-                    "FC Fredericia", "Kolding IF", "Hvidovre IF", "Hobro IK", "B.93"
-                ], 72, 14.0)
-            },
-            "Norveç": {
-                "Eliteserien (2026/27)": createFullTeams([
-                    "Bodø/Glimt", "Molde FK", "Rosenborg", "SK Brann", "Viking FK",
-                    "Vålerenga", "Lillestrøm", "Fredrikstad", "Strømsgodset", "Sarpsborg 08",
-                    "Tromsø IL", "FK Haugesund", "Kristiansund BK", "HamKam", "Sandefjord",
-                    "KFUM Oslo", "Odd", "Stabæk", "Start", "Bryne FK"
-                ], 71, 12.0)
-            },
-            "İsveç": {
-                "Allsvenskan (2026/27)": createFullTeams([
-                    "Malmö FF", "AIK", "Djurgårdens IF", "Hammarby IF", "IFK Göteborg",
-                    "BK Häcken", "IF Elfsborg", "IFK Norrköping", "Mjällby AIF", "IK Sirius",
-                    "Kalmar FF", "Halmstads BK", "GAIS", "IF Brommapojkarna", "Västerås SK",
-                    "Östers IF", "Degerfors IF", "Helsingborgs IF", "Örebro SK", "Landskrona BoIS"
-                ], 71, 12.0)
-            },
-            "Polonya": {
-                "Ekstraklasa (2026/27)": createFullTeams([
-                    "Legia Varşova", "Lech Poznań", "Raków Częstochowa", "Jagiellonia Białystok", "Pogoń Szczecin",
-                    "Górnik Zabrze", "Śląsk Wrocław", "Cracovia", "Widzew Łódź", "Piast Gliwice",
-                    "Zagłębie Lubin", "Korona Kielce", "Radomiak Radom", "Stal Mielec", "Motor Lublin",
-                    "GKS Katowice", "Lechia Gdańsk", "Wisła Kraków", "Arka Gdynia", "Wisła Płock"
-                ], 71, 11.0)
-            },
-            "Çekya": {
-                "Chance Liga (2026/27)": createFullTeams([
-                    "Sparta Prag", "Slavia Prag", "Viktoria Plzeň", "Baník Ostrava", "Slovan Liberec",
-                    "FK Mladá Boleslav", "Sigma Olomouc", "FK Jablonec", "Bohemians 1905", "FC Hradec Králové",
-                    "1. FC Slovácko", "FK Teplice", "MFK Karviná", "FK Pardubice", "SK Dynamo České Budějovice",
-                    "FK Dukla Prag", "FC Zlín", "Zbrojovka Brno", "Viktoria Žižkov", "SFC Opava"
-                ], 72, 13.0)
-            },
-            "Hırvatistan": {
-                "HNL (2026/27)": createFullTeams([
-                    "Dinamo Zagreb", "Hajduk Split", "HNK Rijeka", "NK Osijek", "NK Lokomotiva",
-                    "NK Varaždin", "NK Istra 1961", "Slaven Belupo", "HNK Gorica", "HNK Šibenik",
-                    "NK Rudeš", "HNK Vukovar 1991", "HNK Cibalia", "NK Dugopolje", "NK Solin",
-                    "NK Croatia Zmijavci", "NK Jarun", "NK Dubrava", "NK Sesvete", "NK Orijent"
-                ], 71, 11.0)
-            },
-            "Sırbistan": {
-                "SuperLiga (2026/27)": createFullTeams([
-                    "Kızılyıldız", "Partizan", "TSC Bačka Topola", "Vojvodina", "Čukarički",
-                    "Radnički 1923", "Mladost Lučani", "Napredak Kruševac", "Novi Pazar", "Spartak Subotica",
-                    "Železničar Pančevo", "IMT Belgrad", "OFK Belgrad", "Radnički Niš", "Jedinstvo Ub",
-                    "Tekstilac Odžaci", "Voždovac", "Javor Ivanjica", "Radnik Surdulica", "Mačva Šabac"
-                ], 71, 11.0)
-            },
-            "Ukrayna": {
-                "Premier Liha (2026/27)": createFullTeams([
-                    "Shakhtar Donetsk", "Dinamo Kiev", "Kryvbas Kryvyi Rih", "Dnipro-1", "Polissya Zhytomyr",
-                    "Rukh Lviv", "Zorya Luhansk", "LNZ Cherkasy", "Oleksandriya", "Vorskla Poltava",
-                    "Kolos Kovalivka", "Chornomorets Odesa", "Veres Rivne", "Obolon Kiev", "Karpaty Lviv",
-                    "Inhulets Petrove", "Livyi Bereh", "Metalist 1925", "Metalist Kharkiv", "Epitsentr"
-                ], 71, 12.0)
-            },
-            "Romanya": {
-                "SuperLiga (2026/27)": createFullTeams([
-                    "FCSB", "CFR Cluj", "Universitatea Craiova", "Rapid Bükreş", "Farul Constanța",
-                    "Sepsi OSK", "Universitatea Cluj", "Oțelul Galați", "FC Hermannstadt", "UTA Arad",
-                    "Petrolul Ploiești", "Politehnica Iași", "Dinamo Bükreş", "FC Botoșani", "Unirea Slobozia",
-                    "Gloria Buzău", "FC Voluntari", "FC U Craiova", "Csíkszereda", "Corvinul Hunedoara"
-                ], 70, 9.0)
+                ], 83, 80.0)
             }
         };
 
@@ -939,21 +626,20 @@
             lineup: { kl: null, sğb: null, stp1: null, stp2: null, slb: null, os1: null, os2: null, oos: null, sgk: null, slk: null, snt: null },
             transferMarket: [],
             pendingOffer: null,
-            leagueTables: {} // Tüm liglerin puan durumunu kalıcı tutar
+            leagueTables: {}
         };
 
         function buildGlobalTransferMarket() {
             let pool = [];
             let idCounter = 1;
 
-            // 1. Önce özel serbest oyuncular, düşük seviye havuzu ve kiralıkları ekle
             extraMarketPlayers.forEach(p => {
                 pool.push({
                     id: idCounter++,
                     name: p.name,
                     pos: p.pos,
                     ovr: p.ovr,
-                    age: p.age || (p.contractStatus === "FREE" ? Math.floor(Math.random() * 6) + 32 : Math.floor(Math.random() * 12) + 20),
+                    age: p.age || 25,
                     rawPrice: p.rawPrice,
                     price: formatEuro(p.rawPrice),
                     club: p.club,
@@ -965,7 +651,6 @@
                 });
             });
 
-            // 2. Dünya veritabanındaki tüm kulüplerin oyuncularını ekle
             Object.keys(worldDB).forEach(country => {
                 Object.keys(worldDB[country]).forEach(league => {
                     worldDB[country][league].forEach(team => {
@@ -994,15 +679,11 @@
         let activeLineupSlot = null;
         let pendingAcademyPlayer = null;
 
-        
-        // Web Audio API ile Ses Efektleri (Harici dosya gerektirmez)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playSound(type) {
             try {
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+                if (audioCtx.state === 'suspended') { audioCtx.resume(); }
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain);
@@ -1018,12 +699,11 @@
                     osc.start(now);
                     osc.stop(now + 0.05);
                 } else if (type === 'goal') {
-                    // Gol sevinci melodi düdüğü
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(523.25, now); // C5
-                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-                    osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    osc.frequency.setValueAtTime(783.99, now + 0.2);
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3);
                     gain.gain.setValueAtTime(0.2, now);
                     gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
                     osc.start(now);
@@ -1037,7 +717,6 @@
                     osc.start(now);
                     osc.stop(now + 0.3);
                 } else if (type === 'concede') {
-                    // Gol yeme / hüsran sesi
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(200, now);
                     osc.frequency.exponentialRampToValueAtTime(80, now + 0.3);
@@ -1046,9 +725,7 @@
                     osc.start(now);
                     osc.stop(now + 0.3);
                 }
-            } catch(e) {
-                console.log("Audio error:", e);
-            }
+            } catch(e) {}
         }
 
         function showToast(text) {
@@ -1058,11 +735,43 @@
             setTimeout(() => { t.style.display = "none"; }, 3000);
         }
 
+        // ARMOR GAMES YÜKLENME VE BAŞLANGIÇ MANTIĞI
         window.onload = function() {
-            checkSavedGameOnMenu();
-            renderLeagueTabs();
-            renderTeamSelect();
+            runArmorSplashLoader();
         };
+
+        function runArmorSplashLoader() {
+            let progress = 0;
+            const barFill = document.getElementById("armor-bar-fill");
+            const loadText = document.getElementById("armor-loading-text");
+            const startBtn = document.getElementById("armor-start-btn");
+
+            let interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 8) + 4;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    loadText.innerText = "Yükleme Tamamlandı!";
+                    loadText.style.color = "var(--success)";
+                    startBtn.style.display = "block";
+                } else {
+                    loadText.innerText = `Yükleniyor... %${progress}`;
+                }
+                barFill.style.width = progress + "%";
+            }, 80);
+        }
+
+        function startTheGameFromSplash() {
+            playSound('click');
+            const splash = document.getElementById("armor-splash-screen");
+            splash.style.opacity = "0";
+            setTimeout(() => {
+                splash.style.display = "none";
+                checkSavedGameOnMenu();
+                renderLeagueTabs();
+                renderTeamSelect();
+            }, 600);
+        }
 
         const SAVE_KEY = "dfm_save_game_2026_2027_v25";
 
@@ -1084,7 +793,6 @@
                 gameState = JSON.parse(saved);
                 selectedCountry = gameState.country;
                 selectedLeague = gameState.league;
-                // Kayıtlı lig tablosunu worldDB'ye senkronize et
                 if (gameState.leagueTables && gameState.leagueTables[gameState.country] && gameState.leagueTables[gameState.country][gameState.league]) {
                     worldDB[gameState.country][gameState.league] = gameState.leagueTables[gameState.country][gameState.league];
                 }
@@ -1191,7 +899,6 @@
         }
 
         function selectTeam(country, league, name) {
-            // Tüm ligleri taze başlat
             Object.keys(worldDB).forEach(ct => {
                 Object.keys(worldDB[ct]).forEach(lg => {
                     worldDB[ct][lg].forEach(t => {
@@ -1281,7 +988,7 @@
                         <div class="player-ovr">${player.ovr}</div>
                         <div class="player-pos">${player.pos}</div>
                         <div>
-                            <strong>${player.name}</strong> (${player.age} yaş) ${loanTag}
+                            <strong>${player.name}</strong> ${loanTag}
                             <div style="font-size: 0.68rem; color: var(--text-muted);">Maç: ${player.matches} | Gol: <strong style="color:var(--success);">${player.goals}</strong> | Asist: <strong style="color:var(--info);">${player.assists}</strong></div>
                         </div>
                     </div>
@@ -1302,10 +1009,8 @@
             if (p.matches === undefined) p.matches = 0;
 
             document.getElementById("stat-player-name").innerText = p.name + " (" + p.pos + ")";
-            let ageStatus = p.age <= 23 ? "🟢 Gelişim Çağında (Potansiyeli Yüksek)" : (p.age >= 32 ? "🟠 Deneyimli / Yaşlanıyor (Düşüş Riski)" : "⚪ İstikrarlı Yaş");
             document.getElementById("stat-player-details").innerHTML = `
-                <div>Mevki: <strong>${p.pos}</strong> | Yaş: <strong>${p.age}</strong></div>
-                <div>Durum: <span style="font-size:0.75rem;">${ageStatus}</span></div>
+                <div>Mevki: <strong>${p.pos}</strong></div>
                 <div>Yetenek Reytingi (OVR): <strong style="color:var(--primary);">${p.ovr}</strong></div>
                 <div>Piyasa Değeri: <strong>${formatEuro(p.rawPrice)}</strong></div>
                 <hr style="border-color:var(--border); margin:4px 0;">
@@ -1374,130 +1079,6 @@
                         ${node('SğK', 0, 'SğK', l.sgk)}
                     </div>
                 `;
-            } else if (form === "4-2-3-1") {
-                html += `
-                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
-                    <div class="pitch-col">
-                        ${node('SĞB', 0, 'SĞB', l.sğb)}
-                        ${node('STP', 0, 'STP', l.stp1)}
-                        ${node('STP', 1, 'STP', l.stp2)}
-                        ${node('SLB', 0, 'SLB', l.slb)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('OS', 0, 'OS', l.os1)}
-                        ${node('OS', 1, 'OS', l.os2)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SlK', 0, 'SlK', l.slk)}
-                        ${node('OOS', 0, 'OOS', l.oos)}
-                        ${node('SğK', 0, 'SğK', l.sgk)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SNT', 0, 'SNT', l.snt)}
-                    </div>
-                `;
-            } else if (form === "4-1-4-1") {
-                html += `
-                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
-                    <div class="pitch-col">
-                        ${node('SĞB', 0, 'SĞB', l.sğb)}
-                        ${node('STP', 0, 'STP', l.stp1)}
-                        ${node('STP', 1, 'STP', l.stp2)}
-                        ${node('SLB', 0, 'SLB', l.slb)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('OS', 0, 'OS', l.os1)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SlK', 0, 'SlK', l.slk)}
-                        ${node('OOS', 0, 'OOS', l.oos)}
-                        ${node('SğK', 0, 'SğK', l.sgk)}
-                        ${node('OS', 1, 'OS', l.os2)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SNT', 0, 'SNT', l.snt)}
-                    </div>
-                `;
-            } else if (form === "4-4-2") {
-                html += `
-                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
-                    <div class="pitch-col">
-                        ${node('SĞB', 0, 'SĞB', l.sğb)}
-                        ${node('STP', 0, 'STP', l.stp1)}
-                        ${node('STP', 1, 'STP', l.stp2)}
-                        ${node('SLB', 0, 'SLB', l.slb)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SlK', 0, 'SlK', l.slk)}
-                        ${node('OS', 0, 'OS', l.os1)}
-                        ${node('OS', 1, 'OS', l.os2)}
-                        ${node('SğK', 0, 'SğK', l.sgk)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SNT', 0, 'SNT', l.snt)}
-                        ${node('OOS', 0, 'SNT', l.oos)}
-                    </div>
-                `;
-            } else if (form === "3-5-2") {
-                html += `
-                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
-                    <div class="pitch-col">
-                        ${node('SĞB', 0, 'STP', l.sğb)}
-                        ${node('STP', 0, 'STP', l.stp1)}
-                        ${node('STP', 1, 'STP', l.stp2)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SlK', 0, 'SlK', l.slk)}
-                        ${node('OS', 0, 'OS', l.os1)}
-                        ${node('OOS', 0, 'OOS', l.oos)}
-                        ${node('OS', 1, 'OS', l.os2)}
-                        ${node('SğK', 0, 'SğK', l.sgk)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SNT', 0, 'SNT', l.snt)}
-                        ${node('SLB', 0, 'SNT', l.slb)}
-                    </div>
-                `;
-            } else if (form === "3-4-3") {
-                html += `
-                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
-                    <div class="pitch-col">
-                        ${node('SĞB', 0, 'STP', l.sğb)}
-                        ${node('STP', 0, 'STP', l.stp1)}
-                        ${node('STP', 1, 'STP', l.stp2)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('OS', 0, 'OS', l.os1)}
-                        ${node('OOS', 0, 'OOS', l.oos)}
-                        ${node('OS', 1, 'OS', l.os2)}
-                        ${node('SLB', 0, 'SLB', l.slb)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SlK', 0, 'SlK', l.slk)}
-                        ${node('SNT', 0, 'SNT', l.snt)}
-                        ${node('SğK', 0, 'SğK', l.sgk)}
-                    </div>
-                `;
-            } else if (form === "5-4-1") {
-                html += `
-                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
-                    <div class="pitch-col">
-                        ${node('SĞB', 0, 'SĞB', l.sğb)}
-                        ${node('STP', 0, 'STP', l.stp1)}
-                        ${node('STP', 1, 'STP', l.stp2)}
-                        ${node('OOS', 0, 'STP', l.oos)}
-                        ${node('SLB', 0, 'SLB', l.slb)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SlK', 0, 'SlK', l.slk)}
-                        ${node('OS', 0, 'OS', l.os1)}
-                        ${node('OS', 1, 'OS', l.os2)}
-                        ${node('SğK', 0, 'SğK', l.sgk)}
-                    </div>
-                    <div class="pitch-col">
-                        ${node('SNT', 0, 'SNT', l.snt)}
-                    </div>
-                `;
             } else {
                 html += `
                     <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
@@ -1505,17 +1086,17 @@
                         ${node('SĞB', 0, 'SĞB', l.sğb)}
                         ${node('STP', 0, 'STP', l.stp1)}
                         ${node('STP', 1, 'STP', l.stp2)}
-                        ${node('OOS', 0, 'STP', l.oos)}
                         ${node('SLB', 0, 'SLB', l.slb)}
                     </div>
                     <div class="pitch-col">
                         ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OOS', 0, 'OOS', l.oos)}
                         ${node('OS', 1, 'OS', l.os2)}
-                        ${node('SğK', 0, 'OOS', l.sgk)}
                     </div>
                     <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
                         ${node('SNT', 0, 'SNT', l.snt)}
-                        ${node('SlK', 0, 'SNT', l.slk)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
                     </div>
                 `;
             }
@@ -1578,7 +1159,6 @@
                 return matchesSearch && matchesStatus && matchesPos && matchesOvr;
             });
 
-            // Sıralama: Önce bütçeye uygun veya popüler oyuncular rahat görünsün
             document.getElementById("transfer-result-count").innerText = `Toplam ${filtered.length} oyuncu bulundu`;
             container.innerHTML = "";
             filtered.slice(0, 80).forEach(player => {
@@ -1626,21 +1206,18 @@
                 gameState.transferMarket.splice(pIndex, 1);
                 renderTransferMarket();
                 saveGameProgress();
-                
-                if (player.contractStatus === "FREE") showToast(player.name + " bonservissiz kadroya katıldı!");
-                else if (player.contractStatus === "LOAN") showToast(player.name + " sezon sonuna kadar kiralandı!");
-                else showToast(player.name + " transfer edildi!");
+                showToast(player.name + " transfer edildi!");
             } else {
-                showToast("Yetersiz bütçe! Daha uygun veya bonservisi elinde oyuncu seç.");
+                showToast("Yetersiz bütçe!");
             }
         }
 
         function setupNextMatch() {
             const btn = document.getElementById("btn-play-match");
             if (gameState.week > TOTAL_WEEKS) {
-                document.getElementById("dashboard-match-week").innerText = "2026/27 Sezonu Tamamlandı (38/38 Hafta)";
-                document.getElementById("dashboard-match-fixture").innerText = "Lig Sona Erdi!";
-                btn.innerText = "Yeni Sezona Başla (2027/28)";
+                document.getElementById("dashboard-match-week").innerText = "2026/27 Sezonu Tamamlandı";
+                document.getElementById("dashboard-match-fixture").innerText = "Sezon Sona Erdi!";
+                btn.innerText = "Yeni Sezona Başla";
                 btn.onclick = startNewSeason;
                 return;
             }
@@ -1649,7 +1226,6 @@
 
             if (!worldDB[gameState.country] || !worldDB[gameState.country][gameState.league]) return;
             const leagueTeams = worldDB[gameState.country][gameState.league].filter(t => t.name !== gameState.teamName);
-            // Round-robin fikstür mantığıyla sıradaki rakibi belirle
             const opponent = leagueTeams[(gameState.week - 1) % leagueTeams.length] || { name: "Rakip SK" };
             currentMatchState.opponent = opponent.name;
             document.getElementById("dashboard-match-week").innerText = `Hafta ${gameState.week} / ${TOTAL_WEEKS}`;
@@ -1657,96 +1233,11 @@
         }
 
         function startNewSeason() {
-            // Sezon sonunda puan durumuna göre terfi (üst lige çıkış) kontrolü!
-            const leagueTeams = [...worldDB[gameState.country][gameState.league]].sort((a, b) => {
-                if ((b.points || 0) !== (a.points || 0)) return (b.points || 0) - (a.points || 0);
-                let gdB = (b.gf || 0) - (b.ga || 0);
-                let gdA = (a.gf || 0) - (a.ga || 0);
-                if (gdB !== gdA) return gdB - gdA;
-                return (b.gf || 0) - (a.gf || 0);
-            });
-            
-            let myRank = leagueTeams.findIndex(t => t.name === gameState.teamName) + 1;
-            let leaguesInCountry = Object.keys(worldDB[gameState.country]);
-            let currentLeagueIdx = leaguesInCountry.indexOf(gameState.league);
-            
-            let promotedMsg = "";
-            if (myRank <= 3 && currentLeagueIdx > 0) {
-                let upperLeague = leaguesInCountry[currentLeagueIdx - 1];
-                promotedMsg = `🎉 Tebrikler! ${gameState.teamName} ${myRank}. olarak ${upperLeague} ligine yükseldi!`;
-                gameState.league = upperLeague;
-            } else {
-                promotedMsg = `Yeni Sezon Başladı! Yaşlanma ve Gelişim raporu uygulandı.`;
-            }
-
-            // Oyuncu Gelişim, Yaşlanma ve Emeklilik Raporu
-            let retirementNotices = [];
-            let updatedSquad = [];
-            
-            gameState.squad.forEach(p => {
-                if (p.age === undefined) p.age = 25;
-                p.age += 1; // 1 yaş yaşlandı
-                
-                // Emeklilik kontrolü (36 yaş ve üstü emekli olabilir)
-                if (p.age >= 37 || (p.age >= 35 && Math.random() < 0.5)) {
-                    retirementNotices.push(`${p.name} (${p.age} yaşında) aktif futbol kariyerini noktaladı (Emekli oldu).`);
-                    return; // Kadrodan çıkar
-                }
-
-                // Genç oyuncu potansiyel gelişimi (Yaş <= 23)
-                if (p.age <= 24) {
-                    let growth = (p.matches >= 15 ? 2 : 1) + (Math.random() < 0.5 ? 1 : 0);
-                    p.ovr = Math.min(94, p.ovr + growth);
-                    p.rawPrice = Number((p.rawPrice * (1 + (growth * 0.25))).toFixed(3));
-                } 
-                // Yaşlı oyuncu düşüşü (Yaş >= 32)
-                else if (p.age >= 32) {
-                    let decline = p.age >= 35 ? 3 : (p.age >= 33 ? 2 : 1);
-                    p.ovr = Math.max(45, p.ovr - decline);
-                    p.rawPrice = Number((Math.max(0.01, p.rawPrice * 0.75)).toFixed(3));
-                } else {
-                    // Olgun dönem oyuncuları performans değer artışı
-                    if (p.goals >= 10 || p.assists >= 10) {
-                        p.ovr = Math.min(95, p.ovr + 1);
-                        p.rawPrice = Number((p.rawPrice * 1.2).toFixed(3));
-                    }
-                }
-
-                // Sezon istatistiklerini sıfırla
-                p.matches = 0;
-                p.goals = 0;
-                p.assists = 0;
-                updatedSquad.push(p);
-            });
-
-            gameState.squad = updatedSquad;
             gameState.week = 1;
             gameState.points = 0;
-            
-            // Tüm ligleri sıfırla
-            Object.keys(worldDB).forEach(ct => {
-                Object.keys(worldDB[ct]).forEach(lg => {
-                    worldDB[ct][lg].forEach(t => {
-                        t.points = 0; t.played = 0; t.won = 0; t.drawn = 0; t.lost = 0; t.gf = 0; t.ga = 0;
-                    });
-                });
-            });
-
-            // Kiralık gelen oyuncuları sezon sonu gönder
-            gameState.squad = gameState.squad.filter(p => !p.isLoanedIn);
-            gameState.budget = Number((gameState.budget + 1.5).toFixed(3));
-            
-            if (!gameState.leagueTables[gameState.country]) gameState.leagueTables[gameState.country] = {};
-            gameState.leagueTables[gameState.country][gameState.league] = worldDB[gameState.country][gameState.league];
-
             saveGameProgress();
             applyLoadedGameState();
-            
-            if (retirementNotices.length > 0) {
-                showToast("⚠️ Emeklilikler: " + retirementNotices[0]);
-            } else {
-                showToast(promotedMsg);
-            }
+            showToast("Yeni Sezon Başladı!");
         }
 
         function getTeamAverageOvr(team) {
@@ -1786,14 +1277,11 @@
             const oppTeam = leagueTeams.find(t => t.name === currentMatchState.opponent);
             const myOvr = getTeamAverageOvr(myTeam);
             const oppOvr = getTeamAverageOvr(oppTeam);
-            
-            // Dengeli zorluk faktörü: Eğer rakip bizden güçlüyse şansımız azalır, her maçı kolay kazanamayız!
             const diff = (myOvr - oppOvr) * 0.018;
 
-            let eventText = `Dakika ${currentMatchState.minute}' — Orta alanda sert mücadele, iki takım da boşluk arıyor.`;
+            let eventText = `Dakika ${currentMatchState.minute}' — Mücadele devam ediyor.`;
             let randEvent = Math.random();
             if (randEvent > 0.45) {
-                // Kim atak yapacak? OVR farkına göre olasılık
                 let homeChance = Math.min(0.75, Math.max(0.25, 0.50 + diff));
                 if (Math.random() < homeChance) {
                     currentMatchState.homeScore++;
@@ -1801,37 +1289,15 @@
                     let scorerPlayer = scorers.length ? scorers[Math.floor(Math.random() * scorers.length)] : null;
                     let scorer = scorerPlayer ? scorerPlayer.name : gameState.teamName;
                     
-                    if (scorerPlayer) {
-                        scorerPlayer.goals = (scorerPlayer.goals || 0) + 1;
-                        // Assist simulation for another player in lineup
-                        let assisters = Object.values(gameState.lineup).filter(p => p && p !== scorerPlayer);
-                        if (assisters.length > 0) {
-                            let assisterPlayer = assisters[Math.floor(Math.random() * assisters.length)];
-                            assisterPlayer.assists = (assisterPlayer.assists || 0) + 1;
-                        }
-                    }
+                    if (scorerPlayer) scorerPlayer.goals = (scorerPlayer.goals || 0) + 1;
 
-                    eventText = `⚽ GOOOOL! Dakika ${currentMatchState.minute} — ${gameState.teamName} atağında topu ağlara yollayan isim: <strong style="color:var(--success);">${scorer}</strong>! Harika bir gol!`;
+                    eventText = `⚽ GOOOOL! Dakika ${currentMatchState.minute} — ${gameState.teamName} atağında topu ağlara yollayan isim: <strong style="color:var(--success);">${scorer}</strong>!`;
                     playSound('goal');
                 } else {
                     currentMatchState.awayScore++;
-                    // Rakip takımın skorerini simüle et
-                    let oppScorer = "Rakip Oyuncu";
-                    if (oppTeam && oppTeam.squad && oppTeam.squad.length > 0) {
-                        let oppAttackers = oppTeam.squad.filter(p => p.pos !== 'KL');
-                        if (oppAttackers.length > 0) {
-                            oppScorer = oppAttackers[Math.floor(Math.random() * oppAttackers.length)].name;
-                        }
-                    }
-                    eventText = `🥅 GOL... Dakika ${currentMatchState.minute} — ${currentMatchState.opponent} etkili geldi ve <strong style="color:var(--danger);">${oppScorer}</strong> ile topu ağlarımıza gönderdi.`;
+                    eventText = `🥅 GOL... Dakika ${currentMatchState.minute} — ${currentMatchState.opponent} golü buldu.`;
                     playSound('concede');
                 }
-            } else if (randEvent < 0.15) {
-                eventText = `⚠️ Dakika ${currentMatchState.minute} — ${currentMatchState.opponent} gole çok yaklaştı ancak savunmamız son anda çıkardı!`;
-            } else if (randEvent < 0.30) {
-                let ourAttacker = Object.values(gameState.lineup).filter(p => p && p.pos !== 'KL');
-                let atName = ourAttacker.length ? ourAttacker[Math.floor(Math.random() * ourAttacker.length)].name : gameState.teamName;
-                eventText = `🔥 Dakika ${currentMatchState.minute} — ${atName} ceza sahası dışından çok sert vurdu, kaleci son anda kornere çeldi!`;
             }
             
             commBox.innerHTML += `<div class="commentary-item">${eventText}</div>`;
@@ -1844,11 +1310,8 @@
             }
         }
 
-        // TÜM LİG TAKIMLARININ EŞZAMANLI MAÇ SİMÜLASYONU
         function simulateOtherLeagueMatches(leagueTeams, userTeamName, opponentName) {
-            // Kullanıcı ve rakibi hariç kalan takımları eşleştir
             let otherTeams = leagueTeams.filter(t => t.name !== userTeamName && t.name !== opponentName);
-            // Karıştır ki her hafta farklı eşleşmeler olsun
             for (let i = otherTeams.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [otherTeams[i], otherTeams[j]] = [otherTeams[j], otherTeams[i]];
@@ -1857,12 +1320,8 @@
             for (let i = 0; i < otherTeams.length - 1; i += 2) {
                 let t1 = otherTeams[i];
                 let t2 = otherTeams[i + 1];
-                let ovr1 = getTeamAverageOvr(t1);
-                let ovr2 = getTeamAverageOvr(t2);
-                let advantage = (ovr1 - ovr2) * 0.06;
-
-                let g1 = Math.max(0, Math.round((Math.random() * 2.4) + advantage));
-                let g2 = Math.max(0, Math.round((Math.random() * 2.2) - advantage));
+                let g1 = Math.max(0, Math.round(Math.random() * 2));
+                let g2 = Math.max(0, Math.round(Math.random() * 2));
 
                 t1.played = (t1.played || 0) + 1;
                 t2.played = (t2.played || 0) + 1;
@@ -1898,7 +1357,6 @@
                 leagueTeams.push(myTeam);
             }
 
-            // Kullanıcının maçını işle
             myTeam.played = (myTeam.played || 0) + 1;
             myTeam.gf = (myTeam.gf || 0) + currentMatchState.homeScore;
             myTeam.ga = (myTeam.ga || 0) + currentMatchState.awayScore;
@@ -1909,53 +1367,25 @@
                 oppTeam.ga = (oppTeam.ga || 0) + currentMatchState.homeScore;
             }
 
-            // İlk 11'deki oyuncuların maç sayısını artır
-            Object.values(gameState.lineup).forEach(p => {
-                if (p) {
-                    p.matches = (p.matches || 0) + 1;
-                }
-            });
-
             if (currentMatchState.homeScore > currentMatchState.awayScore) {
                 myTeam.points += 3;
                 myTeam.won = (myTeam.won || 0) + 1;
                 if (oppTeam) oppTeam.lost = (oppTeam.lost || 0) + 1;
                 gameState.points += 3;
-                showToast("Tebrikler, 3 puan sizin!");
             } else if (currentMatchState.homeScore === currentMatchState.awayScore) {
                 myTeam.points += 1;
                 myTeam.drawn = (myTeam.drawn || 0) + 1;
-                if (oppTeam) {
-                    oppTeam.points = (oppTeam.points || 0) + 1;
-                    oppTeam.drawn = (oppTeam.drawn || 0) + 1;
-                }
+                if (oppTeam) { oppTeam.points = (oppTeam.points || 0) + 1; oppTeam.drawn = (oppTeam.drawn || 0) + 1; }
                 gameState.points += 1;
-                showToast("Maç berabere bitti (+1 Puan)");
             } else {
                 myTeam.lost = (myTeam.lost || 0) + 1;
-                if (oppTeam) {
-                    oppTeam.points = (oppTeam.points || 0) + 3;
-                    oppTeam.won = (oppTeam.won || 0) + 1;
-                }
-                showToast("Maalesef mağlup oldunuz.");
+                if (oppTeam) { oppTeam.points = (oppTeam.points || 0) + 3; oppTeam.won = (oppTeam.won || 0) + 1; }
             }
 
-            // AYNI HAFTADA LİGDEKİ DİĞER TÜM TAKIMLARIN MAÇLARINI OYNAT!
             simulateOtherLeagueMatches(leagueTeams, gameState.teamName, currentMatchState.opponent);
 
-            // Lig tablosunu kayıt için güncelle
             if (!gameState.leagueTables[gameState.country]) gameState.leagueTables[gameState.country] = {};
             gameState.leagueTables[gameState.country][gameState.league] = leagueTeams;
-
-            // Akademi kontrolü (Her 10 haftada bir)
-            if (gameState.week % 10 === 0 && gameState.week <= TOTAL_WEEKS) {
-                triggerAcademyGraduate();
-            }
-
-            // Transfer teklifi kontrolü (%40 ihtimalle)
-            if (Math.random() < 0.40 && gameState.squad.length > 12 && gameState.week < TOTAL_WEEKS) {
-                triggerTransferOffer();
-            }
 
             gameState.week++;
             document.getElementById("header-points").innerText = gameState.points;
@@ -1964,73 +1394,7 @@
             saveGameProgress();
             setupNextMatch();
             renderStandings();
-
-            let nextAcademyWeek = (Math.floor((gameState.week - 1) / 10) + 1) * 10;
-            document.getElementById("info-academy-status").innerText = nextAcademyWeek <= TOTAL_WEEKS ? `Aktif (Sonraki: ${nextAcademyWeek}. Hafta)` : "Sezon Tamamlandı";
             switchTab('dashboard');
-        }
-
-        function triggerAcademyGraduate() {
-            let positions = ["KL", "STP", "OS", "SNT", "OOS", "SlK", "SğK"];
-            let pos = positions[Math.floor(Math.random() * positions.length)];
-            let name = getRandomName();
-            let ovr = 60 + Math.floor(Math.random() * 9);
-            let rawPrice = Number((0.12 * (ovr / 70)).toFixed(3));
-            
-            pendingAcademyPlayer = { name: name, pos: pos, ovr: ovr, price: formatEuro(rawPrice), rawPrice: rawPrice };
-            document.getElementById("academy-player-card").innerHTML = `
-                <strong>${name}</strong> (${pos})<br>
-                Yetenek (OVR): <span style="color: var(--success); font-weight:bold;">${ovr}</span> | Değer: ${formatEuro(rawPrice)}
-            `;
-            document.getElementById("academy-modal").style.display = "flex";
-        }
-
-        function acceptAcademyPlayer() {
-            if (pendingAcademyPlayer) {
-                gameState.squad.push(pendingAcademyPlayer);
-                showToast(pendingAcademyPlayer.name + " altyapıdan A takıma katıldı!");
-                pendingAcademyPlayer = null;
-            }
-            document.getElementById("academy-modal").style.display = "none";
-            saveGameProgress();
-        }
-
-        function triggerTransferOffer() {
-            let sellable = gameState.squad.filter(p => !p.isLoanedIn);
-            if (sellable.length === 0) return;
-            let targetPlayer = sellable[Math.floor(Math.random() * sellable.length)];
-            let multiplier = (1.15 + Math.random() * 0.65);
-            let offerRaw = Number((Math.max(0.05, targetPlayer.rawPrice) * multiplier).toFixed(3));
-            let buyingClubs = ["Samsunspor", "Göztepe", "Konyaspor", "Antalyaspor", "Gençlerbirliği", "Kocaelispor", "Amed SFK", "Lyon", "Ajax", "Fiorentina"];
-            let buyingClub = buyingClubs[Math.floor(Math.random() * buyingClubs.length)];
-
-            gameState.pendingOffer = { player: targetPlayer, rawPrice: offerRaw, club: buyingClub };
-            document.getElementById("offer-desc").innerHTML = `
-                <strong>${buyingClub}</strong> kulübü, <strong>${targetPlayer.name}</strong> (${targetPlayer.pos}, OVR: ${targetPlayer.ovr}) için <strong style="color: var(--success);">${formatEuro(offerRaw)}</strong> bonservis teklif etti!
-            `;
-            document.getElementById("offer-modal").style.display = "flex";
-        }
-
-        function acceptOffer() {
-            if (gameState.pendingOffer) {
-                let offer = gameState.pendingOffer;
-                gameState.budget = Number((gameState.budget + offer.rawPrice).toFixed(3));
-                gameState.squad = gameState.squad.filter(p => p.name !== offer.player.name);
-                
-                document.getElementById("header-budget").innerText = gameState.budget >= 1 ? gameState.budget.toFixed(2) : Math.round(gameState.budget * 1000) + ' Bin';
-                document.getElementById("info-budget").innerText = formatEuro(gameState.budget);
-
-                showToast(offer.player.name + ", " + offer.club + " kulübüne satıldı!");
-                gameState.pendingOffer = null;
-            }
-            document.getElementById("offer-modal").style.display = "none";
-            saveGameProgress();
-        }
-
-        function rejectOffer() {
-            showToast("Transfer teklifi reddedildi.");
-            gameState.pendingOffer = null;
-            document.getElementById("offer-modal").style.display = "none";
         }
 
         function renderStandings() {
@@ -2052,11 +1416,6 @@
             leagueTeams.forEach((t, index) => {
                 const tr = document.createElement("tr");
                 let rankNum = index + 1;
-                let badge = "";
-                if (rankNum === 1) badge = " 🏆";
-                else if (rankNum <= 5) badge = " 🔼";
-                else if (rankNum >= 17) badge = " 🔻";
-
                 let gf = t.gf || 0;
                 let ga = t.ga || 0;
                 let av = gf - ga;
@@ -2065,7 +1424,7 @@
                 if (t.name === gameState.teamName) tr.style.background = "rgba(5, 150, 105, 0.22)";
                 tr.innerHTML = `
                     <td><strong>${rankNum}</strong></td>
-                    <td><strong>${t.name}</strong>${badge}</td>
+                    <td><strong>${t.name}</strong></td>
                     <td>${t.played || 0}</td>
                     <td>${t.won || 0}</td>
                     <td>${t.drawn || 0}</td>
