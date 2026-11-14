@@ -96,7 +96,6 @@
     </style>
 </head>
 <body>
-    
     <!-- MSM CLUB INTRO SCREEN -->
     <style>
         #msm-intro-screen {
@@ -206,6 +205,7 @@
     </script>
 
 
+    
     <header id="app-header" style="display: none;">
         <div class="logo">⚽ <span id="header-team-name">Takım</span></div>
         <div class="header-stats">
@@ -219,7 +219,7 @@
             <h2>Dünya Futbol Menajeri Pro — 2026/2027 Sezonu</h2>
             <p style="color: var(--text-muted); margin-bottom: 8px; font-size: 0.8rem;">2026/27 güncel ligler ve kadrolar! Tüm takımlar 38 haftalık fikstürde eşzamanlı maç yapar. Transfer listesi, kiralıklar ve bonservisi elinde onlarca gerçek oyuncu seni bekliyor!</p>
             <div id="load-game-container" style="margin-bottom: 10px; display: none;">
-                <button class="btn" style="background: var(--warning); color: #000; width: 100%; margin-bottom: 4px;" onclick="loadGame()">💾 Kayıtlı Kariyere Devam Et</button>
+                <button class="btn" style="background: var(--warning); color: #000; width: 100%; margin-bottom: 4px;" onclick="playSound('click'); loadGame()">💾 Kayıtlı Kariyere Devam Et</button>
             </div>
             <div class="filter-bar">
                 <select id="country-select" onchange="onCountryChange()" style="min-width: 170px; font-weight: bold;">
@@ -260,7 +260,7 @@
                     <div class="next-match-box">
                         <div style="font-size: 0.75rem; color: var(--text-muted);" id="dashboard-match-week">Hafta 1 / 38</div>
                         <div style="font-size: 1rem; font-weight: bold; margin: 6px 0;" id="dashboard-match-fixture">Takım vs Rakip</div>
-                        <button class="btn btn-block" id="btn-play-match" onclick="startMatch()">Maça Çık</button>
+                        <button class="btn btn-block" id="btn-play-match" onclick="playSound('click'); startMatch()">Maça Çık</button>
                     </div>
                 </div>
                 <div class="card">
@@ -270,7 +270,7 @@
                         <div style="display: flex; justify-content: space-between;"><span>Sezon Durumu:</span> <strong style="color: var(--warning);" id="info-europe-target">Şampiyonluk Yarışı</strong></div>
                         <div style="display: flex; justify-content: space-between;"><span>Transfer Bütçesi:</span> <strong id="info-budget">0.3M €</strong></div>
                         <div style="display: flex; justify-content: space-between;"><span>Altyapı Akademisi:</span> <strong id="info-academy-status" style="color: var(--success);">Aktif (Sonraki: 10. Hafta)</strong></div>
-                        <button class="btn btn-block btn-secondary" style="margin-top: 4px;" onclick="saveAndExit()">💾 Kaydet ve Menüye Dön</button>
+                        <button class="btn btn-block btn-secondary" style="margin-top: 4px;" onclick="playSound('click'); saveAndExit()">💾 Kaydet ve Menüye Dön</button>
                     </div>
                 </div>
             </div>
@@ -283,12 +283,16 @@
                     <span style="font-size: 0.8rem; color: var(--text-muted);">Diziliş:</span>
                     <select id="formation-select" onchange="changeFormation(this.value)">
                         <option value="4-3-3">4-3-3 (Klasik)</option>
+                        <option value="4-2-3-1">4-2-3-1 (Modern / Ofansif)</option>
                         <option value="4-4-2">4-4-2 (Dengeli)</option>
+                        <option value="4-1-4-1">4-1-4-1 (Kontrollü)</option>
                         <option value="3-5-2">3-5-2 (Ofansif)</option>
+                        <option value="3-4-3">3-4-3 (Tam Hücum)</option>
                         <option value="5-3-2">5-3-2 (Katı Savunma)</option>
+                        <option value="5-4-1">5-4-1 (Otobüs Park Et)</option>
                     </select>
                 </div>
-                <button class="btn" style="background: var(--primary);" onclick="saveGameProgress()">Anlık Kaydet</button>
+                <button class="btn" style="background: var(--primary);" onclick="playSound('click'); saveGameProgress()">Anlık Kaydet</button>
             </div>
             <div class="squad-layout">
                 <div>
@@ -363,7 +367,7 @@
                 <div class="match-commentary" id="match-commentary-box">
                     <div class="commentary-item">Hakem düdüğü çaldı ve maç başladı!</div>
                 </div>
-                <button class="btn btn-block" id="match-action-btn" onclick="progressMatch()">Maçı İlerlet</button>
+                <button class="btn btn-block" id="match-action-btn" onclick="playSound('click'); progressMatch()">Maçı İlerlet</button>
             </div>
         </div>
     </main>
@@ -373,7 +377,7 @@
         <div class="modal-content">
             <h3 id="modal-title">Oyuncu Seç</h3>
             <div class="player-list" id="modal-player-list" style="max-height: 240px;"></div>
-            <button class="btn btn-secondary" onclick="closeLineupModal()" style="margin-top: 8px;">Kapat</button>
+            <button class="btn btn-secondary" onclick="playSound('click'); closeLineupModal()" style="margin-top: 8px;">Kapat</button>
         </div>
     </div>
 
@@ -382,7 +386,16 @@
             <h3 style="color: var(--warning);">🌟 Gençlik Akademisi Raporu!</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Altyapımızdan yetenekli bir genç oyuncu A takıma yükseldi!</p>
             <div id="academy-player-card" style="background: var(--bg-dark); padding: 10px; border-radius: 8px; border: 1px solid var(--primary); margin: 8px 0; font-size: 0.9rem;"></div>
-            <button class="btn btn-block" onclick="acceptAcademyPlayer()">Kadromuza Dahil Et</button>
+            <button class="btn btn-block" onclick="playSound('click'); acceptAcademyPlayer()">Kadromuza Dahil Et</button>
+        </div>
+    </div>
+
+    
+    <div class="modal" id="player-stats-modal">
+        <div class="modal-content" style="text-align: center;">
+            <h3 id="stat-player-name" style="color: var(--primary);">Oyuncu İstatistikleri</h3>
+            <div id="stat-player-details" style="background: var(--bg-dark); padding: 12px; border-radius: 8px; border: 1px solid var(--border); margin: 8px 0; font-size: 0.85rem; text-align: left; display: flex; flex-direction: column; gap: 6px;"></div>
+            <button class="btn btn-secondary btn-block" onclick="playSound('click'); closePlayerStatsModal()">Kapat</button>
         </div>
     </div>
 
@@ -391,23 +404,23 @@
             <h3 style="color: var(--warning);">💼 Oyuncunuza Transfer Teklifi Geldi!</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;" id="offer-desc">Bir kulüp oyuncunuz için teklifte bulundu.</p>
             <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button class="btn" style="flex: 1; background: var(--success);" onclick="acceptOffer()">Kabul Et (Sat)</button>
-                <button class="btn" style="flex: 1; background: var(--danger);" onclick="rejectOffer()">Reddet</button>
+                <button class="btn" style="flex: 1; background: var(--success);" onclick="playSound('click'); acceptOffer()">Kabul Et (Sat)</button>
+                <button class="btn" style="flex: 1; background: var(--danger);" onclick="playSound('click'); rejectOffer()">Reddet</button>
             </div>
         </div>
     </div>
 
     <nav class="bottom-nav" id="bottom-nav" style="display: none;">
-        <button class="nav-item active" onclick="switchTab('dashboard')">
+        <button class="nav-item active" onclick="playSound('click'); switchTab('dashboard')">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Ana Sayfa
         </button>
-        <button class="nav-item" onclick="switchTab('squad')">
+        <button class="nav-item" onclick="playSound('click'); switchTab('squad')">
             <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Kadro & Taktik
         </button>
-        <button class="nav-item" onclick="switchTab('standings')">
+        <button class="nav-item" onclick="playSound('click'); switchTab('standings')">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>Puan Durumu
         </button>
-        <button class="nav-item" onclick="switchTab('transfer')">
+        <button class="nav-item" onclick="playSound('click'); switchTab('transfer')">
             <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Transfer Ara
         </button>
     </nav>
@@ -431,77 +444,77 @@
         // 2026/2027 Güncel Gerçek Kadrolar
         const realSquadsDB = {
             "Niğde Belediyespor": [
-                { name: "Tunahan Dikişci", pos: "KL", ovr: 59, rawPrice: 0.08, contractStatus: "CONTRACT" },
-                { name: "Yuşa Tığrak", pos: "KL", ovr: 57, rawPrice: 0.06, contractStatus: "CONTRACT" },
-                { name: "Ebrar Yıldırım", pos: "STP", ovr: 58, rawPrice: 0.075, contractStatus: "CONTRACT" },
-                { name: "Yusuf Balcı", pos: "STP", ovr: 57, rawPrice: 0.065, contractStatus: "CONTRACT" },
-                { name: "Samet Emlik", pos: "STP", ovr: 56, rawPrice: 0.055, contractStatus: "CONTRACT" },
-                { name: "Mertcan Çam", pos: "SĞB", ovr: 58, rawPrice: 0.07, contractStatus: "CONTRACT" },
-                { name: "Emre Özkan", pos: "SLB", ovr: 57, rawPrice: 0.065, contractStatus: "CONTRACT" },
-                { name: "Furkan Uslu", pos: "OS", ovr: 58, rawPrice: 0.075, contractStatus: "CONTRACT" },
-                { name: "İbrahim Bolat", pos: "OS", ovr: 57, rawPrice: 0.065, contractStatus: "CONTRACT" },
-                { name: "Oğuzhan Erdoğan", pos: "OOS", ovr: 59, rawPrice: 0.085, contractStatus: "CONTRACT" },
-                { name: "Burak Çolak", pos: "SlK", ovr: 59, rawPrice: 0.09, contractStatus: "CONTRACT" },
-                { name: "İbrahim Koca", pos: "SNT", ovr: 60, rawPrice: 0.10, contractStatus: "CONTRACT" },
-                { name: "Yusuf Atasoy", pos: "SNT", ovr: 58, rawPrice: 0.075, contractStatus: "CONTRACT" }
+                { name: "Tunahan Dikişci", pos: "KL", ovr: 59, age: 23, rawPrice: 0.08, contractStatus: "CONTRACT" },
+                { name: "Yuşa Tığrak", pos: "KL", ovr: 57, age: 21, rawPrice: 0.06, contractStatus: "CONTRACT" },
+                { name: "Ebrar Yıldırım", pos: "STP", ovr: 58, age: 22, rawPrice: 0.075, contractStatus: "CONTRACT" },
+                { name: "Yusuf Balcı", pos: "STP", ovr: 57, age: 24, rawPrice: 0.065, contractStatus: "CONTRACT" },
+                { name: "Samet Emlik", pos: "STP", ovr: 56, age: 23, rawPrice: 0.055, contractStatus: "CONTRACT" },
+                { name: "Mertcan Çam", pos: "SĞB", ovr: 58, age: 25, rawPrice: 0.07, contractStatus: "CONTRACT" },
+                { name: "Emre Özkan", pos: "SLB", ovr: 57, age: 26, rawPrice: 0.065, contractStatus: "CONTRACT" },
+                { name: "Furkan Uslu", pos: "OS", ovr: 58, age: 22, rawPrice: 0.075, contractStatus: "CONTRACT" },
+                { name: "İbrahim Bolat", pos: "OS", ovr: 57, age: 23, rawPrice: 0.065, contractStatus: "CONTRACT" },
+                { name: "Oğuzhan Erdoğan", pos: "OOS", ovr: 59, age: 24, rawPrice: 0.085, contractStatus: "CONTRACT" },
+                { name: "Burak Çolak", pos: "SlK", ovr: 59, age: 27, rawPrice: 0.09, contractStatus: "CONTRACT" },
+                { name: "İbrahim Koca", pos: "SNT", ovr: 60, age: 25, rawPrice: 0.10, contractStatus: "CONTRACT" },
+                { name: "Yusuf Atasoy", pos: "SNT", ovr: 58, age: 22, rawPrice: 0.075, contractStatus: "CONTRACT" }
             ],
             "Fenerbahçe": [
-                { name: "Dominik Livaković", pos: "KL", ovr: 82, rawPrice: 10.5, contractStatus: "CONTRACT" },
-                { name: "Mason Greenwood", pos: "SğK", ovr: 83, rawPrice: 35.0, contractStatus: "CONTRACT" },
-                { name: "İrfan Can Eğribayat", pos: "KL", ovr: 76, rawPrice: 2.2, contractStatus: "CONTRACT" },
-                { name: "Çağlar Söyüncü", pos: "STP", ovr: 80, rawPrice: 9.0, contractStatus: "CONTRACT" },
-                { name: "Alexander Djiku", pos: "STP", ovr: 80, rawPrice: 8.5, contractStatus: "CONTRACT" },
-                { name: "Jayden Oosterwolde", pos: "SLB", ovr: 79, rawPrice: 13.0, contractStatus: "CONTRACT" },
-                { name: "Bright Osayi-Samuel", pos: "SĞB", ovr: 78, rawPrice: 8.0, contractStatus: "CONTRACT" },
-                { name: "Mert Müldür", pos: "SĞB", ovr: 77, rawPrice: 5.5, contractStatus: "CONTRACT" },
-                { name: "Sofyan Amrabat", pos: "OS", ovr: 81, rawPrice: 15.0, contractStatus: "CONTRACT" },
-                { name: "Fred", pos: "OS", ovr: 82, rawPrice: 14.0, contractStatus: "CONTRACT" },
-                { name: "İsmail Yüksek", pos: "OS", ovr: 79, rawPrice: 13.5, contractStatus: "CONTRACT" },
-                { name: "Sebastian Szymański", pos: "OOS", ovr: 81, rawPrice: 18.0, contractStatus: "CONTRACT" },
-                { name: "Anderson Talisca", pos: "OOS", ovr: 82, rawPrice: 12.0, contractStatus: "CONTRACT" },
-                { name: "İrfan Can Kahveci", pos: "SğK", ovr: 80, rawPrice: 9.5, contractStatus: "CONTRACT" },
-                { name: "Oğuz Aydın", pos: "SlK", ovr: 77, rawPrice: 6.5, contractStatus: "CONTRACT" },
-                { name: "Youssef En-Nesyri", pos: "SNT", ovr: 82, rawPrice: 22.0, contractStatus: "CONTRACT" },
-                { name: "Cenk Tosun", pos: "SNT", ovr: 75, rawPrice: 1.5, contractStatus: "LISTED" }
+                { name: "Dominik Livaković", pos: "KL", ovr: 82, age: 31, rawPrice: 10.5, contractStatus: "CONTRACT" },
+                { name: "Mason Greenwood", pos: "SğK", ovr: 83, age: 25, rawPrice: 35.0, contractStatus: "CONTRACT" },
+                { name: "İrfan Can Eğribayat", pos: "KL", ovr: 76, age: 27, rawPrice: 2.2, contractStatus: "CONTRACT" },
+                { name: "Çağlar Söyüncü", pos: "STP", ovr: 80, age: 30, rawPrice: 9.0, contractStatus: "CONTRACT" },
+                { name: "Alexander Djiku", pos: "STP", ovr: 80, age: 32, rawPrice: 8.5, contractStatus: "CONTRACT" },
+                { name: "Jayden Oosterwolde", pos: "SLB", ovr: 79, age: 25, rawPrice: 13.0, contractStatus: "CONTRACT" },
+                { name: "Bright Osayi-Samuel", pos: "SĞB", ovr: 78, age: 28, rawPrice: 8.0, contractStatus: "CONTRACT" },
+                { name: "Mert Müldür", pos: "SĞB", ovr: 77, age: 27, rawPrice: 5.5, contractStatus: "CONTRACT" },
+                { name: "Sofyan Amrabat", pos: "OS", ovr: 81, age: 30, rawPrice: 15.0, contractStatus: "CONTRACT" },
+                { name: "Fred", pos: "OS", ovr: 82, age: 33, rawPrice: 14.0, contractStatus: "CONTRACT" },
+                { name: "İsmail Yüksek", pos: "OS", ovr: 79, age: 27, rawPrice: 13.5, contractStatus: "CONTRACT" },
+                { name: "Sebastian Szymański", pos: "OOS", ovr: 81, age: 27, rawPrice: 18.0, contractStatus: "CONTRACT" },
+                { name: "Anderson Talisca", pos: "OOS", ovr: 82, age: 32, rawPrice: 12.0, contractStatus: "CONTRACT" },
+                { name: "İrfan Can Kahveci", pos: "SğK", ovr: 80, age: 31, rawPrice: 9.5, contractStatus: "CONTRACT" },
+                { name: "Oğuz Aydın", pos: "SlK", ovr: 77, age: 25, rawPrice: 6.5, contractStatus: "CONTRACT" },
+                { name: "Youssef En-Nesyri", pos: "SNT", ovr: 82, age: 29, rawPrice: 22.0, contractStatus: "CONTRACT" },
+                { name: "Cenk Tosun", pos: "SNT", ovr: 75, age: 35, rawPrice: 1.5, contractStatus: "LISTED" }
             ],
             "Galatasaray": [
-                { name: "Günay Güvenç", pos: "KL", ovr: 75, rawPrice: 1.5, contractStatus: "CONTRACT" },
-                { name: "Davinson Sánchez", pos: "STP", ovr: 84, rawPrice: 20.0, contractStatus: "CONTRACT" },
-                { name: "Abdülkerim Bardakcı", pos: "STP", ovr: 80, rawPrice: 8.5, contractStatus: "CONTRACT" },
-                { name: "Victor Nelsson", pos: "STP", ovr: 78, rawPrice: 11.0, contractStatus: "LISTED" },
-                { name: "Ismail Jakobs", pos: "SLB", ovr: 78, rawPrice: 8.5, contractStatus: "CONTRACT" },
-                { name: "Kaan Ayhan", pos: "SĞB", ovr: 77, rawPrice: 4.0, contractStatus: "CONTRACT" },
-                { name: "Lucas Torreira", pos: "OS", ovr: 83, rawPrice: 16.0, contractStatus: "CONTRACT" },
-                { name: "Gabriel Sara", pos: "OS", ovr: 82, rawPrice: 20.0, contractStatus: "CONTRACT" },
-                { name: "Kerem Demirbay", pos: "OS", ovr: 76, rawPrice: 3.5, contractStatus: "LISTED" },
-                { name: "Barış Alper Yılmaz", pos: "SğK", ovr: 82, rawPrice: 24.0, contractStatus: "CONTRACT" },
-                { name: "Roland Sallai", pos: "SğK", ovr: 79, rawPrice: 11.0, contractStatus: "CONTRACT" },
-                { name: "Yunus Akgün", pos: "SlK", ovr: 79, rawPrice: 11.5, contractStatus: "CONTRACT" },
-                { name: "Mauro Icardi", pos: "SNT", ovr: 83, rawPrice: 14.0, contractStatus: "CONTRACT" },
-                { name: "Michy Batshuayi", pos: "SNT", ovr: 79, rawPrice: 8.0, contractStatus: "CONTRACT" }
+                { name: "Günay Güvenç", pos: "KL", ovr: 75, age: 35, rawPrice: 1.5, contractStatus: "CONTRACT" },
+                { name: "Davinson Sánchez", pos: "STP", ovr: 84, age: 30, rawPrice: 20.0, contractStatus: "CONTRACT" },
+                { name: "Abdülkerim Bardakcı", pos: "STP", ovr: 80, age: 32, rawPrice: 8.5, contractStatus: "CONTRACT" },
+                { name: "Victor Nelsson", pos: "STP", ovr: 78, age: 27, rawPrice: 11.0, contractStatus: "LISTED" },
+                { name: "Ismail Jakobs", pos: "SLB", ovr: 78, age: 27, rawPrice: 8.5, contractStatus: "CONTRACT" },
+                { name: "Kaan Ayhan", pos: "SĞB", ovr: 77, age: 31, rawPrice: 4.0, contractStatus: "CONTRACT" },
+                { name: "Lucas Torreira", pos: "OS", ovr: 83, age: 30, rawPrice: 16.0, contractStatus: "CONTRACT" },
+                { name: "Gabriel Sara", pos: "OS", ovr: 82, age: 27, rawPrice: 20.0, contractStatus: "CONTRACT" },
+                { name: "Kerem Demirbay", pos: "OS", ovr: 76, age: 33, rawPrice: 3.5, contractStatus: "LISTED" },
+                { name: "Barış Alper Yılmaz", pos: "SğK", ovr: 82, age: 26, rawPrice: 24.0, contractStatus: "CONTRACT" },
+                { name: "Roland Sallai", pos: "SğK", ovr: 79, age: 29, rawPrice: 11.0, contractStatus: "CONTRACT" },
+                { name: "Yunus Akgün", pos: "SlK", ovr: 79, age: 26, rawPrice: 11.5, contractStatus: "CONTRACT" },
+                { name: "Mauro Icardi", pos: "SNT", ovr: 83, age: 33, rawPrice: 14.0, contractStatus: "CONTRACT" },
+                { name: "Michy Batshuayi", pos: "SNT", ovr: 79, age: 32, rawPrice: 8.0, contractStatus: "CONTRACT" }
             ],
             "Beşiktaş": [
-                { name: "Mert Günok", pos: "KL", ovr: 79, rawPrice: 2.5, contractStatus: "CONTRACT" },
-                { name: "Ersin Destanoğlu", pos: "KL", ovr: 73, rawPrice: 2.0, contractStatus: "LOAN" },
-                { name: "Gabriel Paulista", pos: "STP", ovr: 79, rawPrice: 3.0, contractStatus: "CONTRACT" },
-                { name: "Felix Uduokhai", pos: "STP", ovr: 78, rawPrice: 7.5, contractStatus: "CONTRACT" },
-                { name: "Arthur Masuaku", pos: "SLB", ovr: 76, rawPrice: 3.5, contractStatus: "CONTRACT" },
-                { name: "Jonas Svensson", pos: "SĞB", ovr: 76, rawPrice: 2.5, contractStatus: "CONTRACT" },
-                { name: "Gedson Fernandes", pos: "OS", ovr: 82, rawPrice: 17.5, contractStatus: "CONTRACT" },
-                { name: "Al-Musrati", pos: "OS", ovr: 79, rawPrice: 9.0, contractStatus: "LISTED" },
-                { name: "Rafa Silva", pos: "OOS", ovr: 84, rawPrice: 16.0, contractStatus: "CONTRACT" },
-                { name: "Milot Rashica", pos: "SğK", ovr: 78, rawPrice: 7.5, contractStatus: "CONTRACT" },
-                { name: "Semih Kılıçsoy", pos: "SNT", ovr: 78, rawPrice: 15.0, contractStatus: "CONTRACT" },
-                { name: "Ciro Immobile", pos: "SNT", ovr: 80, rawPrice: 3.5, contractStatus: "CONTRACT" }
+                { name: "Mert Günok", pos: "KL", ovr: 79, age: 37, rawPrice: 2.5, contractStatus: "CONTRACT" },
+                { name: "Ersin Destanoğlu", pos: "KL", ovr: 73, age: 25, rawPrice: 2.0, contractStatus: "LOAN" },
+                { name: "Gabriel Paulista", pos: "STP", ovr: 79, age: 35, rawPrice: 3.0, contractStatus: "CONTRACT" },
+                { name: "Felix Uduokhai", pos: "STP", ovr: 78, age: 28, rawPrice: 7.5, contractStatus: "CONTRACT" },
+                { name: "Arthur Masuaku", pos: "SLB", ovr: 76, age: 32, rawPrice: 3.5, contractStatus: "CONTRACT" },
+                { name: "Jonas Svensson", pos: "SĞB", ovr: 76, age: 33, rawPrice: 2.5, contractStatus: "CONTRACT" },
+                { name: "Gedson Fernandes", pos: "OS", ovr: 82, age: 27, rawPrice: 17.5, contractStatus: "CONTRACT" },
+                { name: "Al-Musrati", pos: "OS", ovr: 79, age: 30, rawPrice: 9.0, contractStatus: "LISTED" },
+                { name: "Rafa Silva", pos: "OOS", ovr: 84, age: 33, rawPrice: 16.0, contractStatus: "CONTRACT" },
+                { name: "Milot Rashica", pos: "SğK", ovr: 78, age: 29, rawPrice: 7.5, contractStatus: "CONTRACT" },
+                { name: "Semih Kılıçsoy", pos: "SNT", ovr: 78, age: 21, rawPrice: 15.0, contractStatus: "CONTRACT" },
+                { name: "Ciro Immobile", pos: "SNT", ovr: 80, age: 36, rawPrice: 3.5, contractStatus: "CONTRACT" }
             ],
             "Trabzonspor": [
-                { name: "Uğurcan Çakır", pos: "KL", ovr: 81, rawPrice: 10.0, contractStatus: "CONTRACT" },
-                { name: "Stefan Savić", pos: "STP", ovr: 79, rawPrice: 3.0, contractStatus: "CONTRACT" },
-                { name: "Batista Mendy", pos: "OS", ovr: 78, rawPrice: 9.5, contractStatus: "CONTRACT" },
-                { name: "Muhammed Cham", pos: "OOS", ovr: 77, rawPrice: 6.5, contractStatus: "CONTRACT" },
-                { name: "Edin Višća", pos: "SğK", ovr: 78, rawPrice: 2.5, contractStatus: "CONTRACT" },
-                { name: "Simon Banza", pos: "SNT", ovr: 79, rawPrice: 11.0, contractStatus: "CONTRACT" },
-                { name: "Enis Destan", pos: "SNT", ovr: 74, rawPrice: 2.8, contractStatus: "LOAN" }
+                { name: "Uğurcan Çakır", pos: "KL", ovr: 81, age: 30, rawPrice: 10.0, contractStatus: "CONTRACT" },
+                { name: "Stefan Savić", pos: "STP", ovr: 79, age: 35, rawPrice: 3.0, contractStatus: "CONTRACT" },
+                { name: "Batista Mendy", pos: "OS", ovr: 78, age: 26, rawPrice: 9.5, contractStatus: "CONTRACT" },
+                { name: "Muhammed Cham", pos: "OOS", ovr: 77, age: 25, rawPrice: 6.5, contractStatus: "CONTRACT" },
+                { name: "Edin Višća", pos: "SğK", ovr: 78, age: 36, rawPrice: 2.5, contractStatus: "CONTRACT" },
+                { name: "Simon Banza", pos: "SNT", ovr: 79, age: 29, rawPrice: 11.0, contractStatus: "CONTRACT" },
+                { name: "Enis Destan", pos: "SNT", ovr: 74, age: 24, rawPrice: 2.8, contractStatus: "LOAN" }
             ]
         };
 
@@ -564,6 +577,23 @@
             { name: "Canberk Dilaver", pos: "SLB", ovr: 62, rawPrice: 0.10, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
             { name: "Uğur Arslan Kuru", pos: "STP", ovr: 61, rawPrice: 0.085, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
 
+            
+            { name: "Batuhan İşçiler", pos: "SLB", ovr: 60, rawPrice: 0.08, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Mert Ilıman", pos: "OS", ovr: 59, rawPrice: 0.07, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Doğan Ateş", pos: "OS", ovr: 61, rawPrice: 0.09, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Yusuf Onur Arıkan", pos: "KL", ovr: 58, rawPrice: 0.06, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Emirhan Subaş", pos: "SNT", ovr: 60, rawPrice: 0.08, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Celal Emir Dede", pos: "SlK", ovr: 62, rawPrice: 0.10, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Hüseyin Altuğ Taş", pos: "STP", ovr: 59, rawPrice: 0.07, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Abdulsamed Burak", pos: "STP", ovr: 63, rawPrice: 0.12, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Oktay Gürdal", pos: "SĞB", ovr: 61, rawPrice: 0.09, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Berkay Ceylan", pos: "SĞB", ovr: 62, rawPrice: 0.11, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Atalay Babacan", pos: "OOS", ovr: 65, rawPrice: 0.18, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "LISTED" },
+            { name: "Ali Yavuz Kol", pos: "SNT", ovr: 65, rawPrice: 0.19, club: "2. Lig Havuzu", country: "Türkiye", contractStatus: "CONTRACT" },
+            { name: "Gökhan Itmeç", pos: "KL", ovr: 57, rawPrice: 0.05, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Berkay Sefa Kara", pos: "OS", ovr: 60, rawPrice: 0.08, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" },
+            { name: "Eren Tokat", pos: "SNT", ovr: 59, rawPrice: 0.07, club: "3. Lig Havuzu", country: "Türkiye", contractStatus: "FREE" }
+,
             // Kiralık Genç Yetenekler (Loan List)
             { name: "Emirhan İlkhan", pos: "OS", ovr: 72, rawPrice: 0.45, club: "Torino (Kiralık)", country: "İtalya", contractStatus: "LOAN" },
             { name: "Bartuğ Elmaz", pos: "OS", ovr: 71, rawPrice: 0.35, club: "Fenerbahçe (Kiralık)", country: "Türkiye", contractStatus: "LOAN" },
@@ -589,8 +619,8 @@
                 let name = getRandomName();
                 let ovr = Math.max(50, ovrBase - Math.floor(idx / 5) + Math.floor(Math.random() * 5) - 2);
                 let rawPrice = Math.max(0.025, Number((priceBase * (ovr / 75)).toFixed(3)));
+                let age = Math.floor(Math.random() * 19) + 18; // 18 - 36 yaş arası
                 
-                // Rastgele sözleşme durumu dağıtımı
                 let rand = Math.random();
                 let status = "CONTRACT";
                 if (rand < 0.14) status = "LISTED";
@@ -600,9 +630,13 @@
                     name: name,
                     pos: pos,
                     ovr: ovr,
+                    age: age,
                     rawPrice: rawPrice,
                     price: formatEuro(rawPrice),
-                    contractStatus: status
+                    contractStatus: status,
+                    goals: 0,
+                    assists: 0,
+                    matches: 0
                 });
             });
             return roster;
@@ -612,6 +646,10 @@
             return names.map(name => {
                 let realPlayers = (realSquadsDB[name] || []).map(p => ({
                     ...p,
+                    age: p.age || (Math.floor(Math.random() * 14) + 21), // Gerçekçi yaş
+                    goals: 0,
+                    assists: 0,
+                    matches: 0,
                     price: formatEuro(p.rawPrice),
                     contractStatus: p.contractStatus || "CONTRACT"
                 }));
@@ -638,19 +676,19 @@
         };
 
         // 2026/2027 Güncel Ligler (Her grupta 20 takım = 38 haftalık tam sezon formatı!)
-        const worldDB = {
+                const worldDB = {
             "Türkiye": {
                 "Süper Lig (2026/27)": createFullTeams([
                     "Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor", "İstanbul Başakşehir",
                     "Samsunspor", "Göztepe", "Eyüpspor", "Kasımpaşa", "Konyaspor",
                     "Çaykur Rizespor", "Alanyaspor", "Antalyaspor", "Gaziantep FK", "Kayserispor",
-                    "Kocaelispor", "Gençlerbirliği", "Çorum FK", "Erzurumspor FK", "Amed SFK"
+                    "Kocaelispor", "Gençlerbirliği", "Sakaryaspor", "Fatih Karagümrük", "Ankaragücü"
                 ], 77, 25.0),
                 "1. Lig (2026/27)": createFullTeams([
-                    "Fatih Karagümrük", "Ankaragücü", "Sakaryaspor", "Bandırmaspor", "Boluspor",
-                    "Ümraniyespor", "Manisa FK", "Keçiörengücü", "Esenler Erokspor", "Iğdır FK",
-                    "Pendikspor", "İstanbulspor", "Sivasspor", "Bodrum FK", "Hatayspor",
-                    "Adana Demirspor", "Vanspor FK", "Serik Belediyespor", "Sarıyer", "Kastamonuspor"
+                    "Bandırmaspor", "Boluspor", "Ümraniyespor", "Manisa FK", "Keçiörengücü",
+                    "Esenler Erokspor", "Iğdır FK", "Pendikspor", "İstanbulspor", "Sivasspor",
+                    "Bodrum FK", "Hatayspor", "Adana Demirspor", "Çorum FK", "Erzurumspor FK",
+                    "Amed SFK", "Vanspor FK", "Serik Belediyespor", "Sarıyer", "Kastamonuspor"
                 ], 68, 3.5),
                 "2. Lig Beyaz Grup (2026/27)": createFullTeams([
                     "Elazığspor", "Muşspor", "68 Aksaray Belediyespor", "Menemen FK", "Şanlıurfaspor",
@@ -658,12 +696,36 @@
                     "Fethiyespor", "Kırklarelispor", "İnegölspor", "Isparta 32 Spor", "Somaspor",
                     "Altay", "Giresunspor", "Ankaraspor", "Beyoğlu Yeni Çarşı", "Erbaaspor"
                 ], 63, 1.0),
+                "2. Lig Kırmızı Grup (2026/27)": createFullTeams([
+                    "Iğdır FK B", "Vanspor B", "Tarsus İdmanyurdu", "Zonguldak Kömürspor", "Pazarspor",
+                    "Şile Yıldız", "Kırşehir FK", "Afyonspor", "Nazillispor", "Uşakspor",
+                    "Bayburt Özel İdare", "Diyarbekirspor B", "Batman Petrolspor", "Erzincanspor", "Sivas Belediyespor",
+                    "Turgutluspor", "Çankaya FK", "Karaköprü Bld", "Nevşehir Belediyespor", "Ağrı 1970"
+                ], 62, 0.9),
+                "3. Lig 1. Grup (2026/27)": createFullTeams([
+                    "Bursa Yıldırımspor", "Artvin Hopaspor", "Belediye Derincespor", "Edirnespor", "Karaköprü Belediyespor",
+                    "Bergama FK", "Nevşehir Belediyespor", "Çatalcaspor", "Yomraspor", "Amasyaspor",
+                    "Hacettepe 1945", "Kuşadasıspor", "Efe SK", "Alanya Kestelspor", "52 Orduspor",
+                    "Gümüşhanespor", "Siirt İl Özel İdare", "Kızılcabölükspor", "Cizrespor", "Malatya Yeşilyurt"
+                ], 58, 0.4),
+                "3. Lig 2. Grup (2026/27)": createFullTeams([
+                    "Iğdır FK", "Alagöz Holding Iğdır", "Ofspor", "Kuşadası", "Ayvalıkgücü",
+                    "Emlak Konut", "Gema Polimer", "Siirtspor", "Kızılkaya", "Karaköprü",
+                    "Kuşadasıspor", "Malatya", "Elazığ Karakoçan", "Kızılcabölük", "Çarşambaspor",
+                    "Bayrampaşa", "Şile Yıldız", "Darıca Gençlerbirliği", "Kırıkkale FSK", "Kızılcahamam"
+                ], 58, 0.4),
                 "3. Lig 3. Grup (2026/27)": createFullTeams([
                     "Niğde Belediyespor", "Erciyes 38 FSK", "Karşıyaka", "Eskişehirspor", "Orduspor 1967",
-                    "52 Orduspor FK", "Kütahyaspor", "Düzcespor", "Silivrispor", "Kırşehir FSK",
-                    "Karaman FK", "Yeni Mersin İY", "Kırıkkale FK", "Osmaniyespor FK", "Ağrı 1970 Spor",
-                    "Yozgat Bozokspor", "1964 Silifkespor", "Diyarbekirspor", "Karaköprü Belediyespor", "Adanaspor"
-                ], 57, 0.35)
+                    "Kütahyaspor", "Düzcespor", "Silivrispor", "Kırşehir FSK", "Karaman FK",
+                    "Yeni Mersin İY", "Osmaniyespor FK", "Ağrı 1970 Spor", "Yozgat Bozokspor", "1964 Silifkespor",
+                    "Diyarbekirspor", "Adanaspor Alt", "Mardin 1969", "Kahramanmaraşspor", "Bursa Nilüfer"
+                ], 57, 0.35),
+                "3. Lig 4. Grup (2026/27)": createFullTeams([
+                    "Alanya 1221", "Bursa Yıldırım", "Çankaya", "Tokat Belediye Plevne", "Orduspor",
+                    "Adana 1954", "Sebat Gençlik", "Bergama FK", "Karaköprü Bld", "Muş 1984",
+                    "İznikspor", "Bartınspor", "Kastamonu Özel İdare", "Sinopspor", "Çubukspor",
+                    "Gölcükspor", "Karamürselspor", "Gebzespor", "Darıca G.B.", "Bergama Bld"
+                ], 56, 0.3)
             },
             "İngiltere": {
                 "Premier League (2026/27)": createFullTeams([
@@ -671,7 +733,13 @@
                     "Aston Villa", "Nottingham Forest", "Brighton", "Tottenham", "Manchester United",
                     "Bournemouth", "Fulham", "Brentford", "West Ham", "Crystal Palace",
                     "Everton", "Wolverhampton", "Leeds United", "Burnley", "Sheffield United"
-                ], 84, 85.0)
+                ], 84, 85.0),
+                "Championship (2026/27)": createFullTeams([
+                    "West Bromwich", "Coventry City", "Norwich City", "Watford", "Sunderland",
+                    "Middlesbrough", "Hull City", "Stoke City", "Preston North End", "Millwall",
+                    "Swansea City", "Cardiff City", "Bristol City", "Plymouth Argyle", "Blackburn Rovers",
+                    "Sheffield Wednesday", "Oxford United", "Portsmouth", "Derby County", "Luton Town"
+                ], 76, 35.0)
             },
             "İspanya": {
                 "LaLiga (2026/27)": createFullTeams([
@@ -679,7 +747,13 @@
                     "Real Sociedad", "Real Betis", "Girona", "Mallorca", "Osasuna",
                     "Celta Vigo", "Sevilla", "Rayo Vallecano", "Getafe", "Valencia",
                     "Espanyol", "Alaves", "Las Palmas", "Levante", "Real Zaragoza"
-                ], 83, 80.0)
+                ], 83, 80.0),
+                "Segunda División (2026/27)": createFullTeams([
+                    "Deportivo La Coruña", "Real Valladolid", "Granada", "Almería", "Cádiz",
+                    "Eibar", "Sporting Gijón", "Racing Santander", "Elche", "Tenerife",
+                    "Oviedo", "Huesca", "Mirandés", "Burgos", "Albacete",
+                    "Cartagena", "Eldense", "Racing Ferrol", "Castellón", "Málaga"
+                ], 75, 25.0)
             },
             "İtalya": {
                 "Serie A (2026/27)": createFullTeams([
@@ -687,7 +761,13 @@
                     "Lazio", "Fiorentina", "Bologna", "Roma", "Torino",
                     "Udinese", "Genoa", "Cagliari", "Parma", "Como",
                     "Lecce", "Empoli", "Verona", "Sassuolo", "Pisa"
-                ], 83, 75.0)
+                ], 83, 75.0),
+                "Serie B (2026/27)": createFullTeams([
+                    "Sampdoria", "Palermo", "Spezia", "Catanzaro", "Cremonese",
+                    "Brescia", "Modena", "Reggiana", "Sudtirol", "Cittadella",
+                    "Bari", "Salernitana", "Frosinone", "Mantova", "Carrarese",
+                    "Cesena", "Juve Stabia", "Padova", "Catania", "Avellino"
+                ], 75, 22.0)
             },
             "Almanya": {
                 "Bundesliga (2026/27)": createFullTeams([
@@ -695,7 +775,13 @@
                     "VfB Stuttgart", "SC Freiburg", "Mainz 05", "Borussia Mönchengladbach", "Wolfsburg",
                     "Werder Bremen", "Augsburg", "Union Berlin", "TSG Hoffenheim", "St. Pauli",
                     "Hamburger SV", "1. FC Köln", "Fortuna Düsseldorf", "Heidenheim", "Bochum"
-                ], 82, 70.0)
+                ], 82, 70.0),
+                "2. Bundesliga (2026/27)": createFullTeams([
+                    "Schalke 04", "Hertha Berlin", "Hannover 96", "Kaiserslautern", "Nürnberg",
+                    "Karlsruher SC", "Paderborn", "Greuther Fürth", "Magdeburg", "Elversberg",
+                    "Darmstadt 98", "Regensburg", "Preußen Münster", "Ulm", "Eintracht Braunschweig",
+                    "Dynamo Dresden", "Hansa Rostock", "Arminia Bielefeld", "Viktoria Köln", "Saarbrücken"
+                ], 75, 20.0)
             },
             "Fransa": {
                 "Ligue 1 (2026/27)": createFullTeams([
@@ -703,7 +789,13 @@
                     "Nice", "Lens", "Strasbourg", "Toulouse", "Brest",
                     "Rennes", "Auxerre", "Nantes", "Reims", "Angers",
                     "Saint-Étienne", "Montpellier", "Le Havre", "Paris FC", "Lorient"
-                ], 81, 65.0)
+                ], 81, 65.0),
+                "Ligue 2 (2026/27)": createFullTeams([
+                    "Bordeaux", "Metz", "Troyes", "Guingamp", "Amiens",
+                    "Pau FC", "Grenoble", "Rodez", "Bastia", "Laval",
+                    "Ajaccio", "Dunkerque", "Annecy", "Clermont Foot", "Red Star",
+                    "Martigues", "Boulogne", "Nancy", "Le Mans", "Châteauroux"
+                ], 73, 18.0)
             },
             "Portekiz": {
                 "Primeira Liga (2026/27)": createFullTeams([
@@ -861,11 +953,15 @@
                     name: p.name,
                     pos: p.pos,
                     ovr: p.ovr,
+                    age: p.age || (p.contractStatus === "FREE" ? Math.floor(Math.random() * 6) + 32 : Math.floor(Math.random() * 12) + 20),
                     rawPrice: p.rawPrice,
                     price: formatEuro(p.rawPrice),
                     club: p.club,
                     country: p.country,
-                    contractStatus: p.contractStatus
+                    contractStatus: p.contractStatus,
+                    goals: 0,
+                    assists: 0,
+                    matches: 0
                 });
             });
 
@@ -897,6 +993,63 @@
         let currentMatchState = { opponent: "", homeScore: 0, awayScore: 0, minute: 0 };
         let activeLineupSlot = null;
         let pendingAcademyPlayer = null;
+
+        
+        // Web Audio API ile Ses Efektleri (Harici dosya gerektirmez)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                let now = audioCtx.currentTime;
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'goal') {
+                    // Gol sevinci melodi düdüğü
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                    osc.start(now);
+                    osc.stop(now + 0.6);
+                } else if (type === 'whistle') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(2500, now);
+                    osc.frequency.setValueAtTime(2200, now + 0.15);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'concede') {
+                    // Gol yeme / hüsran sesi
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, now);
+                    osc.frequency.exponentialRampToValueAtTime(80, now + 0.3);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            } catch(e) {
+                console.log("Audio error:", e);
+            }
+        }
 
         function showToast(text) {
             const t = document.getElementById("toast-message");
@@ -1026,11 +1179,11 @@
                 const safeName = team.name.replace(/'/g, "\'");
                 
                 html += `
-                    <div class="team-card" onclick="selectTeam('${safeCountry}', '${safeLeague}', '${safeName}')">
+                    <div class="team-card" onclick="playSound('click'); selectTeam('${safeCountry}', '${safeLeague}', '${safeName}')">
                         <div style="font-weight: bold; font-size: 0.95rem; color: #fff;">${team.name}</div>
                         <div style="font-size: 0.72rem; color: var(--primary);">${targetCountry} • ${targetLeague}</div>
                         <div style="font-size: 0.72rem; color: var(--text-muted);">Bütçe: ${formatEuro(team.budget)} | Kadro: ${team.squad.length} Oyuncu</div>
-                        <button class="btn" onclick="event.stopPropagation(); selectTeam('${safeCountry}', '${safeLeague}', '${safeName}');" style="margin-top: 4px; width: 100%;">Takımı Seç</button>
+                        <button class="btn" onclick="playSound('click'); event.stopPropagation(); selectTeam('${safeCountry}', '${safeLeague}', '${safeName}');" style="margin-top: 4px; width: 100%;">Takımı Seç</button>
                     </div>
                 `;
             });
@@ -1115,22 +1268,56 @@
             const container = document.getElementById("squad-list-container");
             container.innerHTML = "";
             gameState.squad.forEach((player, idx) => {
+                if (player.goals === undefined) player.goals = 0;
+                if (player.assists === undefined) player.assists = 0;
+                if (player.matches === undefined) player.matches = 0;
+
                 const item = document.createElement("div");
                 item.className = "player-item";
                 let loanTag = player.isLoanedIn ? `<span class="status-badge status-loan">Kiralık Geldi</span>` : "";
+                if (player.age === undefined) player.age = Math.floor(Math.random() * 15) + 20;
                 item.innerHTML = `
-                    <div class="player-details">
+                    <div class="player-details" style="cursor: pointer;" onclick="openPlayerStats(${idx})">
                         <div class="player-ovr">${player.ovr}</div>
                         <div class="player-pos">${player.pos}</div>
                         <div>
-                            <strong>${player.name}</strong> ${loanTag}
-                            <div style="font-size: 0.68rem; color: var(--text-muted);">Değer: ${formatEuro(player.rawPrice)}</div>
+                            <strong>${player.name}</strong> (${player.age} yaş) ${loanTag}
+                            <div style="font-size: 0.68rem; color: var(--text-muted);">Maç: ${player.matches} | Gol: <strong style="color:var(--success);">${player.goals}</strong> | Asist: <strong style="color:var(--info);">${player.assists}</strong></div>
                         </div>
                     </div>
-                    <button class="btn" style="padding: 4px 8px; font-size: 0.72rem;" onclick="quickAssignToTeam(${idx})">11'e Koy</button>
+                    <div style="display:flex; gap:4px;">
+                        <button class="btn btn-secondary" style="padding: 4px 6px; font-size: 0.7rem;" onclick="playSound('click'); openPlayerStats(${idx})">İstatistik</button>
+                        <button class="btn" style="padding: 4px 8px; font-size: 0.72rem;" onclick="playSound('click'); quickAssignToTeam(${idx})">11'e Koy</button>
+                    </div>
                 `;
                 container.appendChild(item);
             });
+        }
+
+        function openPlayerStats(idx) {
+            const p = gameState.squad[idx];
+            if (!p) return;
+            if (p.goals === undefined) p.goals = 0;
+            if (p.assists === undefined) p.assists = 0;
+            if (p.matches === undefined) p.matches = 0;
+
+            document.getElementById("stat-player-name").innerText = p.name + " (" + p.pos + ")";
+            let ageStatus = p.age <= 23 ? "🟢 Gelişim Çağında (Potansiyeli Yüksek)" : (p.age >= 32 ? "🟠 Deneyimli / Yaşlanıyor (Düşüş Riski)" : "⚪ İstikrarlı Yaş");
+            document.getElementById("stat-player-details").innerHTML = `
+                <div>Mevki: <strong>${p.pos}</strong> | Yaş: <strong>${p.age}</strong></div>
+                <div>Durum: <span style="font-size:0.75rem;">${ageStatus}</span></div>
+                <div>Yetenek Reytingi (OVR): <strong style="color:var(--primary);">${p.ovr}</strong></div>
+                <div>Piyasa Değeri: <strong>${formatEuro(p.rawPrice)}</strong></div>
+                <hr style="border-color:var(--border); margin:4px 0;">
+                <div>Oynanan Maç: <strong>${p.matches}</strong></div>
+                <div>Atılan Goller: <strong style="color:var(--success);">${p.goals}</strong></div>
+                <div>Yapılan Asistler: <strong style="color:var(--info);">${p.assists}</strong></div>
+            `;
+            document.getElementById("player-stats-modal").style.display = "flex";
+        }
+
+        function closePlayerStatsModal() {
+            document.getElementById("player-stats-modal").style.display = "none";
         }
 
         function quickAssignToTeam(playerIdx) {
@@ -1158,7 +1345,7 @@
             const form = gameState.formation || "4-3-3";
             
             const node = (slotPos, slotIdx, label, pObj) => `
-                <div class="pitch-player-node" onclick="openLineupModal('${slotPos}', ${slotIdx})">
+                <div class="pitch-player-node" onclick="playSound('click'); openLineupModal('${slotPos}', ${slotIdx})">
                     <div class="pos-badge">${label}</div>
                     <div class="name-badge">${pObj ? pObj.name.split(' ').pop() : "Seç"}</div>
                     <div class="ovr-badge">${pObj ? 'OVR ' + pObj.ovr : ''}</div>
@@ -1185,6 +1372,50 @@
                         ${node('SlK', 0, 'SlK', l.slk)}
                         ${node('SNT', 0, 'SNT', l.snt)}
                         ${node('SğK', 0, 'SğK', l.sgk)}
+                    </div>
+                `;
+            } else if (form === "4-2-3-1") {
+                html += `
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'SĞB', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                        ${node('SLB', 0, 'SLB', l.slb)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
+                        ${node('OOS', 0, 'OOS', l.oos)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SNT', 0, 'SNT', l.snt)}
+                    </div>
+                `;
+            } else if (form === "4-1-4-1") {
+                html += `
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'SĞB', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                        ${node('SLB', 0, 'SLB', l.slb)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('OS', 0, 'OS', l.os1)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
+                        ${node('OOS', 0, 'OOS', l.oos)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SNT', 0, 'SNT', l.snt)}
                     </div>
                 `;
             } else if (form === "4-4-2") {
@@ -1225,6 +1456,46 @@
                     <div class="pitch-col">
                         ${node('SNT', 0, 'SNT', l.snt)}
                         ${node('SLB', 0, 'SNT', l.slb)}
+                    </div>
+                `;
+            } else if (form === "3-4-3") {
+                html += `
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'STP', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OOS', 0, 'OOS', l.oos)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                        ${node('SLB', 0, 'SLB', l.slb)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
+                        ${node('SNT', 0, 'SNT', l.snt)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
+                    </div>
+                `;
+            } else if (form === "5-4-1") {
+                html += `
+                    <div class="pitch-col">${node('KL', 0, 'KL', l.kl)}</div>
+                    <div class="pitch-col">
+                        ${node('SĞB', 0, 'SĞB', l.sğb)}
+                        ${node('STP', 0, 'STP', l.stp1)}
+                        ${node('STP', 1, 'STP', l.stp2)}
+                        ${node('OOS', 0, 'STP', l.oos)}
+                        ${node('SLB', 0, 'SLB', l.slb)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SlK', 0, 'SlK', l.slk)}
+                        ${node('OS', 0, 'OS', l.os1)}
+                        ${node('OS', 1, 'OS', l.os2)}
+                        ${node('SğK', 0, 'SğK', l.sgk)}
+                    </div>
+                    <div class="pitch-col">
+                        ${node('SNT', 0, 'SNT', l.snt)}
                     </div>
                 `;
             } else {
@@ -1328,7 +1599,7 @@
                             <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">${player.club} (${player.country}) • Bedel: <strong style="color:#fff;">${formatEuro(player.rawPrice)}</strong></div>
                         </div>
                     </div>
-                    <button class="btn" style="background:${btnColor}; color:${player.contractStatus === 'LISTED' ? '#000' : '#fff'}; white-space:nowrap;" onclick="buyPlayer(${player.id})">${btnLabel}</button>
+                    <button class="btn" style="background:${btnColor}; color:${player.contractStatus === 'LISTED' ? '#000' : '#fff'}; white-space:nowrap;" onclick="playSound('click'); buyPlayer(${player.id})">${btnLabel}</button>
                 `;
                 container.appendChild(item);
             });
@@ -1386,18 +1657,96 @@
         }
 
         function startNewSeason() {
+            // Sezon sonunda puan durumuna göre terfi (üst lige çıkış) kontrolü!
+            const leagueTeams = [...worldDB[gameState.country][gameState.league]].sort((a, b) => {
+                if ((b.points || 0) !== (a.points || 0)) return (b.points || 0) - (a.points || 0);
+                let gdB = (b.gf || 0) - (b.ga || 0);
+                let gdA = (a.gf || 0) - (a.ga || 0);
+                if (gdB !== gdA) return gdB - gdA;
+                return (b.gf || 0) - (a.gf || 0);
+            });
+            
+            let myRank = leagueTeams.findIndex(t => t.name === gameState.teamName) + 1;
+            let leaguesInCountry = Object.keys(worldDB[gameState.country]);
+            let currentLeagueIdx = leaguesInCountry.indexOf(gameState.league);
+            
+            let promotedMsg = "";
+            if (myRank <= 3 && currentLeagueIdx > 0) {
+                let upperLeague = leaguesInCountry[currentLeagueIdx - 1];
+                promotedMsg = `🎉 Tebrikler! ${gameState.teamName} ${myRank}. olarak ${upperLeague} ligine yükseldi!`;
+                gameState.league = upperLeague;
+            } else {
+                promotedMsg = `Yeni Sezon Başladı! Yaşlanma ve Gelişim raporu uygulandı.`;
+            }
+
+            // Oyuncu Gelişim, Yaşlanma ve Emeklilik Raporu
+            let retirementNotices = [];
+            let updatedSquad = [];
+            
+            gameState.squad.forEach(p => {
+                if (p.age === undefined) p.age = 25;
+                p.age += 1; // 1 yaş yaşlandı
+                
+                // Emeklilik kontrolü (36 yaş ve üstü emekli olabilir)
+                if (p.age >= 37 || (p.age >= 35 && Math.random() < 0.5)) {
+                    retirementNotices.push(`${p.name} (${p.age} yaşında) aktif futbol kariyerini noktaladı (Emekli oldu).`);
+                    return; // Kadrodan çıkar
+                }
+
+                // Genç oyuncu potansiyel gelişimi (Yaş <= 23)
+                if (p.age <= 24) {
+                    let growth = (p.matches >= 15 ? 2 : 1) + (Math.random() < 0.5 ? 1 : 0);
+                    p.ovr = Math.min(94, p.ovr + growth);
+                    p.rawPrice = Number((p.rawPrice * (1 + (growth * 0.25))).toFixed(3));
+                } 
+                // Yaşlı oyuncu düşüşü (Yaş >= 32)
+                else if (p.age >= 32) {
+                    let decline = p.age >= 35 ? 3 : (p.age >= 33 ? 2 : 1);
+                    p.ovr = Math.max(45, p.ovr - decline);
+                    p.rawPrice = Number((Math.max(0.01, p.rawPrice * 0.75)).toFixed(3));
+                } else {
+                    // Olgun dönem oyuncuları performans değer artışı
+                    if (p.goals >= 10 || p.assists >= 10) {
+                        p.ovr = Math.min(95, p.ovr + 1);
+                        p.rawPrice = Number((p.rawPrice * 1.2).toFixed(3));
+                    }
+                }
+
+                // Sezon istatistiklerini sıfırla
+                p.matches = 0;
+                p.goals = 0;
+                p.assists = 0;
+                updatedSquad.push(p);
+            });
+
+            gameState.squad = updatedSquad;
             gameState.week = 1;
             gameState.points = 0;
-            const leagueTeams = worldDB[gameState.country][gameState.league];
-            leagueTeams.forEach(t => {
-                t.points = 0; t.played = 0; t.won = 0; t.drawn = 0; t.lost = 0; t.gf = 0; t.ga = 0;
+            
+            // Tüm ligleri sıfırla
+            Object.keys(worldDB).forEach(ct => {
+                Object.keys(worldDB[ct]).forEach(lg => {
+                    worldDB[ct][lg].forEach(t => {
+                        t.points = 0; t.played = 0; t.won = 0; t.drawn = 0; t.lost = 0; t.gf = 0; t.ga = 0;
+                    });
+                });
             });
+
             // Kiralık gelen oyuncuları sezon sonu gönder
             gameState.squad = gameState.squad.filter(p => !p.isLoanedIn);
-            gameState.budget = Number((gameState.budget + (gameState.country === "Türkiye" && gameState.league.includes("3. Lig") ? 0.25 : 2.0)).toFixed(3));
+            gameState.budget = Number((gameState.budget + 1.5).toFixed(3));
+            
+            if (!gameState.leagueTables[gameState.country]) gameState.leagueTables[gameState.country] = {};
+            gameState.leagueTables[gameState.country][gameState.league] = worldDB[gameState.country][gameState.league];
+
             saveGameProgress();
             applyLoadedGameState();
-            showToast("2027/28 Yeni Sezonu Başladı!");
+            
+            if (retirementNotices.length > 0) {
+                showToast("⚠️ Emeklilikler: " + retirementNotices[0]);
+            } else {
+                showToast(promotedMsg);
+            }
         }
 
         function getTeamAverageOvr(team) {
@@ -1408,6 +1757,7 @@
         }
 
         function startMatch() {
+            playSound('whistle');
             if (gameState.week > TOTAL_WEEKS) return;
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-match').classList.add('active');
@@ -1436,21 +1786,54 @@
             const oppTeam = leagueTeams.find(t => t.name === currentMatchState.opponent);
             const myOvr = getTeamAverageOvr(myTeam);
             const oppOvr = getTeamAverageOvr(oppTeam);
-            const diff = (myOvr - oppOvr) * 0.025;
+            
+            // Dengeli zorluk faktörü: Eğer rakip bizden güçlüyse şansımız azalır, her maçı kolay kazanamayız!
+            const diff = (myOvr - oppOvr) * 0.018;
 
-            let eventText = `Dakika ${currentMatchState.minute}: Orta saha mücadelesi devam ediyor.`;
-            if (Math.random() > 0.42) {
-                let homeChance = Math.min(0.8, Math.max(0.2, 0.52 + diff));
+            let eventText = `Dakika ${currentMatchState.minute}' — Orta alanda sert mücadele, iki takım da boşluk arıyor.`;
+            let randEvent = Math.random();
+            if (randEvent > 0.45) {
+                // Kim atak yapacak? OVR farkına göre olasılık
+                let homeChance = Math.min(0.75, Math.max(0.25, 0.50 + diff));
                 if (Math.random() < homeChance) {
                     currentMatchState.homeScore++;
                     let scorers = Object.values(gameState.lineup).filter(p => p && p.pos !== 'KL');
-                    let scorer = scorers.length ? scorers[Math.floor(Math.random() * scorers.length)].name : gameState.teamName;
-                    eventText = `⚽ GOOOL! ${gameState.teamName} (${scorer}) ağları sarstı!`;
+                    let scorerPlayer = scorers.length ? scorers[Math.floor(Math.random() * scorers.length)] : null;
+                    let scorer = scorerPlayer ? scorerPlayer.name : gameState.teamName;
+                    
+                    if (scorerPlayer) {
+                        scorerPlayer.goals = (scorerPlayer.goals || 0) + 1;
+                        // Assist simulation for another player in lineup
+                        let assisters = Object.values(gameState.lineup).filter(p => p && p !== scorerPlayer);
+                        if (assisters.length > 0) {
+                            let assisterPlayer = assisters[Math.floor(Math.random() * assisters.length)];
+                            assisterPlayer.assists = (assisterPlayer.assists || 0) + 1;
+                        }
+                    }
+
+                    eventText = `⚽ GOOOOL! Dakika ${currentMatchState.minute} — ${gameState.teamName} atağında topu ağlara yollayan isim: <strong style="color:var(--success);">${scorer}</strong>! Harika bir gol!`;
+                    playSound('goal');
                 } else {
                     currentMatchState.awayScore++;
-                    eventText = `⚽ GOL... ${currentMatchState.opponent} golü buldu.`;
+                    // Rakip takımın skorerini simüle et
+                    let oppScorer = "Rakip Oyuncu";
+                    if (oppTeam && oppTeam.squad && oppTeam.squad.length > 0) {
+                        let oppAttackers = oppTeam.squad.filter(p => p.pos !== 'KL');
+                        if (oppAttackers.length > 0) {
+                            oppScorer = oppAttackers[Math.floor(Math.random() * oppAttackers.length)].name;
+                        }
+                    }
+                    eventText = `🥅 GOL... Dakika ${currentMatchState.minute} — ${currentMatchState.opponent} etkili geldi ve <strong style="color:var(--danger);">${oppScorer}</strong> ile topu ağlarımıza gönderdi.`;
+                    playSound('concede');
                 }
+            } else if (randEvent < 0.15) {
+                eventText = `⚠️ Dakika ${currentMatchState.minute} — ${currentMatchState.opponent} gole çok yaklaştı ancak savunmamız son anda çıkardı!`;
+            } else if (randEvent < 0.30) {
+                let ourAttacker = Object.values(gameState.lineup).filter(p => p && p.pos !== 'KL');
+                let atName = ourAttacker.length ? ourAttacker[Math.floor(Math.random() * ourAttacker.length)].name : gameState.teamName;
+                eventText = `🔥 Dakika ${currentMatchState.minute} — ${atName} ceza sahası dışından çok sert vurdu, kaleci son anda kornere çeldi!`;
             }
+            
             commBox.innerHTML += `<div class="commentary-item">${eventText}</div>`;
             commBox.scrollTop = commBox.scrollHeight;
             document.getElementById("match-home-score").innerText = currentMatchState.homeScore;
@@ -1525,6 +1908,13 @@
                 oppTeam.gf = (oppTeam.gf || 0) + currentMatchState.awayScore;
                 oppTeam.ga = (oppTeam.ga || 0) + currentMatchState.homeScore;
             }
+
+            // İlk 11'deki oyuncuların maç sayısını artır
+            Object.values(gameState.lineup).forEach(p => {
+                if (p) {
+                    p.matches = (p.matches || 0) + 1;
+                }
+            });
 
             if (currentMatchState.homeScore > currentMatchState.awayScore) {
                 myTeam.points += 3;
